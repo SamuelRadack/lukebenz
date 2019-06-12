@@ -1,0 +1,211 @@
+---
+title: "World Cup Methodology"
+author: 
+  -admin
+date: "2018-06-10"
+output: html_document
+tags: ["World Cup", "Soccer"]
+---
+
+
+
+
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>With the 2018 FIFA World Cup nearly upon us, we set out to build a model to predict game outcomes and estimate coutries chances of reaching various rounds of the tournament. Ranking systems for various sports, including <a href="https://sports.sites.yale.edu/ncaa-mens-basketball-power-rankings-0">NCAA Men’s Basketball</a>, <a href="https://github.com/mc-robinson/YUSAG_football_model">NCAA Football</a>, and <a href="https://sports.sites.yale.edu/nba-model-math">NBA</a>, have been the basis of several of our projects in the past. With the exception of rankings using ELO, all of our past ranking systems have made use of linear regression in one form or another. Simply, those models took on something similar to the following form
+<span class="math display">\[
+Y = \beta_0 + \beta_{team} X_{team} + \beta_{opp} X_{opp} + \beta_{loc} X_{loc} + \epsilon
+\]</span>
+where <span class="math inline">\(X_{team, i}, X_{opp, i}\)</span>, and <span class="math inline">\(X_{loc, i}\)</span> are indicator vectors for the <span class="math inline">\(i^{th}\)</span> game’s <code>team</code>, <code>opponent</code>, and <code>location</code> (Home, Away, Neutral) from the perspective of <code>team</code>, and <span class="math inline">\(Y_i\)</span> is game’s the score-differential. The key assumptions for this model are that game outcomes are independent of one another, and that our error <span class="math inline">\(\epsilon \sim N(0, \sigma^2)\)</span>.</p>
+</div>
+<div id="first-attempt" class="section level1">
+<h1>First Attempt</h1>
+<p>Before going into detail on the model we ultimated settled on, let’s first examine what didn’t work–and more importantly <strong>why</strong>. Given our prior experience using linear regression to predict score differential in several different sporting events, it seemed natural to extend the notion to international soccer. In fact, our initial attempt seemed quite reasonable. The basic idea was as follows:</p>
+<ul>
+<li>Use linear regression with covariates <code>team</code>, <code>opponent</code>, and <code>location</code> to predict <code>goal_diff</code> (a game’s goal differential).</li>
+<li>Use a <a href="https://en.wikipedia.org/wiki/Multinomial_logistic_regression">multinomial logistic regression</a> model with input <code>pred_goal_diff</code> to estimate probabilities of <code>win</code>, <code>loss</code>, and <code>tie</code>.
+Our rankings indicated that Germany, Brazil, and Spain were the top 3 teams, entirely plausible our eyes (as casual soccer fans).</li>
+</ul>
+<p>In writing <a href="https://en.wikipedia.org/wiki/Monte_Carlo_method">Monte Carlo simulations</a> to estimate round-by-round probabilities of advacing, we began to notice a potential fault in our model. While it was easy enough to simulate game outcomes and award points (3 for win, 1 for tie, 0 for loss) given our estimated <code>win</code>, <code>loss</code>, and <code>tie</code> probabilites for each of the group stage games, breaking ties in the group standings to determine which two teams would advance to the knockout round presented more of a challenge. If two or more teams are tied on points after a round robin within the group, the first tie-breaker is net goal differtial, a country’s goals scored - goals allowed in the 3 group stage games. Our initial thought was to simply flip a coin to break ties, but this underestimates the probabiity that better teams advance past the group stage. Consider the following hypothethical scenario in group B:</p>
+<table border=2, align = "center>
+<tr> <th>  </th> <th> country </th> <th> sim_points </th>  </tr>
+<tr> <td align="right"> 1 </td> <td> Spain </td> <td align="right"> 9 </td> </tr>
+<tr> <td align="right"> 2 </td> <td> Portugal </td> <td align="right"> 4 </td> </tr>
+<tr> <td align="right"> 3 </td> <td> Morocco </td> <td align="right"> 4 </td> </tr>
+<tr> <td align="right"> 4 </td> <td> Iran </td> <td align="right"> 0 </td> </tr>
+</table>
+<p>Simply flipping a coin to determine whether Portugal or Morocco would advance in the above case almost certianly underestimates the chances that Portugal, the superior of the two, would have a larger goal differential than Morocco. So, was there a better way to account for goal differntial? Recall, <code>goal_diff</code> was the response variable of our linear regression. A nice result of simple linear regression is that for game <span class="math inline">\(i\)</span>, we have <span class="math inline">\(\widehat Y_i\)</span> normally distributed. Since <span class="math inline">\(\widehat Y_i = \widehat \beta_0 + \widehat\beta X_i\)</span> and each <span class="math inline">\(\widehat \beta_i \sim N(\beta_i, \sigma_i^2)\)</span>, <span class="math display">\[\widehat Y_j \sim N(\beta_0 + \beta X_j, \sum_i \sigma_i^2)\]</span>
+Approximating such a distribution using prediction intervals for <code>goal_diff</code>, perhaps we could form net goal differential distributions for each team in group play and randomly draw from those distrubutions in the case of a tie in the group standings. Things quickly became not well-defined when trying to draw from <span class="math inline">\(Y \sim N(\mu, \sigma^2) | Y \geq 1\)</span> (in case of loss, <span class="math inline">\(Y \leq -1\)</span>). Moreover, in the case of a tie, we’d be setting <span class="math inline">\(Y = 0\)</span> in our simulation, yet under the normal distribution, <span class="math inline">\(P(Y = 0) = 0\)</span> (in fact the probability <span class="math inline">\(Y = c\)</span> exactly is 0 any fixed constant <span class="math inline">\(c\)</span>). By this point, we’d realized we were in trouble, as drawing from this continuous distribution for a discrete random variable didn’t make a lot of sense. Back to the drawing board.</p>
+</div>
+<div id="taking-a-step-back" class="section level1">
+<h1>Taking a Step Back</h1>
+<p>At this stage, there are two questions to consider. The first, is why didn’t a linear model, which had worked well for us in the case of basketball and football, work well in the case of soccer? Furthermore, we wondered, if not a linear model, what type of model would work best? The answer to both of these questions is best seen by looking at histograms of points/goals scored in soccer games vs. basketball games.</p>
+<p><img src="/post/wc_model_methodology/blogpost_files/figure-html/unnamed-chunk-1-1.png" width="672" /><img src="/post/wc_model_methodology/blogpost_files/figure-html/unnamed-chunk-1-2.png" width="672" /></p>
+<p>Based on the plots above, we see that the distribution of basketball scores looks like a bell curve, while the distribution of soccer scores does not. Rather, the distribution of soccer scores looks to be more like a <a href="https://en.wikipedia.org/wiki/Poisson_distribution">Poisson distribution</a>. Recall that the probability mass function (PMF) of the possion distribution with parameter <span class="math inline">\(\lambda\)</span> is by
+<span class="math display">\[
+P(X = k) = \frac{e^{-\lambda}\lambda^k}{x!} \textrm{ for } x = 0, 1, 2, ...
+\]</span></p>
+<p>Additionally, if <span class="math inline">\(X \sim Pois(\lambda)\)</span>, <span class="math inline">\(\mathbb{E}(X) = \lambda\)</span>. As <span class="math inline">\(\lambda\)</span> gets large, Poisson distributions become more and more like Guassians, hence the ability for sports with larger average scores (i.e. basketball) to be better modeled with a Normal Model than sports with lower scores (i.e. soccer, hockey). Since the difference of i.i.d. normal random variables is also normal, linear regression is perfectly fine for modeling <code>score_diff</code> is basketball. However, the difference of two i.i.d. poisson random variables <strong>is not</strong> normal nor poisson. Rather, the difference of two poisson random variables follows the <a href="https://en.wikipedia.org/wiki/Skellam_distribution">skellam distribution</a>. Thus, it seems like our best bet here is to use <a href="https://en.wikipedia.org/wiki/Poisson_regression">poisson regression</a> for our model. In fact, several studies have shown that poisson regression is good for modeling soccer <a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> <a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a> <a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a> <a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a>.</p>
+</div>
+<div id="building-the-model" class="section level1">
+<h1>Building the Model</h1>
+<p>The data, <a href="https://www.kaggle.com/martj42/international-football-results-from-1872-to-2017">available on Kaggle</a>, covers over 39,000 international soccer matches dating back to 1872. For the purpose of this model, we have chosen to use data for games played after <strong>January 1, 2014</strong>. Many major tournaments in soccer, the World Cup included, occur on a four year cycle, so using the last 4 years worth of data seemed natural.</p>
+<p>Daniel Sheehan has written a <a href="https://dashee87.github.io/data%20science/football/r/predicting-football-results-with-statistical-modelling/">fantastic blog post on using poisson regression to predict the outcomes of soccer games</a>, and our model is based off of his work (he provides lots of examples in both R and Python, and we’d highly recommend reading it!).</p>
+<p>We began by duplicating the data set and transforming one copy to be from the perspective of the <code>opponent</code>. For example, if we had the vector in the <strong>&lt;</strong> <code>team</code> = "Germany", <code>opponent</code> = "Brazil", <code>location</code> = "N", <code>team_score</code> = 7, <code>opp_score</code> = 1 <strong>&gt;</strong>, we’d also add to our data set the vector <strong>&lt;</strong><code>team</code> = "Brazil", <code>opponent</code> = "Germany", <code>location</code> = "N", <code>team_score</code> = 1, <code>opp_score</code> = 7 <strong>&gt;</strong>. What we eventually end up predicting is <code>team_score</code> as a function of <code>team</code>, <code>opponent</code>, and <code>location</code>.</p>
+<p>Before actually building the model, there were one more things that we considered, namely <code>match_weight</code>, how much weight we should give a particular game. There were two factors on which the model weights were set: time since the was played, and the type of match being played. We broke matches in our data set into four types (derived from the <a href="https://www.fifa.com/fifa-world-ranking/procedure/men.html">official FIFA rankings formula</a>):</p>
+<ul>
+<li>Friendlies and other matches (Base Weight <span class="math inline">\(\alpha_i = 1\)</span>)</li>
+<li>Qualification matches for World Cup and continental championships (Base Weight = <span class="math inline">\(\alpha_i = 3\)</span>)</li>
+<li>Confederations Cup and continental championships (Base Weight = <span class="math inline">\(\alpha_i = 5\)</span>)</li>
+<li>World Cup Matches (Base Weight = <span class="math inline">\(\alpha_i= 8\)</span>)</li>
+</ul>
+<p>Letting <span class="math inline">\(\delta_i\)</span> represent the date on which game <span class="math inline">\(i\)</span> was played and let <span class="math inline">\(\delta_t\)</span> be today’s date (i.e. the date we choose to fit/re-fit the model). Finally, take <span class="math inline">\(\delta\star = \max_{i} (\delta_t - \delta_i)\)</span>. Then, the <code>match_weight</code>, <span class="math inline">\(w_i\)</span> of match <span class="math inline">\(i\)</span> is given by
+<span class="math display">\[
+w_i = \alpha_i \times e^{- \frac{\delta_t - \delta_i}{\delta\star}}
+\]</span>
+<img src="/post/wc_model_methodology/blogpost_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p>We see above that the 2014 World Cup and the 2016 Euro Cup are among the most heavily weighted games, as we would hope. Now the call to the model is as follows:</p>
+<pre class="r"><code>glm.futbol &lt;- glm(goals ~ team + opponent + location, 
+                  family = &quot;poisson&quot;,
+                  data = y, 
+                  weights = match_weight)</code></pre>
+<p>The model gives coefficients for each country both as levels of the <code>team</code> and <code>opponent</code> factors. Since the model output predictions can be taken as the average <code>team_score</code> for a given <code>team</code> against a given <code>opponent</code> at a given <code>location</code>, we can view the country specific coefficients as offense and defensive components of a power rating. The interpretation of such coefficients is less intutive than in the case of linear regression, in which coefficients signfy points better than an average team, but you can think of them as more similar to logistic regression coefficients. Higher offensive coefficients indicate a team is likely to score more goals on average while low (more negative) defensive coefficients indicate a team is likely to conceed fewer goals on average.</p>
+<pre><code>##            team  offense   defense net_rating rank
+## 77      Germany 1.703729 -1.363466   3.067195    1
+## 72       France 1.576077 -1.298866   2.874943    2
+## 29       Brazil 1.730614 -1.126375   2.856989    3
+## 181       Spain 1.646285 -1.127339   2.773624    4
+## 9     Argentina 1.320125 -1.425954   2.746078    5
+## 45     Colombia 1.448187 -1.284832   2.733019    6
+## 20      Belgium 1.569723 -1.127761   2.697484    7
+## 158    Portugal 1.442480 -1.211316   2.653797    8
+## 140 Netherlands 1.592443 -1.054254   2.646696    9
+## 64      England 1.265444 -1.286320   2.551764   10</code></pre>
+<p>Offensively, the top teams by our model, are Brazil, Germany and Spain, while Argentina, Germany, and England posses the best defenses.</p>
+</div>
+<div id="sample-match-prediction" class="section level1">
+<h1>Sample Match Prediction</h1>
+<p>To see how this model works in more detail, let’s walk through how we predict the outcome of a single match. We’ll use the marquee Spain-Portugal fixture from Group B as our case study. The model output for the vector <strong>&lt;</strong><code>team</code> = "Spain", <code>opponent</code> = "Portugal", <code>location</code> = "N" <strong>&gt;</strong> is 1.37, while the model output for the vector <strong>&lt;</strong><code>team</code> = "Portugal", <code>opponent</code> = "Spain", <code>location</code> = "N" <strong>&gt;</strong> is 1.21 . This signifies that on average, we expect Spain to score 1.37 goals and expect Portugal to score 1.21 goals. There is much more information encoded in these two numbers however. Let <span class="math inline">\(X_s\)</span> be the random variable denoting the number of goals Spain score and let <span class="math inline">\(X_p\)</span> denote the number of goals that Portugal scores. Then, we have that <span class="math inline">\(X_s \sim Pois(\lambda_s = 1.37)\)</span> and <span class="math inline">\(X_p \sim Pois(\lambda_p = 1.21)\)</span>, and from these distributions, we can get a lot of neat stuff. First, we can look at the joint distribution of goals scored. Rows indicate the number of goals Spain scores while columns correspond to the number of goals Portugal scores.</p>
+<table border="1">
+<tr>
+<th>
+</th>
+<th>
+0
+</th>
+<th>
+1
+</th>
+<th>
+2
+</th>
+<th>
+3
+</th>
+</tr>
+<tr>
+<td align="right">
+<strong>0</strong>
+</td>
+<td align="right">
+0.0758
+</td>
+<td align="right">
+0.0917
+</td>
+<td align="right">
+0.0555
+</td>
+<td align="right">
+0.0224
+</td>
+</tr>
+<tr>
+<td align="right">
+<strong>1</strong>
+</td>
+<td align="right">
+0.1038
+</td>
+<td align="right">
+0.1256
+</td>
+<td align="right">
+0.0760
+</td>
+<td align="right">
+0.0307
+</td>
+</tr>
+<tr>
+<td align="right">
+<strong>2</strong>
+</td>
+<td align="right">
+0.0711
+</td>
+<td align="right">
+0.0860
+</td>
+<td align="right">
+0.0521
+</td>
+<td align="right">
+0.0210
+</td>
+</tr>
+<tr>
+<td align="right">
+<strong>3</strong>
+</td>
+<td align="right">
+0.0325
+</td>
+<td align="right">
+0.0393
+</td>
+<td align="right">
+0.0238
+</td>
+<td align="right">
+0.0096
+</td>
+</tr>
+</table>
+<p>Perhaps unsuprisingly, the most likely outcome is a 1-1 draw, but there is still about an 87% chance we see a different outcome. Summing the diagonal entries of this matrix (extended out beyond 3 goals–let’s assume it’s neither team will score more than 10 goals) gives the probability that that Iberian neighbors end in a stalemate, while summing the entries above the diagonal or below the diagonal yield Portugal or Spain’s chances of winning, respectively. Overall, we estimate that Spain has about a 41% chance to win, Portugal has about a 33% chance to win, and there is a 26% chance the two teams draw.</p>
+<p><img src="/post/wc_model_methodology/blogpost_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+</div>
+<div id="simulating-the-world-cup" class="section level1">
+<h1>Simulating the World Cup</h1>
+<p>Now that we have the ability predict any game, we can run some Monte Carlo simulations to estimate the probability of each time winning the World Cup. We run 10,000 iterations of the following simulation steps:</p>
+<ol style="list-style-type: decimal">
+<li>Simulate each group game by drawing the number of goals scored by each team from their respective poisson distributions.</li>
+<li>Advance the top 2 teams in each group by points, and in the case of ties, use goal differential, goals forced, and goals allowed (in that order) as tiebreakers.</li>
+<li>Simulate knockout round games as in step 1. If there is a tie, flip a coin to determine who wins the simulated penalty shooutout (assuming that teams convert penalties at similar rates, this is not a decent approximation <a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a>).</li>
+<li>Repeat step 4 until there is a champion</li>
+</ol>
+<p><img src="/post/wc_model_methodology/blogpost_files/figure-html/unnamed-chunk-6-1.png" width="672" /><img src="/post/wc_model_methodology/blogpost_files/figure-html/unnamed-chunk-6-2.png" width="672" /></p>
+<p>Our simulations indicate that despite being in the so called “group of death”, defending champion Germany is most likely to win the World Cup, with a roughly 16% chance to hoist the crown. Brazil (11%), Frace (9%), Spain (8%), and the trio of Argentina, Belgium and Columbia (6% each) follow closely behind. A full list of World Cup odds, as well as the code used in this project can be found on <a href="https://github.com/lbenz730/world_cup">GitHub</a>.</p>
+</div>
+<div id="limitations" class="section level1">
+<h1>Limitations</h1>
+<p>A key assumption of the poisson distribution is that the rate parameter <span class="math inline">\(\lambda\)</span> does not depend on time. That is, in using this model, we are assuming that the rate of goals is equal during each minute of the match. However, this is not true in practice, and several sources extend their framework to bivariate poisson regression <a href="#fn6" class="footnote-ref" id="fnref6"><sup>6</sup></a> <a href="#fn7" class="footnote-ref" id="fnref7"><sup>7</sup></a> <a href="#fn8" class="footnote-ref" id="fnref8"><sup>8</sup></a> <a href="#fn9" class="footnote-ref" id="fnref9"><sup>9</sup></a>. Other limitations include the relatively small number of important matches in international soccer. While we examine on a 4 year basis, there may only be 15-20 matches per team of the highest importance, making prediction dificult even with our best effort to correct for difference between matches on the basis of time and relative importance.</p>
+</div>
+<div id="acknowledgements" class="section level1">
+<h1>Acknowledgements</h1>
+<p>We’d like to thank <a href="https://twitter.com/kpelechrinis">Kostas Pelechrinis</a> and <a href="https://twitter.com/StatsbyLopez">Michael Lopez</a> for offering suggestions regarding the switch from linear to poisson regression, as well as providing example papers modeling soccer outcomes using poisson regressions. Additionally, we’d like to thank <a href="https://twitter.com/EdwardEgrosFox4">Edward Egros</a>, who mentioned the data set used in this project during his April visit to Yale University.</p>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p><a href="https://www.jstor.org/stable/4128211?seq=1#page_scan_tab_contents" class="uri">https://www.jstor.org/stable/4128211?seq=1#page_scan_tab_contents</a><a href="#fnref1" class="footnote-back">↩</a></p></li>
+<li id="fn2"><p><a href="https://epub.ub.uni-muenchen.de/29028/1/TR_EM2016.pdf" class="uri">https://epub.ub.uni-muenchen.de/29028/1/TR_EM2016.pdf</a><a href="#fnref2" class="footnote-back">↩</a></p></li>
+<li id="fn3"><p><a href="http://www2.stat-athens.aueb.gr/~jbn/tr/TR60_soccer.ps" class="uri">http://www2.stat-athens.aueb.gr/~jbn/tr/TR60_soccer.ps</a><a href="#fnref3" class="footnote-back">↩</a></p></li>
+<li id="fn4"><p><a href="http://www2.stat-athens.aueb.gr/~karlis/Bivariate%20Poisson%20Regression.pdf" class="uri">http://www2.stat-athens.aueb.gr/~karlis/Bivariate%20Poisson%20Regression.pdf</a><a href="#fnref4" class="footnote-back">↩</a></p></li>
+<li id="fn5"><p><a href="https://fivethirtyeight.com/features/a-chart-for-predicting-penalty-shootout-odds-in-real-time/" class="uri">https://fivethirtyeight.com/features/a-chart-for-predicting-penalty-shootout-odds-in-real-time/</a><a href="#fnref5" class="footnote-back">↩</a></p></li>
+<li id="fn6"><p><a href="https://www.jstor.org/stable/4128211?seq=1#page_scan_tab_contents" class="uri">https://www.jstor.org/stable/4128211?seq=1#page_scan_tab_contents</a><a href="#fnref6" class="footnote-back">↩</a></p></li>
+<li id="fn7"><p><a href="https://epub.ub.uni-muenchen.de/29028/1/TR_EM2016.pdf" class="uri">https://epub.ub.uni-muenchen.de/29028/1/TR_EM2016.pdf</a><a href="#fnref7" class="footnote-back">↩</a></p></li>
+<li id="fn8"><p><a href="http://www2.stat-athens.aueb.gr/~jbn/tr/TR60_soccer.ps" class="uri">http://www2.stat-athens.aueb.gr/~jbn/tr/TR60_soccer.ps</a><a href="#fnref8" class="footnote-back">↩</a></p></li>
+<li id="fn9"><p><a href="http://www2.stat-athens.aueb.gr/~karlis/Bivariate%20Poisson%20Regression.pdf" class="uri">http://www2.stat-athens.aueb.gr/~karlis/Bivariate%20Poisson%20Regression.pdf</a><a href="#fnref9" class="footnote-back">↩</a></p></li>
+</ol>
+</div>

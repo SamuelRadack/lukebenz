@@ -1,0 +1,2429 @@
+---
+title: "Statsketball 2019"
+author:
+  - admin
+date: "2019-03-19"
+output: html_document
+tags: 
+  - NCAA Basketball
+---
+
+<script src="/rmarkdown-libs/kePrint/kePrint.js"></script>
+
+
+<p>Below is my submission methodology for the 2019 American Statistical Association <a href="https://thisisstatistics.org/home-2/statsketball/">Statsketball</a> Draft Challenge. Having won the contest <a href="https://thisisstatistics.org/statsketball-2018-congratulations-to-our-winners/">in 2018</a>, I knew that I had to up my game this year to defend my crown.</p>
+<div id="contest-background" class="section level1">
+<h1>Contest Background</h1>
+<p>The Statsketball Draft Challenge asks participants the chance to select NCAA Tournament Teams using a budget of 224 draft points. The cost of each team, in draft points, is based on the team’s seed.</p>
+<table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:center;">
+seed
+</th>
+<th style="text-align:center;">
+cost
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+75
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+40
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+3
+</td>
+<td style="text-align:center;">
+25
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+4
+</td>
+<td style="text-align:center;">
+20
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+5
+</td>
+<td style="text-align:center;">
+17
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+6
+</td>
+<td style="text-align:center;">
+15
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+7
+</td>
+<td style="text-align:center;">
+12
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+8
+</td>
+<td style="text-align:center;">
+10
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+9
+</td>
+<td style="text-align:center;">
+9
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+10
+</td>
+<td style="text-align:center;">
+8
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+11
+</td>
+<td style="text-align:center;">
+7
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+12
+</td>
+<td style="text-align:center;">
+6
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+13
+</td>
+<td style="text-align:center;">
+5
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+14
+</td>
+<td style="text-align:center;">
+4
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+15
+</td>
+<td style="text-align:center;">
+3
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+16
+</td>
+<td style="text-align:center;">
+1
+</td>
+</tr>
+</tbody>
+</table>
+<p>The deeper each team goes in the tournanement, the more points they accrue, with each round more valuable than the last. Wins in each round are worth 1, 2, 3, 5, 8, and 13 points, respectively. The goal of the contest is to score the most points by selecting a subset a group of teams within the alloted budget.</p>
+</div>
+<div id="methodology" class="section level1">
+<h1>Methodology</h1>
+<div id="ncaa-hoops-model" class="section level3">
+<h3>NCAA Hoops Model</h3>
+<p>A key ingredient to my submission is the NCAA men’s basketball model that I have developed over the last 3 years. In very simple terms, the model using weighted least squares regression to predict score differentials between any two teams, and then utilizes logistic regression to transform the obtained pointspread into a win probability for each team. The specifics of this model are not the primary focus of the Statsketball tournament submission, but for those curious, a detailed write-up of the model methodology can be found <a href="http://rpubs.com/lbenz730/ncaa_hoops_methodology">here</a>. For the purposes of this contest, all that is important is knowing is that given teams <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span>, the model outputs, <span class="math inline">\(P_A\)</span> and <span class="math inline">\(P_B\)</span>, the chances that team <span class="math inline">\(A\)</span> and team <span class="math inline">\(B\)</span> win the game, respectively.</p>
+</div>
+<div id="simulating-the-ncaa-tournament" class="section level3">
+<h3>Simulating the NCAA Tournament</h3>
+<p>The second step in my submission invloved running Monte Carlo simulations of the NCAA tournament. A single simulation of the tournament used the following steps</p>
+<ol style="list-style-type: decimal">
+<li>Use NCAA Hoops Model to predict the win probabilities for all 32 games in first round.</li>
+<li>Draw 32 random numbers from a uniform distribution, one for each game.</li>
+<li>Let game <span class="math inline">\(i\)</span> be played between team <span class="math inline">\(A_i\)</span> and team <span class="math inline">\(B_i\)</span> If the <span class="math inline">\(i^{th}\)</span> random number is <span class="math inline">\(\leq\)</span> team <span class="math inline">\(A_i\)</span>’s chances of winning, advance team <span class="math inline">\(A_i\)</span> to the next round. Otherwise, advance team <span class="math inline">\(B_i\)</span> to the next round.</li>
+<li>Repeat step 3 for all games in given round.</li>
+<li>Repeat setps 1-4 for subsequent rounds, until a champion is crowned.</li>
+</ol>
+<p>I ran 10,000 simulations of the NCAA tournament to obtain estimates of the probabilities of each team reaching each round. R code for running these simulations can be found <a href="https://github.com/lbenz730/NCAA_Hoops/blob/a7e9353ceba18b36985ca052100227e365edd8a9/3.0_Files/ncaa_sims.R">here</a>. The results of my simulations are shown below.</p>
+<table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:center;">
+team
+</th>
+<th style="text-align:center;">
+seed
+</th>
+<th style="text-align:center;">
+region
+</th>
+<th style="text-align:center;">
+r64
+</th>
+<th style="text-align:center;">
+r32
+</th>
+<th style="text-align:center;">
+s16
+</th>
+<th style="text-align:center;">
+e8
+</th>
+<th style="text-align:center;">
+f4
+</th>
+<th style="text-align:center;">
+ncg
+</th>
+<th style="text-align:center;">
+champ
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center;">
+Gonzaga
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+West
+</td>
+<td style="text-align:center;">
+1.0000
+</td>
+<td style="text-align:center;">
+0.9954
+</td>
+<td style="text-align:center;">
+0.9133
+</td>
+<td style="text-align:center;">
+0.7932
+</td>
+<td style="text-align:center;">
+0.6129
+</td>
+<td style="text-align:center;">
+0.4113
+</td>
+<td style="text-align:center;">
+0.2653
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Duke
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+East
+</td>
+<td style="text-align:center;">
+1.0000
+</td>
+<td style="text-align:center;">
+0.9928
+</td>
+<td style="text-align:center;">
+0.9036
+</td>
+<td style="text-align:center;">
+0.7341
+</td>
+<td style="text-align:center;">
+0.5039
+</td>
+<td style="text-align:center;">
+0.3367
+</td>
+<td style="text-align:center;">
+0.1928
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Virginia
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+South
+</td>
+<td style="text-align:center;">
+1.0000
+</td>
+<td style="text-align:center;">
+0.9866
+</td>
+<td style="text-align:center;">
+0.8822
+</td>
+<td style="text-align:center;">
+0.7261
+</td>
+<td style="text-align:center;">
+0.5267
+</td>
+<td style="text-align:center;">
+0.2890
+</td>
+<td style="text-align:center;">
+0.1682
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+North Carolina
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+Midwest
+</td>
+<td style="text-align:center;">
+1.0000
+</td>
+<td style="text-align:center;">
+0.9889
+</td>
+<td style="text-align:center;">
+0.8877
+</td>
+<td style="text-align:center;">
+0.6631
+</td>
+<td style="text-align:center;">
+0.4617
+</td>
+<td style="text-align:center;">
+0.2354
+</td>
+<td style="text-align:center;">
+0.1081
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Michigan St. 
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+East
+</td>
+<td style="text-align:center;">
+1.0000
+</td>
+<td style="text-align:center;">
+0.9824
+</td>
+<td style="text-align:center;">
+0.7774
+</td>
+<td style="text-align:center;">
+0.6230
+</td>
+<td style="text-align:center;">
+0.3082
+</td>
+<td style="text-align:center;">
+0.1867
+</td>
+<td style="text-align:center;">
+0.0870
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Kentucky
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+Midwest
+</td>
+<td style="text-align:center;">
+1.0000
+</td>
+<td style="text-align:center;">
+0.9695
+</td>
+<td style="text-align:center;">
+0.7446
+</td>
+<td style="text-align:center;">
+0.5019
+</td>
+<td style="text-align:center;">
+0.2380
+</td>
+<td style="text-align:center;">
+0.0954
+</td>
+<td style="text-align:center;">
+0.0362
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Michigan
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+West
+</td>
+<td style="text-align:center;">
+1.0000
+</td>
+<td style="text-align:center;">
+0.9549
+</td>
+<td style="text-align:center;">
+0.7001
+</td>
+<td style="text-align:center;">
+0.4205
+</td>
+<td style="text-align:center;">
+0.1518
+</td>
+<td style="text-align:center;">
+0.0688
+</td>
+<td style="text-align:center;">
+0.0276
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Tennessee
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+South
+</td>
+<td style="text-align:center;">
+1.0000
+</td>
+<td style="text-align:center;">
+0.9508
+</td>
+<td style="text-align:center;">
+0.7411
+</td>
+<td style="text-align:center;">
+0.4412
+</td>
+<td style="text-align:center;">
+0.1914
+</td>
+<td style="text-align:center;">
+0.0728
+</td>
+<td style="text-align:center;">
+0.0275
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Purdue
+</td>
+<td style="text-align:center;">
+3
+</td>
+<td style="text-align:center;">
+South
+</td>
+<td style="text-align:center;">
+1.0000
+</td>
+<td style="text-align:center;">
+0.9398
+</td>
+<td style="text-align:center;">
+0.6942
+</td>
+<td style="text-align:center;">
+0.3801
+</td>
+<td style="text-align:center;">
+0.1453
+</td>
+<td style="text-align:center;">
+0.0517
+</td>
+<td style="text-align:center;">
+0.0193
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Texas Tech
+</td>
+<td style="text-align:center;">
+3
+</td>
+<td style="text-align:center;">
+West
+</td>
+<td style="text-align:center;">
+1.0000
+</td>
+<td style="text-align:center;">
+0.9165
+</td>
+<td style="text-align:center;">
+0.6242
+</td>
+<td style="text-align:center;">
+0.3324
+</td>
+<td style="text-align:center;">
+0.1060
+</td>
+<td style="text-align:center;">
+0.0427
+</td>
+<td style="text-align:center;">
+0.0160
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Auburn
+</td>
+<td style="text-align:center;">
+5
+</td>
+<td style="text-align:center;">
+Midwest
+</td>
+<td style="text-align:center;">
+1.0000
+</td>
+<td style="text-align:center;">
+0.7955
+</td>
+<td style="text-align:center;">
+0.5087
+</td>
+<td style="text-align:center;">
+0.1826
+</td>
+<td style="text-align:center;">
+0.0935
+</td>
+<td style="text-align:center;">
+0.0312
+</td>
+<td style="text-align:center;">
+0.0093
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Virginia Tech
+</td>
+<td style="text-align:center;">
+4
+</td>
+<td style="text-align:center;">
+East
+</td>
+<td style="text-align:center;">
+1.0000
+</td>
+<td style="text-align:center;">
+0.9012
+</td>
+<td style="text-align:center;">
+0.5951
+</td>
+<td style="text-align:center;">
+0.1621
+</td>
+<td style="text-align:center;">
+0.0678
+</td>
+<td style="text-align:center;">
+0.0277
+</td>
+<td style="text-align:center;">
+0.0080
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Houston
+</td>
+<td style="text-align:center;">
+3
+</td>
+<td style="text-align:center;">
+Midwest
+</td>
+<td style="text-align:center;">
+1.0000
+</td>
+<td style="text-align:center;">
+0.9020
+</td>
+<td style="text-align:center;">
+0.5159
+</td>
+<td style="text-align:center;">
+0.2142
+</td>
+<td style="text-align:center;">
+0.0721
+</td>
+<td style="text-align:center;">
+0.0193
+</td>
+<td style="text-align:center;">
+0.0056
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Wisconsin
+</td>
+<td style="text-align:center;">
+5
+</td>
+<td style="text-align:center;">
+South
+</td>
+<td style="text-align:center;">
+1.0000
+</td>
+<td style="text-align:center;">
+0.7462
+</td>
+<td style="text-align:center;">
+0.4815
+</td>
+<td style="text-align:center;">
+0.1321
+</td>
+<td style="text-align:center;">
+0.0573
+</td>
+<td style="text-align:center;">
+0.0158
+</td>
+<td style="text-align:center;">
+0.0042
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Florida St. 
+</td>
+<td style="text-align:center;">
+4
+</td>
+<td style="text-align:center;">
+West
+</td>
+<td style="text-align:center;">
+1.0000
+</td>
+<td style="text-align:center;">
+0.8603
+</td>
+<td style="text-align:center;">
+0.5624
+</td>
+<td style="text-align:center;">
+0.1190
+</td>
+<td style="text-align:center;">
+0.0493
+</td>
+<td style="text-align:center;">
+0.0144
+</td>
+<td style="text-align:center;">
+0.0040
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Buffalo
+</td>
+<td style="text-align:center;">
+6
+</td>
+<td style="text-align:center;">
+West
+</td>
+<td style="text-align:center;">
+1.0000
+</td>
+<td style="text-align:center;">
+0.7971
+</td>
+<td style="text-align:center;">
+0.3297
+</td>
+<td style="text-align:center;">
+0.1366
+</td>
+<td style="text-align:center;">
+0.0336
+</td>
+<td style="text-align:center;">
+0.0110
+</td>
+<td style="text-align:center;">
+0.0033
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Louisville
+</td>
+<td style="text-align:center;">
+7
+</td>
+<td style="text-align:center;">
+East
+</td>
+<td style="text-align:center;">
+1.0000
+</td>
+<td style="text-align:center;">
+0.7231
+</td>
+<td style="text-align:center;">
+0.1890
+</td>
+<td style="text-align:center;">
+0.1093
+</td>
+<td style="text-align:center;">
+0.0288
+</td>
+<td style="text-align:center;">
+0.0110
+</td>
+<td style="text-align:center;">
+0.0033
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+LSU
+</td>
+<td style="text-align:center;">
+3
+</td>
+<td style="text-align:center;">
+East
+</td>
+<td style="text-align:center;">
+1.0000
+</td>
+<td style="text-align:center;">
+0.8281
+</td>
+<td style="text-align:center;">
+0.5024
+</td>
+<td style="text-align:center;">
+0.1455
+</td>
+<td style="text-align:center;">
+0.0378
+</td>
+<td style="text-align:center;">
+0.0121
+</td>
+<td style="text-align:center;">
+0.0030
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Kansas
+</td>
+<td style="text-align:center;">
+4
+</td>
+<td style="text-align:center;">
+Midwest
+</td>
+<td style="text-align:center;">
+1.0000
+</td>
+<td style="text-align:center;">
+0.8524
+</td>
+<td style="text-align:center;">
+0.3988
+</td>
+<td style="text-align:center;">
+0.1145
+</td>
+<td style="text-align:center;">
+0.0476
+</td>
+<td style="text-align:center;">
+0.0111
+</td>
+<td style="text-align:center;">
+0.0020
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Iowa St. 
+</td>
+<td style="text-align:center;">
+6
+</td>
+<td style="text-align:center;">
+Midwest
+</td>
+<td style="text-align:center;">
+1.0000
+</td>
+<td style="text-align:center;">
+0.6897
+</td>
+<td style="text-align:center;">
+0.3652
+</td>
+<td style="text-align:center;">
+0.1494
+</td>
+<td style="text-align:center;">
+0.0486
+</td>
+<td style="text-align:center;">
+0.0123
+</td>
+<td style="text-align:center;">
+0.0017
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Kansas St. 
+</td>
+<td style="text-align:center;">
+4
+</td>
+<td style="text-align:center;">
+South
+</td>
+<td style="text-align:center;">
+1.0000
+</td>
+<td style="text-align:center;">
+0.8050
+</td>
+<td style="text-align:center;">
+0.3783
+</td>
+<td style="text-align:center;">
+0.0852
+</td>
+<td style="text-align:center;">
+0.0297
+</td>
+<td style="text-align:center;">
+0.0061
+</td>
+<td style="text-align:center;">
+0.0015
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Marquette
+</td>
+<td style="text-align:center;">
+5
+</td>
+<td style="text-align:center;">
+West
+</td>
+<td style="text-align:center;">
+1.0000
+</td>
+<td style="text-align:center;">
+0.6964
+</td>
+<td style="text-align:center;">
+0.3216
+</td>
+<td style="text-align:center;">
+0.0455
+</td>
+<td style="text-align:center;">
+0.0161
+</td>
+<td style="text-align:center;">
+0.0035
+</td>
+<td style="text-align:center;">
+0.0013
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Mississippi St. 
+</td>
+<td style="text-align:center;">
+5
+</td>
+<td style="text-align:center;">
+East
+</td>
+<td style="text-align:center;">
+1.0000
+</td>
+<td style="text-align:center;">
+0.8290
+</td>
+<td style="text-align:center;">
+0.3609
+</td>
+<td style="text-align:center;">
+0.0747
+</td>
+<td style="text-align:center;">
+0.0233
+</td>
+<td style="text-align:center;">
+0.0063
+</td>
+<td style="text-align:center;">
+0.0010
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Wofford
+</td>
+<td style="text-align:center;">
+7
+</td>
+<td style="text-align:center;">
+Midwest
+</td>
+<td style="text-align:center;">
+1.0000
+</td>
+<td style="text-align:center;">
+0.6854
+</td>
+<td style="text-align:center;">
+0.2001
+</td>
+<td style="text-align:center;">
+0.0909
+</td>
+<td style="text-align:center;">
+0.0237
+</td>
+<td style="text-align:center;">
+0.0056
+</td>
+<td style="text-align:center;">
+0.0009
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Villanova
+</td>
+<td style="text-align:center;">
+6
+</td>
+<td style="text-align:center;">
+South
+</td>
+<td style="text-align:center;">
+1.0000
+</td>
+<td style="text-align:center;">
+0.6152
+</td>
+<td style="text-align:center;">
+0.2016
+</td>
+<td style="text-align:center;">
+0.0725
+</td>
+<td style="text-align:center;">
+0.0179
+</td>
+<td style="text-align:center;">
+0.0029
+</td>
+<td style="text-align:center;">
+0.0006
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Nevada
+</td>
+<td style="text-align:center;">
+7
+</td>
+<td style="text-align:center;">
+West
+</td>
+<td style="text-align:center;">
+1.0000
+</td>
+<td style="text-align:center;">
+0.5528
+</td>
+<td style="text-align:center;">
+0.1717
+</td>
+<td style="text-align:center;">
+0.0652
+</td>
+<td style="text-align:center;">
+0.0127
+</td>
+<td style="text-align:center;">
+0.0026
+</td>
+<td style="text-align:center;">
+0.0006
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Maryland
+</td>
+<td style="text-align:center;">
+6
+</td>
+<td style="text-align:center;">
+East
+</td>
+<td style="text-align:center;">
+1.0000
+</td>
+<td style="text-align:center;">
+0.7421
+</td>
+<td style="text-align:center;">
+0.3775
+</td>
+<td style="text-align:center;">
+0.0956
+</td>
+<td style="text-align:center;">
+0.0215
+</td>
+<td style="text-align:center;">
+0.0057
+</td>
+<td style="text-align:center;">
+0.0005
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Utah St. 
+</td>
+<td style="text-align:center;">
+8
+</td>
+<td style="text-align:center;">
+Midwest
+</td>
+<td style="text-align:center;">
+1.0000
+</td>
+<td style="text-align:center;">
+0.5534
+</td>
+<td style="text-align:center;">
+0.0668
+</td>
+<td style="text-align:center;">
+0.0184
+</td>
+<td style="text-align:center;">
+0.0041
+</td>
+<td style="text-align:center;">
+0.0009
+</td>
+<td style="text-align:center;">
+0.0003
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Cincinnati
+</td>
+<td style="text-align:center;">
+7
+</td>
+<td style="text-align:center;">
+South
+</td>
+<td style="text-align:center;">
+1.0000
+</td>
+<td style="text-align:center;">
+0.5308
+</td>
+<td style="text-align:center;">
+0.1392
+</td>
+<td style="text-align:center;">
+0.0442
+</td>
+<td style="text-align:center;">
+0.0078
+</td>
+<td style="text-align:center;">
+0.0014
+</td>
+<td style="text-align:center;">
+0.0002
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Yale
+</td>
+<td style="text-align:center;">
+14
+</td>
+<td style="text-align:center;">
+East
+</td>
+<td style="text-align:center;">
+1.0000
+</td>
+<td style="text-align:center;">
+0.1719
+</td>
+<td style="text-align:center;">
+0.0457
+</td>
+<td style="text-align:center;">
+0.0044
+</td>
+<td style="text-align:center;">
+0.0005
+</td>
+<td style="text-align:center;">
+0.0002
+</td>
+<td style="text-align:center;">
+0.0002
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Florida
+</td>
+<td style="text-align:center;">
+10
+</td>
+<td style="text-align:center;">
+West
+</td>
+<td style="text-align:center;">
+1.0000
+</td>
+<td style="text-align:center;">
+0.4472
+</td>
+<td style="text-align:center;">
+0.1223
+</td>
+<td style="text-align:center;">
+0.0390
+</td>
+<td style="text-align:center;">
+0.0064
+</td>
+<td style="text-align:center;">
+0.0014
+</td>
+<td style="text-align:center;">
+0.0001
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Syracuse
+</td>
+<td style="text-align:center;">
+8
+</td>
+<td style="text-align:center;">
+West
+</td>
+<td style="text-align:center;">
+1.0000
+</td>
+<td style="text-align:center;">
+0.5412
+</td>
+<td style="text-align:center;">
+0.0490
+</td>
+<td style="text-align:center;">
+0.0193
+</td>
+<td style="text-align:center;">
+0.0063
+</td>
+<td style="text-align:center;">
+0.0013
+</td>
+<td style="text-align:center;">
+0.0001
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Saint Mary’s (CA)
+</td>
+<td style="text-align:center;">
+11
+</td>
+<td style="text-align:center;">
+South
+</td>
+<td style="text-align:center;">
+1.0000
+</td>
+<td style="text-align:center;">
+0.3848
+</td>
+<td style="text-align:center;">
+0.0944
+</td>
+<td style="text-align:center;">
+0.0259
+</td>
+<td style="text-align:center;">
+0.0039
+</td>
+<td style="text-align:center;">
+0.0007
+</td>
+<td style="text-align:center;">
+0.0001
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+UCF
+</td>
+<td style="text-align:center;">
+9
+</td>
+<td style="text-align:center;">
+East
+</td>
+<td style="text-align:center;">
+1.0000
+</td>
+<td style="text-align:center;">
+0.4608
+</td>
+<td style="text-align:center;">
+0.0406
+</td>
+<td style="text-align:center;">
+0.0099
+</td>
+<td style="text-align:center;">
+0.0020
+</td>
+<td style="text-align:center;">
+0.0005
+</td>
+<td style="text-align:center;">
+0.0001
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Baylor
+</td>
+<td style="text-align:center;">
+9
+</td>
+<td style="text-align:center;">
+West
+</td>
+<td style="text-align:center;">
+1.0000
+</td>
+<td style="text-align:center;">
+0.4588
+</td>
+<td style="text-align:center;">
+0.0377
+</td>
+<td style="text-align:center;">
+0.0130
+</td>
+<td style="text-align:center;">
+0.0031
+</td>
+<td style="text-align:center;">
+0.0004
+</td>
+<td style="text-align:center;">
+0.0001
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Iowa
+</td>
+<td style="text-align:center;">
+10
+</td>
+<td style="text-align:center;">
+South
+</td>
+<td style="text-align:center;">
+1.0000
+</td>
+<td style="text-align:center;">
+0.4692
+</td>
+<td style="text-align:center;">
+0.1131
+</td>
+<td style="text-align:center;">
+0.0352
+</td>
+<td style="text-align:center;">
+0.0064
+</td>
+<td style="text-align:center;">
+0.0007
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+VCU
+</td>
+<td style="text-align:center;">
+8
+</td>
+<td style="text-align:center;">
+East
+</td>
+<td style="text-align:center;">
+1.0000
+</td>
+<td style="text-align:center;">
+0.5392
+</td>
+<td style="text-align:center;">
+0.0557
+</td>
+<td style="text-align:center;">
+0.0165
+</td>
+<td style="text-align:center;">
+0.0032
+</td>
+<td style="text-align:center;">
+0.0007
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Oklahoma
+</td>
+<td style="text-align:center;">
+9
+</td>
+<td style="text-align:center;">
+South
+</td>
+<td style="text-align:center;">
+1.0000
+</td>
+<td style="text-align:center;">
+0.5250
+</td>
+<td style="text-align:center;">
+0.0609
+</td>
+<td style="text-align:center;">
+0.0220
+</td>
+<td style="text-align:center;">
+0.0055
+</td>
+<td style="text-align:center;">
+0.0006
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Ole Miss
+</td>
+<td style="text-align:center;">
+8
+</td>
+<td style="text-align:center;">
+South
+</td>
+<td style="text-align:center;">
+1.0000
+</td>
+<td style="text-align:center;">
+0.4750
+</td>
+<td style="text-align:center;">
+0.0549
+</td>
+<td style="text-align:center;">
+0.0194
+</td>
+<td style="text-align:center;">
+0.0054
+</td>
+<td style="text-align:center;">
+0.0006
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Washington
+</td>
+<td style="text-align:center;">
+9
+</td>
+<td style="text-align:center;">
+Midwest
+</td>
+<td style="text-align:center;">
+1.0000
+</td>
+<td style="text-align:center;">
+0.4466
+</td>
+<td style="text-align:center;">
+0.0445
+</td>
+<td style="text-align:center;">
+0.0108
+</td>
+<td style="text-align:center;">
+0.0019
+</td>
+<td style="text-align:center;">
+0.0003
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Minnesota
+</td>
+<td style="text-align:center;">
+10
+</td>
+<td style="text-align:center;">
+East
+</td>
+<td style="text-align:center;">
+1.0000
+</td>
+<td style="text-align:center;">
+0.2769
+</td>
+<td style="text-align:center;">
+0.0324
+</td>
+<td style="text-align:center;">
+0.0128
+</td>
+<td style="text-align:center;">
+0.0016
+</td>
+<td style="text-align:center;">
+0.0003
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Ohio St. 
+</td>
+<td style="text-align:center;">
+11
+</td>
+<td style="text-align:center;">
+Midwest
+</td>
+<td style="text-align:center;">
+1.0000
+</td>
+<td style="text-align:center;">
+0.3103
+</td>
+<td style="text-align:center;">
+0.1036
+</td>
+<td style="text-align:center;">
+0.0275
+</td>
+<td style="text-align:center;">
+0.0045
+</td>
+<td style="text-align:center;">
+0.0002
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Seton Hall
+</td>
+<td style="text-align:center;">
+10
+</td>
+<td style="text-align:center;">
+Midwest
+</td>
+<td style="text-align:center;">
+1.0000
+</td>
+<td style="text-align:center;">
+0.3146
+</td>
+<td style="text-align:center;">
+0.0522
+</td>
+<td style="text-align:center;">
+0.0149
+</td>
+<td style="text-align:center;">
+0.0021
+</td>
+<td style="text-align:center;">
+0.0002
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Murray St. 
+</td>
+<td style="text-align:center;">
+12
+</td>
+<td style="text-align:center;">
+West
+</td>
+<td style="text-align:center;">
+1.0000
+</td>
+<td style="text-align:center;">
+0.3036
+</td>
+<td style="text-align:center;">
+0.0836
+</td>
+<td style="text-align:center;">
+0.0079
+</td>
+<td style="text-align:center;">
+0.0011
+</td>
+<td style="text-align:center;">
+0.0002
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Oregon
+</td>
+<td style="text-align:center;">
+12
+</td>
+<td style="text-align:center;">
+South
+</td>
+<td style="text-align:center;">
+1.0000
+</td>
+<td style="text-align:center;">
+0.2538
+</td>
+<td style="text-align:center;">
+0.1059
+</td>
+<td style="text-align:center;">
+0.0124
+</td>
+<td style="text-align:center;">
+0.0024
+</td>
+<td style="text-align:center;">
+0.0001
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+New Mexico St. 
+</td>
+<td style="text-align:center;">
+12
+</td>
+<td style="text-align:center;">
+Midwest
+</td>
+<td style="text-align:center;">
+1.0000
+</td>
+<td style="text-align:center;">
+0.2045
+</td>
+<td style="text-align:center;">
+0.0705
+</td>
+<td style="text-align:center;">
+0.0090
+</td>
+<td style="text-align:center;">
+0.0021
+</td>
+<td style="text-align:center;">
+0.0001
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Temple
+</td>
+<td style="text-align:center;">
+11
+</td>
+<td style="text-align:center;">
+East
+</td>
+<td style="text-align:center;">
+0.4049
+</td>
+<td style="text-align:center;">
+0.0883
+</td>
+<td style="text-align:center;">
+0.0199
+</td>
+<td style="text-align:center;">
+0.0018
+</td>
+<td style="text-align:center;">
+0.0003
+</td>
+<td style="text-align:center;">
+0.0001
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Belmont
+</td>
+<td style="text-align:center;">
+11
+</td>
+<td style="text-align:center;">
+East
+</td>
+<td style="text-align:center;">
+0.5951
+</td>
+<td style="text-align:center;">
+0.1696
+</td>
+<td style="text-align:center;">
+0.0545
+</td>
+<td style="text-align:center;">
+0.0074
+</td>
+<td style="text-align:center;">
+0.0009
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Vermont
+</td>
+<td style="text-align:center;">
+13
+</td>
+<td style="text-align:center;">
+West
+</td>
+<td style="text-align:center;">
+1.0000
+</td>
+<td style="text-align:center;">
+0.1397
+</td>
+<td style="text-align:center;">
+0.0324
+</td>
+<td style="text-align:center;">
+0.0021
+</td>
+<td style="text-align:center;">
+0.0005
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+UC Irvine
+</td>
+<td style="text-align:center;">
+13
+</td>
+<td style="text-align:center;">
+South
+</td>
+<td style="text-align:center;">
+1.0000
+</td>
+<td style="text-align:center;">
+0.1950
+</td>
+<td style="text-align:center;">
+0.0343
+</td>
+<td style="text-align:center;">
+0.0024
+</td>
+<td style="text-align:center;">
+0.0003
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Arizona St. 
+</td>
+<td style="text-align:center;">
+11
+</td>
+<td style="text-align:center;">
+West
+</td>
+<td style="text-align:center;">
+0.5599
+</td>
+<td style="text-align:center;">
+0.1223
+</td>
+<td style="text-align:center;">
+0.0192
+</td>
+<td style="text-align:center;">
+0.0033
+</td>
+<td style="text-align:center;">
+0.0001
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Liberty
+</td>
+<td style="text-align:center;">
+12
+</td>
+<td style="text-align:center;">
+East
+</td>
+<td style="text-align:center;">
+1.0000
+</td>
+<td style="text-align:center;">
+0.1710
+</td>
+<td style="text-align:center;">
+0.0251
+</td>
+<td style="text-align:center;">
+0.0018
+</td>
+<td style="text-align:center;">
+0.0001
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Northern Ky.
+</td>
+<td style="text-align:center;">
+14
+</td>
+<td style="text-align:center;">
+West
+</td>
+<td style="text-align:center;">
+1.0000
+</td>
+<td style="text-align:center;">
+0.0835
+</td>
+<td style="text-align:center;">
+0.0145
+</td>
+<td style="text-align:center;">
+0.0012
+</td>
+<td style="text-align:center;">
+0.0001
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Georgia St. 
+</td>
+<td style="text-align:center;">
+14
+</td>
+<td style="text-align:center;">
+Midwest
+</td>
+<td style="text-align:center;">
+1.0000
+</td>
+<td style="text-align:center;">
+0.0980
+</td>
+<td style="text-align:center;">
+0.0153
+</td>
+<td style="text-align:center;">
+0.0010
+</td>
+<td style="text-align:center;">
+0.0001
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Saint Louis
+</td>
+<td style="text-align:center;">
+13
+</td>
+<td style="text-align:center;">
+East
+</td>
+<td style="text-align:center;">
+1.0000
+</td>
+<td style="text-align:center;">
+0.0988
+</td>
+<td style="text-align:center;">
+0.0189
+</td>
+<td style="text-align:center;">
+0.0009
+</td>
+<td style="text-align:center;">
+0.0001
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Northeastern
+</td>
+<td style="text-align:center;">
+13
+</td>
+<td style="text-align:center;">
+Midwest
+</td>
+<td style="text-align:center;">
+1.0000
+</td>
+<td style="text-align:center;">
+0.1476
+</td>
+<td style="text-align:center;">
+0.0220
+</td>
+<td style="text-align:center;">
+0.0016
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+St. John’s (NY)
+</td>
+<td style="text-align:center;">
+11
+</td>
+<td style="text-align:center;">
+West
+</td>
+<td style="text-align:center;">
+0.4401
+</td>
+<td style="text-align:center;">
+0.0806
+</td>
+<td style="text-align:center;">
+0.0124
+</td>
+<td style="text-align:center;">
+0.0009
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Montana
+</td>
+<td style="text-align:center;">
+15
+</td>
+<td style="text-align:center;">
+West
+</td>
+<td style="text-align:center;">
+1.0000
+</td>
+<td style="text-align:center;">
+0.0451
+</td>
+<td style="text-align:center;">
+0.0059
+</td>
+<td style="text-align:center;">
+0.0009
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Old Dominion
+</td>
+<td style="text-align:center;">
+14
+</td>
+<td style="text-align:center;">
+South
+</td>
+<td style="text-align:center;">
+1.0000
+</td>
+<td style="text-align:center;">
+0.0602
+</td>
+<td style="text-align:center;">
+0.0098
+</td>
+<td style="text-align:center;">
+0.0006
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Gardner-Webb
+</td>
+<td style="text-align:center;">
+16
+</td>
+<td style="text-align:center;">
+South
+</td>
+<td style="text-align:center;">
+1.0000
+</td>
+<td style="text-align:center;">
+0.0134
+</td>
+<td style="text-align:center;">
+0.0020
+</td>
+<td style="text-align:center;">
+0.0004
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Colgate
+</td>
+<td style="text-align:center;">
+15
+</td>
+<td style="text-align:center;">
+South
+</td>
+<td style="text-align:center;">
+1.0000
+</td>
+<td style="text-align:center;">
+0.0492
+</td>
+<td style="text-align:center;">
+0.0066
+</td>
+<td style="text-align:center;">
+0.0003
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Abilene Christian
+</td>
+<td style="text-align:center;">
+15
+</td>
+<td style="text-align:center;">
+Midwest
+</td>
+<td style="text-align:center;">
+1.0000
+</td>
+<td style="text-align:center;">
+0.0305
+</td>
+<td style="text-align:center;">
+0.0031
+</td>
+<td style="text-align:center;">
+0.0002
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Bradley
+</td>
+<td style="text-align:center;">
+15
+</td>
+<td style="text-align:center;">
+East
+</td>
+<td style="text-align:center;">
+1.0000
+</td>
+<td style="text-align:center;">
+0.0176
+</td>
+<td style="text-align:center;">
+0.0012
+</td>
+<td style="text-align:center;">
+0.0002
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Iona
+</td>
+<td style="text-align:center;">
+16
+</td>
+<td style="text-align:center;">
+Midwest
+</td>
+<td style="text-align:center;">
+1.0000
+</td>
+<td style="text-align:center;">
+0.0111
+</td>
+<td style="text-align:center;">
+0.0010
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+North Dakota St. 
+</td>
+<td style="text-align:center;">
+16
+</td>
+<td style="text-align:center;">
+East
+</td>
+<td style="text-align:center;">
+0.7344
+</td>
+<td style="text-align:center;">
+0.0061
+</td>
+<td style="text-align:center;">
+0.0001
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+N.C. Central
+</td>
+<td style="text-align:center;">
+16
+</td>
+<td style="text-align:center;">
+East
+</td>
+<td style="text-align:center;">
+0.2656
+</td>
+<td style="text-align:center;">
+0.0011
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Fairleigh Dickinson
+</td>
+<td style="text-align:center;">
+16
+</td>
+<td style="text-align:center;">
+West
+</td>
+<td style="text-align:center;">
+0.5314
+</td>
+<td style="text-align:center;">
+0.0025
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Prairie View
+</td>
+<td style="text-align:center;">
+16
+</td>
+<td style="text-align:center;">
+West
+</td>
+<td style="text-align:center;">
+0.4686
+</td>
+<td style="text-align:center;">
+0.0021
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+<td style="text-align:center;">
+0.0000
+</td>
+</tr>
+</tbody>
+</table>
+<p><img src="/post/statsketball/statsketball_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+</div>
+<div id="expected-points" class="section level3">
+<h3>Expected Points</h3>
+<p>Now that we have probabilities that each team reaches each round in the tournament, we can compute the expected number of points a given team will score. Let <span class="math inline">\(S_i\)</span> denote the number of points team <span class="math inline">\(i\)</span> will score in the Statsketball tournament. We see that the expected number of points team <span class="math inline">\(i\)</span> will score, <span class="math inline">\(\mathbb{E}(W_i)\)</span> is computed as follows:
+<span class="math display">\[
+\mathbb{E}(S_i) = \sum_{j = 1}^6 P(\text{Team } i \text{ wins in Round } j)\times(\text{Points for win in Round } j)
+\]</span>
+<img src="/post/statsketball/statsketball_files/figure-html/unnamed-chunk-3-1.png" width="672" />
+It’s not suprising that teams with better seeds tend to have the best expected points. However, given the increased cost, is it necessarily worth it? Looking at a plot of expected points divided by team cost (to get an estimate of how many points we can expected per draft point we spend), it’s clear that many of the 1-seeds, with the expection of Gonzaga, are overvalued.</p>
+<p><img src="/post/statsketball/statsketball_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+</div>
+<div id="selecting-teams-the-knapsack-problem" class="section level3">
+<h3>Selecting Teams: The Knapsack Problem</h3>
+<p>I’d like to select the teams that maximize the number of expected points in my entry, subject to the budget restriction. This is a version of the classic, <a href="https://en.wikipedia.org/wiki/Knapsack_problem">Knapsack Problem</a>. In the Knapsack Problem, there are <span class="math inline">\(N\)</span> objects with values <span class="math inline">\(p_1, ..., p_n\)</span> and weights <span class="math inline">\(w_1, ..., w_n\)</span>. The problem asks for the most valuable subset of objects that can fit in the backpack, which has weight capacity <span class="math inline">\(C\)</span>. In the context of Statsketball, the objects are the teams, values <span class="math inline">\(p_i\)</span> are equal to the expected points scored <span class="math inline">\(\mathbb{E}(S_i)\)</span>, weights <span class="math inline">\(w_i\)</span> are equal to team costs, and the capacity <span class="math inline">\(C\)</span> is our budget of 224 draft points. The Knapsack problem is solved using <a href="https://www.educative.io/collection/page/5668639101419520/5633779737559040/5666387129270272?affiliate_id=5082902844932096&amp;utm_source=google&amp;utm_medium=cpc&amp;utm_campaign=grokking-DP&amp;gclid=EAIaIQobChMI6uKx06yO4QIVmo7ICh317gO0EAAYASABEgL7dfD_BwE">Dynamic Programming</a>, and there is an implementation of a Knapsack solver in the <code>adagio</code> R package. Note, that we will have to combine the expected points of the First 4 teams because the contest rules only asks that we select the combination of teams in each play-in game slot.</p>
+<pre class="r"><code>library(adagio)
+kn_solved &lt;- knapsack(ncaa_sims$cost, ncaa_sims$exp_pts, 224)
+kn_solved</code></pre>
+<pre><code>## $capacity
+## [1] 224
+## 
+## $profit
+## [1] 42.297
+## 
+## $indices
+## [1]  2 18 21 32 35 48 49 51</code></pre>
+<pre class="r"><code>ncaa_sims$team[kn_solved$indices]</code></pre>
+<pre><code>## [1] &quot;Michigan St.&quot; &quot;Kentucky&quot;     &quot;Auburn&quot;       &quot;Iona&quot;        
+## [5] &quot;Purdue&quot;       &quot;Gardner-Webb&quot; &quot;Gonzaga&quot;      &quot;Texas Tech&quot;</code></pre>
+<p>We aren’t expecting much from either of the 16 seeds, Gardner-Webb and Iona, but those are simply chosen in order to not be wasteful. Not suprisingly, the teams chosen are among the best value picks in seeds 1-5 identified above.</p>
+</div>
+<div id="limitations" class="section level3">
+<h3>Limitations</h3>
+<p>There are two main limitations of maximizing expected points. The first, is that we don’t know what teams other entrants to the Statsketball tournament are selecting. Any team that is selected by several entrants becomes relatively less valuable. Another limitation is that maximizing expected points yields fewer teams chosen. Many times, we can obtain 90% of the expected points of 1 team for the same (or lower) cost using some combination of 2 or 3 teams. Having lots of teams sounds great in practice, as we keep more doors open in case of upsets, but at the same time, the lower seeded a team is, the less likely it is to exceed it’s expected value. Many distributions of team points in statsketball will be heavily skewed towards 0, as lower seeded teams are likely to be knocked out in round 1 of the tournament. Because we are comparing means and not distributions, there might be some other combination of teams with a lower expected value that is more likely to outscore the group of teams I’ve selected.</p>
+<p>By no means is this method perfect, but I think it does a reasonably good job of identifying and selecting undervalued teams given the cost constraints of the tournament.</p>
+</div>
+</div>

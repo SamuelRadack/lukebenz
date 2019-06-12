@@ -1,0 +1,53 @@
+---
+title: "You Play to…Lose the Game?"
+author: 
+  - admin
+date: "2018-06-27"
+output: html_document
+tags: ["World Cup", "Soccer"]
+---
+
+
+
+<p>Former NFL head coach, and current Arizona State coach, Herm Edwards once famously said, <a href="https://www.youtube.com/watch?v=b5-iJUuPWis">“you play to win the game.”</a>. Every once in a blue mood, Edwards’ logic is actually false, and sometimes teams don’t play to win–because they are incentivized NOT to win. At the 2012 Summer Olypmics, for example, several badmitton teams intentionally lost in hopes of <a href="https://www.telegraph.co.uk/sport/olympics/badminton/9444025/Badminton-match-fixing-scandal-how-and-why-the-four-pairs-were-disqualified-from-the-London-2012-Olympics.html">securing a more favorable draw through the knockout phases of the tournament</a>.</p>
+<p>There is speculation that we might see more of this when Belgium and England square off in the final match of Group G at the 2018 FIFA World Cup. Both squads come into the match with 2 wins apiece, having each already secured slots in the knockout round. All that remains to be determined is who will win the group, and who will finish as runner-up. Either squad would win the group if victorious, and since England and Belgium are tied on points, goal differential, and goals forced, meaning a draw would result in the group winner being decided via <a href="https://www.thesun.co.uk/world-cup-2018/6613106/fair-play-ranking-points-world-cup-group-stages-germany/">FIFA Fair Play</a>. This means that England would need to get at least 2 more yellow cards than Belgium to have any chance of advancing via a draw. Prior to Group G and H finishing, here’s how the Knockout Round bracket is looking.
+<img src="bracket.png" alt="bracket" /></p>
+<p>The top half of the bracket looks absolutely stacked compared to the bottom half of the bracket. <a href="http://rpubs.com/lbenz730/world_cup_model">My World Cup model</a> produces net ratings and world rankings for each country, allowing us to examine the disparity between the two halfs of the bracket</p>
+<p><strong>Top Half Rankings</strong></p>
+<ul>
+<li>Brazil 2.97 (1)</li>
+<li>France 2.92 (2)</li>
+<li>Portugal 2.63 (10)</li>
+<li>Uruguay 2.59 (12)</li>
+<li>Argentina 2.50 (14)</li>
+<li>Mexico 2.12 (25)</li>
+</ul>
+<p><strong>Bottom Half Rankings</strong></p>
+<ul>
+<li>Spain 2.72 (6)</li>
+<li>Croatia 2.71 (7)</li>
+<li>Denmark 2.62 (11)</li>
+<li>Sweden 2.57 (13)</li>
+<li>Switzerland 2.33 (19)</li>
+<li>Russia 1.96 (35)</li>
+</ul>
+<p>Are these groups really that different in talent? The average rating in the upper half of the bracket is 2.62, while the average team in the lower half of the bracket is 2.48 . Among teams to qualify for the Knockout Round, we can simulate the average talent disparity between the top half of the bracket, when the Group G winner will go, and the lower half of the bracket, where the Group G runner-up will go.</p>
+<p><img src="/post/eng_bel/index_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<p>In the histogram displaying talent disparities from 100,000 simulated knockout brackets based on pre-tournament probabilities to advance, we see that the disparity based on current ratings isn’t that big. Perhaps the reason that we think the disparity is larger than it actually is that that big-name teams in the top-half of the bracket, namely Argentina, are worse than expected pre-tournament, while several teams in the bottom half, like Croatia, Sweden, and Switzerland, have all improved in rating since the beginning of the tournament. Irregardless, there is truth in the fact that the top half of the knockout break is stronger on average than the bottom half of the bracket. Let’s see how England and Belgium fair based on which half of the bracket they are in to see if losing in order to finish second in Group G really is better.</p>
+<pre><code>##        finish  Qtrs Semis Final Champ
+## 1   eng_first 0.639 0.294 0.137 0.070
+## 2  eng_second 0.590 0.330 0.173 0.074
+## 3  belg_first 0.660 0.339 0.178 0.089
+## 4 belg_second 0.657 0.375 0.208 0.117</code></pre>
+<p><img src="/post/eng_bel/index_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p>Using Monte Carlo, I simulated the knockout round 1000 times with each Belgium winning the group and 1000 times with England winning the group. Not suprisingly, both teams had better round-by-round advancement probabilities across the board, with the exception of the quarterfinals, when finishing as group runner up.</p>
+<div id="conditioning-on-colombia" class="section level3">
+<h3>Conditioning on Colombia</h3>
+<p>There is however, an additional interesting factor to consider. While “G” comes before “H”, FIFA has decided to schedule the final round of Group H matches on Thursday morning while scheduling the Group G matches on Thursday afternoon. This means that both England and Belgium will know who their opponets in the round of 16 would be based on the early morning results from Group H. More specifically, England and Belgium will know which half of the draw Colombia is on. Colombia is the 5th ranked team in my model, with a rating of 2.73 , and would be a much more difficult matchup than either Japan or Senegal, the other two potential Group H teams Colombia or Belgium would face. The possibility of facing Colombia is exactly why the quarterfinal advantage seems to disappear. Would the possibility of facing Columbia as Group H winners make it worth winning Group G instead? We can simulate the knockout round 1000 times with Colombia winning Group H (sent to bottom-half), finishing runners up (sent to top-half), or missing the knockout round all together.</p>
+<p><img src="/post/eng_bel/index_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p>We see based on the chart above that matching Colombia’s result if they progress is favorable in the long run to simply trying to finish group runner’s up. Simply avoiding Colombia in the first round can be worth about 3-5% in Belgium and England’s chances of winning the World Cup, with both countries best odds coming when they land in the lower half of the bracket AND avoid Colombia. So overall, perhaps the biggest advantage for England and Belgium is knowing who their opponents would be with 100% certainty prior to their own game. And do be surprised if things get a little crazy with one team trying to ensure they lose, especially if Colombia fails to win Group H. Sorry, Herm – you don’t always “play to win the game”. And maybe–just maybe–it’ll be a whole lot more fun.</p>
+</div>
+<div id="acknowledgements" class="section level3">
+<h3>Acknowledgements</h3>
+<p>I’d like to thank <a href="https://twitter.com/StatsInTheWild">Gregory Matthews</a> for <a href="https://twitter.com/StatsInTheWild/status/1010943601357086720">giving me the idea to write this article</a>.</p>
+</div>

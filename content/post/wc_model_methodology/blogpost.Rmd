@@ -1,0 +1,266 @@
+---
+title: "World Cup Methodology"
+author: 
+  -admin
+date: "2018-06-10"
+output: html_document
+tags: ["World Cup", "Soccer"]
+---
+\newcommand{\argmin}{\mathop{\rm arg\,min}}
+
+# Introduction
+With the 2018 FIFA World Cup nearly upon us, we set out to build a model to predict game outcomes and estimate coutries chances of reaching various rounds of the tournament. Ranking systems for various sports, including [NCAA Men's Basketball](https://sports.sites.yale.edu/ncaa-mens-basketball-power-rankings-0), [NCAA Football](https://github.com/mc-robinson/YUSAG_football_model), and [NBA](https://sports.sites.yale.edu/nba-model-math), have been the basis of several of our projects in the past. With the exception of rankings using ELO, all of our past ranking systems have made use of linear regression in one form or another. Simply, those models took on something similar to the following form
+$$
+Y = \beta_0 + \beta_{team} X_{team} + \beta_{opp} X_{opp} + \beta_{loc} X_{loc} + \epsilon
+$$
+where $X_{team, i}, X_{opp, i}$, and  $X_{loc, i}$ are indicator vectors for the $i^{th}$ game's ```team```, ```opponent```, and ```location``` (Home, Away, Neutral) from the perspective of ```team```, and $Y_i$ is game's the score-differential. The key assumptions for this model are that game outcomes are independent of one another, and that our error $\epsilon \sim N(0, \sigma^2)$.
+
+
+# First Attempt
+Before going into detail on the model we ultimated settled on, let's first examine what didn't work--and more importantly __why__. Given our prior experience using linear regression to predict score differential in several different sporting events, it seemed natural to extend the notion to international soccer. In fact, our initial attempt seemed quite reasonable. The basic idea was as follows:
+
+* Use linear regression with covariates ```team```, ```opponent```, and ```location``` to predict ```goal_diff``` (a game's goal differential).
+* Use a [multinomial logistic regression](https://en.wikipedia.org/wiki/Multinomial_logistic_regression) model with input ```pred_goal_diff``` to estimate probabilities of ```win```, ```loss```, and ```tie```.
+Our rankings indicated that Germany, Brazil, and Spain were the top 3 teams, entirely plausible our eyes (as casual soccer fans). 
+
+In writing [Monte Carlo simulations](https://en.wikipedia.org/wiki/Monte_Carlo_method) to estimate round-by-round probabilities of advacing, we began to notice a potential fault in our model. While it was easy enough to simulate game outcomes and award points (3 for win, 1 for tie, 0 for loss) given our estimated ```win```, ```loss```, and ```tie``` probabilites for each of the group stage games, breaking ties in the group standings to determine which two teams would advance to the knockout round presented more of a challenge. If two or more teams are tied on points after a round robin within the group, the first tie-breaker is net goal differtial, a country's goals scored - goals allowed in the 3 group stage games. Our initial thought was to simply flip a coin to break ties, but this underestimates the probabiity that better teams advance past the group stage. Consider the following hypothethical scenario in group B:
+
+<table border=2, align = "center>
+<tr> <th>  </th> <th> country </th> <th> sim_points </th>  </tr>
+<tr> <td align="right"> 1 </td> <td> Spain </td> <td align="right"> 9 </td> </tr>
+<tr> <td align="right"> 2 </td> <td> Portugal </td> <td align="right"> 4 </td> </tr>
+<tr> <td align="right"> 3 </td> <td> Morocco </td> <td align="right"> 4 </td> </tr>
+<tr> <td align="right"> 4 </td> <td> Iran </td> <td align="right"> 0 </td> </tr>
+</table>
+
+Simply flipping a coin to determine whether Portugal or Morocco would advance in the above case almost certianly underestimates the chances that Portugal, the superior of the two, would have a larger goal differential than Morocco. So, was there a better way to account for goal differntial? Recall, ```goal_diff``` was the response variable of our linear regression. A nice result of simple linear regression is that for game $i$, we have $\widehat Y_i$ normally distributed. Since $\widehat Y_i = \widehat \beta_0 + \widehat\beta X_i$ and each $\widehat \beta_i \sim N(\beta_i, \sigma_i^2)$, $$\widehat Y_j \sim N(\beta_0 + \beta X_j, \sum_i \sigma_i^2)$$ 
+Approximating such a distribution using prediction intervals for ```goal_diff```, perhaps we could form net goal differential distributions for each team in group play and randomly draw from those distrubutions in the case of a tie in the group standings. Things quickly became not well-defined when trying to draw from $Y \sim N(\mu, \sigma^2) | Y \geq 1$ (in case of loss, $Y \leq -1$). Moreover, in the case of a tie, we'd be setting $Y = 0$ in our simulation, yet under the normal distribution, $P(Y = 0) = 0$ (in fact the probability $Y = c$ exactly is 0 any fixed constant $c$). By this point, we'd realized we were in trouble, as drawing from this continuous distribution for a discrete random variable didn't make a lot of sense. Back to the drawing board.
+
+# Taking a Step Back
+At this stage, there are two questions to consider. The first, is why didn't a linear model, which had worked well for us in the case of basketball and football, work well in the case of soccer? Furthermore, we wondered, if not a linear model, what type of model would work best? The answer to both of these questions is best seen by looking at histograms of points/goals scored in soccer games vs. basketball games. 
+
+```{r, echo = F, warning = F, message = F}
+library(dplyr)
+x <- read.csv("international_soccer_game_data.csv", as.is = T)
+n <- nrow(x)
+x$date <- as.Date(x$date,"%Y-%m-%d")
+x$days_since <- as.numeric(Sys.Date() - x$date)
+
+### Dulplicate the Data Set for H/A
+home <- select(x, home_team, away_team, tournament, neutral, home_score, 
+               days_since, date) %>%
+  mutate(location = "H")
+away <- select(x, away_team, home_team, tournament, neutral, away_score, 
+               days_since, date) %>%
+  mutate(location = "A")
+names(home) <- c("team", "opponent", "tournament", "neutral", "goals", 
+                 "days_since", "date", "location")
+names(away) <- c("team", "opponent", "tournament", "neutral", "goals", 
+                 "days_since", "date", "location")
+x <- rbind(home, away)
+x$location[x$neutral] <- "N"
+hist(x$goals[x$goals < 10], xlab = "Goals Scored", main = "Histogram of Goals Scored in International Soccer Matches since 1872", col = "seagreen", ylim = c(0, 27000), cex.main = 0.9)
+z <- read.csv("https://raw.githubusercontent.com/lbenz730/NCAA_Hoops/master/3.0_Files/Results/2015-16/NCAA_Hoops_Results_2016_Final.csv", as.is = T)
+z <- rbind(z, read.csv("https://raw.githubusercontent.com/lbenz730/NCAA_Hoops/master/3.0_Files/Results/2016-17/NCAA_Hoops_Results_2017_Final.csv", as.is = T)[,1:10])
+z <- rbind(z, read.csv("https://raw.githubusercontent.com/lbenz730/NCAA_Hoops/master/3.0_Files/Results/2017-18/NCAA_Hoops_Results_3_25_2018.csv", as.is = T)[,1:10])
+hist(z$teamscore, col = "orange", breaks = 25, xlab = "Points Scored",
+     main = "Histogram of NCAA Men's Basketball Scores, 2015/16 - 2017/18",
+     cex.main = 0.9)
+```
+
+Based on the plots above, we see that the distribution of basketball scores looks like a bell curve, while the distribution of soccer scores does not. Rather, the distribution of soccer scores looks to be more like a [Poisson distribution](https://en.wikipedia.org/wiki/Poisson_distribution). Recall that the probability mass function (PMF) of the possion distribution with parameter $\lambda$ is by
+$$
+P(X = k) = \frac{e^{-\lambda}\lambda^k}{x!} \textrm{ for } x = 0, 1, 2, ...
+$$
+
+Additionally, if $X \sim Pois(\lambda)$,  $\mathbb{E}(X) = \lambda$. As $\lambda$ gets large, Poisson distributions become more and more like Guassians, hence the ability for sports with larger average scores (i.e. basketball) to be better modeled with a Normal Model than sports with lower scores (i.e. soccer, hockey). Since the difference of i.i.d. normal random variables is also normal, linear regression is perfectly fine for modeling ```score_diff``` is basketball. However, the difference of two i.i.d. poisson random variables __is not__ normal nor poisson. Rather, the difference of two poisson random variables follows the [skellam distribution](https://en.wikipedia.org/wiki/Skellam_distribution). Thus, it seems like our best bet here is to use [poisson regression](https://en.wikipedia.org/wiki/Poisson_regression) for our model. In fact, several studies have shown that poisson regression is good for modeling soccer [^1] [^2] [^3] [^4]. 
+
+# Building the Model
+The data, [available on Kaggle](https://www.kaggle.com/martj42/international-football-results-from-1872-to-2017), covers over 39,000 international soccer matches dating back to 1872. For the purpose of this model, we have chosen to use data for games played after __January 1, 2014__. Many major tournaments in soccer, the World Cup included, occur on a four year cycle, so using the last 4 years worth of data seemed natural. 
+
+Daniel Sheehan has written a [fantastic blog post on using poisson regression to predict the outcomes of soccer games](https://dashee87.github.io/data%20science/football/r/predicting-football-results-with-statistical-modelling/), and our model is based off of his work (he provides lots of examples in both R and Python, and we'd highly recommend reading it!). 
+
+We began by duplicating the data set and transforming one copy to be from the perspective of the ```opponent```. For example, if we had the vector in the __<__ ```team``` = \"Germany\", ```opponent``` = \"Brazil\", ```location``` = \"N\", ```team_score``` = 7, ```opp_score``` = 1 __>__, we'd also add to our data set the vector __<__```team``` = \"Brazil\", ```opponent``` = \"Germany\", ```location``` = \"N\", ```team_score``` = 1, ```opp_score``` = 7 __>__. What we eventually end up predicting is ```team_score``` as a function of ```team```, ```opponent```, and ```location```. 
+
+Before actually building the model, there were one more things that we considered, namely ```match_weight```, how much weight we should give a particular game. There were two factors on which the model weights were set: time since the was played, and the type of match being played. We broke matches in our data set into four types (derived from the [official FIFA rankings formula](https://www.fifa.com/fifa-world-ranking/procedure/men.html)):
+
+* Friendlies and other matches (Base Weight $\alpha_i = 1$)
+* Qualification matches for World Cup and continental championships (Base Weight = $\alpha_i = 3$)
+* Confederations Cup and continental championships (Base Weight = $\alpha_i = 5$)
+* World Cup Matches (Base Weight = $\alpha_i= 8$)
+
+Letting $\delta_i$ represent the date on which game $i$ was played and let $\delta_t$ be today's date (i.e. the date we choose to fit/re-fit the model). Finally, take $\delta\star = \max_{i} (\delta_t - \delta_i)$. Then, the ```match_weight```, $w_i$ of match $i$ is given by
+$$
+w_i = \alpha_i \times e^{- \frac{\delta_t - \delta_i}{\delta\star}}
+$$
+```{r, echo = F, warning = F}
+x$game_type <- "OM"
+x$game_type[x$tournament == "FIFA World Cup"] <- "WC"
+x$game_type[x$tournament == "FIFA World Cup qualification"] <- "WCQ"
+x$game_type[x$tournament == "Friendly"] <- "FR"
+x$game_type[x$tournament == "Confederations Cup"] <- "CFC"
+
+x$game_type[x$tournament == "AFC Asian Cup"] <- "CC"
+x$game_type[x$tournament == "AFC Challenge Cup"] <- "CC"
+x$game_type[x$tournament == "African Cup of Nations"] <- "CC"
+x$game_type[x$tournament == "CFU Caribbean Cup"] <- "CC"
+x$game_type[x$tournament == "CONCACAF Championship"] <- "CC"
+x$game_type[x$tournament == "Gold Cup"] <- "CC"
+x$game_type[x$tournament == "Oceania Nations Cup"] <- "CC"
+x$game_type[x$tournament == "UAFA Cup"] <- "CC"
+x$game_type[x$tournament == "UEFA Euro"] <- "CC"
+
+x$game_type[x$tournament == "AFC Asian Cup qualification"] <- "CCQ"
+x$game_type[x$tournament == "AFC Challenge Cup qualification"] <- "CCQ"
+x$game_type[x$tournament == "African Cup of Nations qualification"] <- "CCQ"
+x$game_type[x$tournament == "CFU Caribbean Cup qualification"] <- "CCQ"
+x$game_type[x$tournament == "CONCACAF Championship qualification"] <- "CCQ"
+x$game_type[x$tournament == "Gold Cup qualification"] <- "CCQ"
+x$game_type[x$tournament == "Oceania Nations Cup qualification"] <- "CCQ"
+x$game_type[x$tournament == "UAFA Cup qualification"] <- "CCQ"
+x$game_type[x$tournament == "UEFA Euro qualification"] <- "CCQ"
+
+### Match Importance Parameters (based on those used in the FIFA rankings formula)
+x$match_weight <- 1
+x$match_weight[x$game_type == "WC"] <- 8
+x$match_weight[x$game_type == "WCQ" | x$game_type == "CCQ"] <- 3
+x$match_weight[x$game_type == "CFC" | x$game_type == "CC"] <- 5
+
+y <- filter(x, date >= "2014/01/01")
+y$match_weight <- 
+  mutate(y, "match_weight" = match_weight * exp(-days_since/max(days_since))) %>% 
+  pull(match_weight)
+
+library(ggplot2)
+ggplot(y, aes(x = date, y = match_weight, col = game_type)) + geom_point() +
+  labs(x = "Date", y = "Match Weight", title = "Match Weight by Date") + 
+  annotate("text", x = as.Date("2016-06-01"), y = 3.4, label = "2016 Euro Cup",
+           size = 2) + 
+  annotate("text", x = as.Date("2014-06-01"), y = 3.4, label = "2014 World Cup",
+           size = 2)
+
+```
+
+We see above that the 2014 World Cup and the 2016 Euro Cup are among the most heavily weighted games, as we would hope. Now the call to the model is as follows:
+```{r, eval = F}
+glm.futbol <- glm(goals ~ team + opponent + location, 
+                  family = "poisson",
+                  data = y, 
+                  weights = match_weight)
+```
+
+The model gives coefficients for each country both as levels of the ```team``` and ```opponent``` factors. Since the model output predictions can be taken as the average ```team_score``` for a given ```team``` against a given ```opponent``` at a given ```location```, we can view the country specific coefficients as offense and defensive components of a power rating. The interpretation of such coefficients is less intutive than in the case of linear regression, in which coefficients signfy points better than an average team, but you can think of them as more similar to logistic regression coefficients. Higher offensive coefficients indicate a team is likely to score more goals on average while low (more negative) defensive coefficients indicate a team is likely to conceed fewer goals on average. 
+
+```{r, echo = F}
+glm.futbol <- glm(goals ~ team + opponent + location, 
+                  family = "poisson",
+                  data = y, 
+                  weights = match_weight)
+team_num <- (length(glm.futbol$coefficients) - 1)/ 2
+rankings <- data.frame("team" = sort(unique(y$team)),
+                       "offense" = rep(NA, team_num),
+                       "defense" = rep(NA, team_num))
+off_scale_factor <- mean(glm.futbol$coefficients[2:team_num])
+def_scale_factor <- mean(glm.futbol$coefficients[(team_num + 1):(2*team_num - 1)])
+rankings$offense <- c(0, glm.futbol$coefficients[2:team_num]) - off_scale_factor
+rankings$defense <- c(0, glm.futbol$coefficients[(team_num + 1):(2*team_num - 1)]) - def_scale_factor
+rankings$net_rating <- rankings$offense - rankings$defense
+
+
+rankings <- rankings[order(rankings$net_rating, decreasing = T),]
+rankings$rank <- 1:nrow(rankings)
+head(rankings, 10)
+```
+
+Offensively, the top teams by our model, are Brazil, Germany and Spain, while Argentina, Germany, and England posses the best defenses. 
+
+# Sample Match Prediction
+To see how this model works in more detail, let's walk through how we predict the outcome of a single match. We'll use the marquee Spain-Portugal fixture from Group B as our case study. The model output for the vector __<__```team``` = \"Spain\", ```opponent``` = \"Portugal\", ```location``` = \"N\" __>__ is 1.37, while the model output for the vector __<__```team``` = \"Portugal\", ```opponent``` = \"Spain\", ```location``` = \"N\" __>__ is 1.21 . This signifies that on average, we expect Spain to score 1.37 goals and expect Portugal to score 1.21 goals. There is much more information encoded in these two numbers however. Let $X_s$ be the random variable denoting the number of goals Spain score and let $X_p$ denote the number of goals that Portugal scores. Then, we have that $X_s \sim Pois(\lambda_s = 1.37)$ and $X_p \sim Pois(\lambda_p = 1.21)$, and from these distributions, we can get a lot of neat stuff. First, we can look at the joint distribution of goals scored. Rows indicate the number of goals Spain scores while columns correspond to the number of goals Portugal scores.
+
+<table border=1>
+<tr> <th>  </th> <th> 0 </th> <th> 1 </th> <th> 2 </th> <th> 3 </th>  </tr>
+<tr> <td align="right"> __0__ </td> <td align="right"> 0.0758 </td> <td align="right"> 0.0917 </td> <td align="right"> 0.0555 </td> <td align="right"> 0.0224 </td> </tr>
+<tr> <td align="right"> __1__ </td> <td align="right"> 0.1038 </td> <td align="right"> 0.1256 </td> <td align="right"> 0.0760 </td> <td align="right"> 0.0307 </td> </tr>
+<tr> <td align="right"> __2__ </td> <td align="right"> 0.0711 </td> <td align="right"> 0.0860 </td> <td align="right"> 0.0521 </td> <td align="right"> 0.0210 </td> </tr>
+<tr> <td align="right"> __3__ </td> <td align="right"> 0.0325 </td> <td align="right"> 0.0393 </td> <td align="right"> 0.0238 </td> <td align="right"> 0.0096 </td> </tr>
+</table>
+
+Perhaps unsuprisingly, the most likely outcome is a 1-1 draw, but there is still about an 87% chance we see a different outcome. Summing the diagonal entries of this matrix (extended out beyond 3 goals--let's assume it's neither team will score more than 10 goals) gives the probability that that Iberian neighbors end in a stalemate, while summing the entries above the diagonal or below the diagonal yield Portugal or Spain's chances of winning, respectively. Overall, we estimate that Spain has about a 41% chance to win, Portugal has about a 33% chance to win, and there is a 26% chance the two teams draw.
+
+```{r, echo = F}
+z <- data.frame("Country" = rep(c("Spain", "Portugal"), rep(4,2)),
+                "Goals" = rep(c("0", "1", "2", "3+"), 2),
+                "Probability" = c(dpois(0:2, 1.37), sum(dpois(3:10, 1.37)),
+                                  dpois(0:2, 1.21), sum(dpois(3:10, 1.21))))
+
+ggplot(z, aes(x = Goals, y = Probability, fill = Country)) + 
+  geom_bar(stat = "identity", position='dodge', colour  = "black") + 
+  labs(title = "Spain vs. Portugal Goal Distributions") + 
+  scale_fill_manual(values=c("aquamarine1", "red3"))
+
+```
+
+# Simulating the World Cup
+Now that we have the ability predict any game, we can run some Monte Carlo simulations to estimate the probability of each time winning the World Cup. We run 10,000 iterations of the following simulation steps:
+
+1. Simulate each group game by drawing the number of goals scored by each team from their respective poisson distributions.
+2. Advance the top 2 teams in each group by points, and in the case of ties, use goal differential, goals forced, and goals allowed (in that order) as tiebreakers.
+3. Simulate knockout round games as in step 1. If there is a tie, flip a coin to determine who wins the simulated penalty shooutout (assuming that teams convert penalties at similar rates, this is not a decent approximation [^5]).
+4. Repeat step 4 until there is a champion
+
+```{r, echo = F}
+wc_sims <- read.csv("https://raw.githubusercontent.com/lbenz730/world_cup/3fca1243d8dbd67f560f7c7e29deb8037434f2e0/wc_sims.csv", as.is = T)
+wc_sims <- wc_sims[order(wc_sims$expected_pts, decreasing = T),]
+wc_sims$country <- as.factor(wc_sims$country)
+wc_sims$country <- reorder(wc_sims$country, order(wc_sims$expected_pts, decreasing = T))
+ggplot(wc_sims, aes(x = country, y = expected_pts, fill = group)) + 
+  geom_bar(stat = "identity") + 
+  theme(axis.text.x = element_text(angle = 90)) + 
+  labs(x = "Country", y = "Expected Points", title = "Expected Points Breakdown")
+
+wc_sims <- wc_sims[order(wc_sims$champ, decreasing = T),]
+z <- data.frame("country" = rep(as.character(wc_sims$country), rep(6, 32)),
+                "elim_round" = rep(c("Group Stage", "Round of 16", "Quarterfinals",
+                                     "Semi-Finals", "Finals", "Champion"), 32),
+                "prob" = rep(NA, 32*6))
+
+
+for(country in unique(z$country)) {
+  index <- as.character(wc_sims$country) == country
+  e1 <- 1 - wc_sims$r16[index]
+  e16 <- 1 - e1 - wc_sims$qtrs[index]
+  eq <- 1 - e1 - e16 - wc_sims$semis[index]
+  es <- 1 - e1 - e16 - eq- wc_sims$finals[index]
+  ef <- 1 - e1 - e16 - eq - es - wc_sims$champ[index]
+  champ <- wc_sims$champ[index]
+  z$prob[z$country == country] <- c(e1, e16, eq, es, ef, champ)
+ 
+}
+
+
+z$country <- as.factor(z$country)
+z$country <- reorder(z$country, rep(order(wc_sims$champ, decreasing = T), rep(6, 32)))
+z$elim_round <- as.factor(z$elim_round)
+z$elim_round <- reorder(z$elim_round, rep(6:1, 32))
+ggplot(z, aes(x = country, y = prob, fill = elim_round)) + 
+  geom_bar(stat = "identity") + theme(axis.text.x = element_text(angle = 90)) + 
+  labs(x = "Country", y = "Probability", title = "Round by Round Elimination Probabilities",
+       fill = "Elimination Round") +
+  theme(axis.title = element_text(size = 14), plot.title = element_text(hjust = 0.5, size = 16))
+
+```
+
+Our simulations indicate that despite being in the so called "group of death", defending champion Germany is most likely to win the World Cup, with a roughly 16% chance to hoist the crown. Brazil (11%), Frace (9%), Spain (8%), and the trio of Argentina, Belgium and Columbia (6% each) follow closely behind. A full list of World Cup odds, as well as the code used in this project can be found on [GitHub](https://github.com/lbenz730/world_cup).
+
+# Limitations
+A key assumption of the poisson distribution is that the rate parameter $\lambda$ does not depend on time. That is, in using this model, we are assuming that the rate of goals is equal during each minute of the match. However, this is not true in practice, and several sources extend their framework to bivariate poisson regression [^1] [^2] [^3] [^4]. Other limitations include the relatively small number of important matches in international soccer. While we examine on a 4 year basis, there may only be 15-20 matches per team of the highest importance, making prediction dificult even with our best effort to correct for difference between matches on the basis of time and relative importance.
+
+# Acknowledgements
+We'd like to thank [Kostas Pelechrinis](https://twitter.com/kpelechrinis) and [Michael Lopez](https://twitter.com/StatsbyLopez) for offering suggestions regarding the switch from linear to poisson regression, as well as providing example papers modeling soccer outcomes using poisson regressions. Additionally, we'd like to thank [Edward Egros](https://twitter.com/EdwardEgrosFox4), who mentioned the data set used in this project during his April visit to Yale University.
+
+[^1]: https://www.jstor.org/stable/4128211?seq=1#page_scan_tab_contents
+[^2]: https://epub.ub.uni-muenchen.de/29028/1/TR_EM2016.pdf
+[^3]: http://www2.stat-athens.aueb.gr/~jbn/tr/TR60_soccer.ps
+[^4]: http://www2.stat-athens.aueb.gr/~karlis/Bivariate%20Poisson%20Regression.pdf
+[^5]: https://fivethirtyeight.com/features/a-chart-for-predicting-penalty-shootout-odds-in-real-time/
+
