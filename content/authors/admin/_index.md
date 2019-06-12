@@ -34,7 +34,7 @@ user_groups:
 - Visitors
 ---
 
-My name is Luke Benz and I am an incoming data scientist at [Medidata Solutions, Inc.](https://www.medidata.com/en/). I graduated Yale University in 2019 with a BS in Applied Mathematics with a concentration in Statistics and Data Science.
+My name is Luke Benz and I am an incoming data scientist at [Medidata Solutions, Inc.](https://www.medidata.com/en/). I graduated from Yale University in 2019 with a BS in Applied Mathematics with a concentration in Statistics and Data Science.
 
 While at Yale, I worked as a biostatistics research assistant for [Dr. Elizabeth Claus](https://publichealth.yale.edu/people/elizabeth_claus.profile) at the Yale School of Public Health, analyzing data on quality of life for patients with various kinds of brain tumors.
 
