@@ -14,4 +14,4 @@ title: FiveThirtyEight Riddlers
 * [Transitive National Champions](https://sports.sites.yale.edu/transitive-national-champions)
 
 
-Code solutions to several riddlers can be found [here]((https://github.com/lbenz730/Riddlers).
+Code solutions to several riddlers can be found [here](https://github.com/lbenz730/Riddlers).
