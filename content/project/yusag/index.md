@@ -1,7 +1,7 @@
 ---
 date: "2019-05-20T00:00:00Z"
 external_link: ""
-summary: A list of sports analytics projected completed while in the Yale Undergraduate Sports Analytics Group
+summary: A list of sports analytics projects completed while in the Yale Undergraduate Sports Analytics Group
 tags:
 title: Yale Sports Analytics
 ---
