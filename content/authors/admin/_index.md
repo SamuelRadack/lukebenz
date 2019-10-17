@@ -8,10 +8,11 @@ education:
     year: 2019
 email: "lukesbenz@gmail.com"
 interests:
+- Biostatistics
+- Clinical Trials
 - Data Visualization
 - Bayesian Statistics
 - Social Networks
-- Biostatistics
 - Sports Analytics
 name: Luke Benz
 organizations:
