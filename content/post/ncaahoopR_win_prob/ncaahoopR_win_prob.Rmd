@@ -4,11 +4,10 @@ author:
   - admin
 date: "2019-10-16"
 tags: ["ncaahoopR"]
-header-includes:
-- \usepackage{graphicx,latexsym}
-- \usepackage{amssymb,amsthm,amsmath,fixmath}
-- \usepackage{longtable,booktabs,setspace,array}
 ---
+\usepackage{graphicx,latexsym}
+\usepackage{amssymb,amsthm,amsmath,fixmath}
+\usepackage{longtable,booktabs,setspace,array}
 \newcommand{\mb}{\mathbold}
 \newcommand{\trans}{{\scriptstyle T}}
 
@@ -24,9 +23,9 @@ Y_{ik} | p_{ikt} &\sim \text{Bernoulli}(p_{ikt}) \\
 \epsilon_{ikt} &\sim N(0, \sigma^2)
 \end{aligned}
 $$
-In the above model, observations are of the form $(\mb X_{ikt}, Y_{ik})$, where $\mb X_{ikt}$ denotes a vector of covariates of interest with time $t$ remaining in game $k$ and, $Y_{ik}$ is an indicator whether team $i$ won $(Y_{ik} = 1)$ or lost $(Y_{ik} = 0)$ the game in question. $\mb X_{ikt}$ occur at discrete, non-regular time points $t$, as observations are only available after the occurrence of certain game events (such as a made basket, foul, turnover, or timeout) which don't adhere to a regular time schedule.
+In the above model, observations are of the form $ X_{ikt}, Y_{ik})$, where $ X_{ikt}$ denotes a vector of covariates of interest with time $t$ remaining in game $k$ and, $Y_{ik}$ is an indicator whether team $i$ won $(Y_{ik} = 1)$ or lost $(Y_{ik} = 0)$ the game in question. $X_{ikt}$ occur at discrete, non-regular time points $t$, as observations are only available after the occurrence of certain game events (such as a made basket, foul, turnover, or timeout) which don't adhere to a regular time schedule.
 
-$\mb\beta_t$ represents the vector of coefficients for the covariates of interest with time $t$ remaining. One challenge in fitting the above model is that the covariates of interest, such as score differential and pre-game point spread, have non-linear dependencies on the amount of time remaining in the game.  While time remaining is not explicitly a covariate in any version of this model, coefficient estimates for covariates of interest are obtained at various values of time remaining $t$. 
+$\beta_t$ represents the vector of coefficients for the covariates of interest with time $t$ remaining. One challenge in fitting the above model is that the covariates of interest, such as score differential and pre-game point spread, have non-linear dependencies on the amount of time remaining in the game.  While time remaining is not explicitly a covariate in any version of this model, coefficient estimates for covariates of interest are obtained at various values of time remaining $t$. 
 To combat covariates' non-linear dependence on time, various versions of this type of college basketball win probability model, including work by [Brian Burke](https://bit.ly/1FJIjd4) and [Bart Torvik](http://adamcwisports.blogspot.com/2017/07/how-i-built-crappy-basketball-win.html) have broken the game into discrete time chunks, over which the coefficients are assumed to be constant. 
 
 However, numerous problems can arise when one categorizes or makes discrete a continuous variable. To get around this problem, I fit several versions of this model were over discrete time intervals which overlapped by 90%. LOESS smoothing was then applied to the resulting coefficient estimates to obtain smooth coefficient functions over time. Coefficient estimates represent the increase in the log odds of winning a game while holding all of the other covariates in the model constant.
