@@ -1,5 +1,5 @@
 ---
-date: "2018-12-13T00:00:00Z"
+date: "2019-05-22T00:00:00Z"
 summary: A collection of sports research projects
 tags: ["AFL", "NCAA Basketball", "Research"]
 title: Sports Analytics Research

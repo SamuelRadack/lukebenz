@@ -1,5 +1,5 @@
 ---
-date: "2018-05-20T00:00:00Z"
+date: "2019-12-01T00:00:00Z"
 external_link: ""
 summary: A collection of links to various basketball related shiny apps.
 tags: ["NCAA Basketball", "Software"]
