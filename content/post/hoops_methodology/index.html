@@ -1,0 +1,172 @@
+---
+title: "NCAA Hoops Model Methodology"
+author: 
+  - admin
+date: "2018-10-21"
+output: html_document
+tag: "NCAA Basketball"
+---
+
+
+
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>For the past two years, I’ve been maintaining a men’s college basketball prediction model that I first built for the <a href="http://sports.sites.yale.edu">Yale Undergraduate Sports Analytics Group</a> (YUSAG) during my sophomore year of college. The model has done objectively quite well over the past two seasons. It correctly predicted last year’s National Champion, Villanova, and accurately predicted North Carolina and Gonzaga as the most likely finalists in the 2017 title game. Brackets filled out using model derived predictions have finished above the 90th percentile on ESPN each of the past two seasons. Using my model, I even won the <a href="http://thisisstatistics.org/statsketball-2018-congratulations-to-our-winners/">2018 American Statsitical Association Statsketball Tournament</a>. Having two seasons of experience with this project under my belt, there are a number of additional features I’ve been interested in adding/changing for the 2018-19 season.</p>
+</div>
+<div id="background" class="section level1">
+<h1>Background</h1>
+<p>Before we get into what’s different this year, we need to look at the way the YUSAG model has worked in the past. The core of the model is linear regression, specified by
+<span class="math display">\[
+Y =  \beta_{team}X_{team} - \beta_{opp}X_{opp} + \beta_{loc}X_{loc} + \epsilon
+\]</span></p>
+<p>where <span class="math inline">\(X_{team, i}, X_{opp, i}\)</span>, and <span class="math inline">\(X_{loc, i}\)</span> are indicator vectors for the <span class="math inline">\(i^{th}\)</span> game’s <code>team</code>, <code>opponent</code>, and <code>location</code> (Home, Away, Neutral) from the perspective of <code>team</code>, and <span class="math inline">\(Y_i\)</span> is game’s the score-differential. The key assumptions for this model are that game outcomes are independent of one another, and that our error <span class="math inline">\(\epsilon \sim N(0, \sigma^2)\)</span>.</p>
+<p><span class="math inline">\(\beta_{team}\)</span>, nicknamed “YUSAG Coefficients”, were scaled to represent the points better or worse a team was the average college team basketball team on a neutral court. Lastly, <span class="math inline">\(\beta_{loc}\)</span> is a parameter indicating home-court advantage, estimated to be about 3.2 points.</p>
+<p><em>Note that the coefficients</em> <span class="math inline">\(\beta_{opp}\)</span> <em>have the same values and interpretation as</em> <span class="math inline">\(\beta_{team}\)</span>. <em>I’ll note that when this model is actually fit,</em> <span class="math inline">\(\beta_{opp} = -\beta_{team}\)</span> <em>but in the interest of easy interpretation in these methodology notes, I have flipped the signs of the</em> <span class="math inline">\(\beta_{opp}\)</span> <em>coefficients and added a minus sign to the model formulation above.</em></p>
+<p>Let’s walk through an example to see how this all works. Say Yale is hosting Harvard, and we’d like to predict score differential. <span class="math inline">\(\widehat\beta_{team = Yale} = -2.1\)</span> and <span class="math inline">\(\widehat\beta_{opp = Harvard} = 1.9\)</span>. This means that on a neutral court, Yale is 2.1 points worse than the average college basketball team, and Harvard is 1.9 point better. Our predicted outcome for this game would be as follows:
+<span class="math display">\[
+\widehat Y_i = \widehat \beta_{team = Yale} - \widehat \beta_{opp = Harvard} + \widehat \beta_{loc = Home} = -2.1 - 1.9 + 3.2 = -0.8
+\]</span>
+Hence, we’d expect Harvard to win this game by roughly 0.8 points. Of course, we could’ve predicted the game from the perspective of Harvard as well, and we’d get exactly the same answer. Since <span class="math inline">\(\beta_{opp = Yale} = \beta_{team = Yale}\)</span> and <span class="math inline">\(\beta_{team = Harvard} = \beta_{opp = Harvard}\)</span>, we have
+<span class="math display">\[
+\widehat Y_i = \widehat \beta_{team = Harvard} - \widehat \beta_{opp = Yale} + \widehat \beta_{loc = Away} = 1.9 - (-2.1) - 3.2 = 0.8
+\]</span></p>
+<p>We recover the Harvard by 0.8 predicted scoreline, and hence, it doesn’t matter which school we use as “team” or “opponent” because the results are identical. Once we have a predicted score differential, we can convert this to a win probability using <a href="https://en.wikipedia.org/wiki/Logistic_regression">logistic regression</a>. I won’t get into the specifics how logistic regressions works in this post, but for the purposes of this example, just think about it as a translation between predicted point spread and predicted win probability.</p>
+<p><img src="/post/hoops_methodology/index_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<p>One thing that we check to see is that the win probability model is well calibrated. That is, if we predict a team has a 75% chance of winning, then we should see them win about 75% of the time on out of sample data. To see that the model is well tuned, I’ve fit the logistic regression on data from the 2017-18 season, and then made predictions of win probability from prior predicted score differentials for the 2016-17 season. We don’t see any drastic deviations from the line denoting perfect correspondence between predcited and observed win probability. This is good–it means teams are winning about as often as we predict they are winning!</p>
+<p><img src="/post/hoops_methodology/index_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+</div>
+<div id="offense-and-defense-specific-models" class="section level1">
+<h1>Offense and Defense Specific Models</h1>
+<p>Now that we have the basics of model, we can dive into what’s new for this season. In the past, I’ve only been interesting in predicting game <em>score differential</em>, <span class="math inline">\(Y_i\)</span>. In fact, we can rewrite score differentials as <span class="math inline">\(Y_i = T_i - O_i\)</span>, where <span class="math inline">\(T_i\)</span> denotes <code>team_score</code> and <span class="math inline">\(O_i\)</span> denotes <code>opp_score</code> for game <span class="math inline">\(i\)</span>, respectively. Not only is the distribution of <code>score_differential</code> normally distributed, but so too is the distribution of <code>team_score</code>. I’ll note that the gap around 0 in the distribution of <code>score_differential</code> is due to the fact that games can’t end in ties. I’ll also comment that the distribution of <code>opp_score</code> is identical to that of <code>team_score</code> as each game is entered twice in the database, so there is a direct one-to-one correspondence between each value of <code>team_score</code> and <code>opp_score</code>.</p>
+<p><img src="/post/hoops_methodology/index_files/figure-html/unnamed-chunk-3-1.png" width="672" /><img src="/post/hoops_methodology/index_files/figure-html/unnamed-chunk-3-2.png" width="672" /></p>
+<p>Recall, the <a href="https://en.wikipedia.org/wiki/Sum_of_normally_distributed_random_variables">sum of two normal random variables is also normally distributed</a>, even if they are not indepent of one another. Thus, using the same linear model framework, we can predict for each game <span class="math inline">\(T_i\)</span> and <span class="math inline">\(O_i\)</span>. That is, in addition to a predicted score differential, we can actually predict the number of points each team will score. As a consqeuence, we can obtaining estimates of team offensive and defensive coefficeints, <span class="math inline">\(\alpha_{team}\)</span> and <span class="math inline">\(\delta_{team}\)</span>, respectively. To be clear, this is not necessarily a different model, but a reparameterization that allows us to learn more informations about the contributions of team strength.</p>
+<p><span class="math display">\[
+Y = \beta_{team}X_{team} - \beta_{opp}X_{opp} + \beta_{loc}X_{loc}\\
+(T - O) = \beta_{team}X_{team} - \beta_{opp}X_{opp} + \beta_{loc}X_{loc} \\
+T - O = (\alpha_{team} - \delta_{team})X_{team} - (\alpha_{opp} - \delta_{opp})X_{opp} + \beta_{loc}X_{loc} \\
+T - O = (\alpha_{team} - \delta_{team})X_{team} - (\alpha_{opp} - \delta_{opp})X_{opp} + \beta_{loc}X_{loc} + (\beta_0 - \beta_0) \\
+\]</span>
+Specifically, we can split the above equation into the following two equations
+<span class="math display">\[
+T = \beta_0 + \alpha_{team}X_{team} - \delta_{opp}X_{opp} + \beta_{loc, off}X_{loc}\\
+O = \beta_0 -\delta_{team}X_{team} + \alpha_{opp}X_{opp} + \beta_{loc, def}X_{loc}
+\]</span>
+where <span class="math inline">\(\beta_{loc, off}\)</span> and <span class="math inline">\(\beta_{loc, def}\)</span> denote the contributions to home court advantage to offense and defense, respectively, and <span class="math inline">\(\beta_0\)</span> is the average number of points scored (for one team) per game across all of college basketball, roughly 73 points. So what is this actually saying? For a given game we predict <span class="math inline">\(T\)</span>, the number of points a team will score by</p>
+<ol style="list-style-type: decimal">
+<li>Begin with the baseline average number of points scored, <span class="math inline">\(\beta_0\)</span></li>
+<li>Add a team specific offensive term, <span class="math inline">\(\alpha_{team}\)</span>. We can interpret <span class="math inline">\(\alpha_{team}\)</span> as the number of points <strong>more</strong> than the baseline (<span class="math inline">\(\beta_0\)</span>) our desired team would score against <strong>the average college basketball team on a neutral floor</strong>.</li>
+<li>Subtract an opponent specific defensive term, <span class="math inline">\(\delta_{opp}\)</span>. We can interpret <span class="math inline">\(\delta_{opp}\)</span> as the number of points <strong>fewer</strong> than the baseline (<span class="math inline">\(\beta_0\)</span>) our desired team’s opponent would allow against <strong>the average college basketball team on a neutral floor</strong>.</li>
+<li>Add an term to adjust for home court advantage.</li>
+</ol>
+<p>By symmetry, our prediction of the number of points our desired team allows, <span class="math inline">\(O\)</span>, is calculated in almost exactly the same way. Perhaps the math unnecessarily overcomplicates something fairly straightforward, but I think that the derivation of these formulae show <em>how</em> these offensive and defensive coefficients should be interpreted. It’s easy to want to interpret these as meaures of offensive and defensive strength, but it’s extremely important we don’t fall for this temptation. Rather, we should view <span class="math inline">\(\beta_{team}\)</span> as estimates of overall team strength, and <span class="math inline">\(\alpha_{team}\)</span> and <span class="math inline">\(\delta_{team}\)</span> as indicators of how teams derive their strength. For example, consider the top six teams from the end of the 2017-18 season by offensive and defensive coefficients.</p>
+<p><em>Top</em> <span class="math inline">\(\alpha_{team}\)</span></p>
+<pre><code>##             team off_coeff def_coeff yusag_coeff overall_rank
+## 1      Villanova  17.98007  7.946133    25.92621            1
+## 2       Oklahoma  15.84885 -4.138373    11.71048           43
+## 3           Duke  15.42955  7.892312    23.32186            2
+## 4 North Carolina  14.85430  3.956107    18.81041            8
+## 5         Xavier  14.26454  2.986246    17.25079           13
+## 6         Kansas  12.73801  6.421469    19.15948            7</code></pre>
+<p><em>Top</em> <span class="math inline">\(\delta_{team}\)</span></p>
+<pre><code>##         team off_coeff def_coeff yusag_coeff overall_rank
+## 1   Virginia -2.383885  23.25942    20.87554            5
+## 2 Cincinnati  2.420159  16.90140    19.32156            6
+## 3   Syracuse -2.952363  14.43724    11.48487           45
+## 4   Michigan  4.521445  14.09245    18.61390            9
+## 5 Texas Tech  4.553551  13.00919    17.56274           11
+## 6  Tennessee  5.024089  12.07138    17.09547           14</code></pre>
+<p>We see the pitfall of interpreting <span class="math inline">\(\alpha_{team}\)</span> and <span class="math inline">\(\delta_{team}\)</span> as direct measures of offensive and defensive strength most noticably in the case of Virginia. We might be tempted to say that Virgina had a below average offense in 2017-18. This is not exactly the case. On a points per game basis, UVA scored fewer points than the average college basketball team, but this is because their elite defense would often slow down the game, leaving fewer possessions for their offense to score. Adjusted for tempo, <a href="http://barttorvik.com/trankslice.php?year=2018&amp;sort=&amp;conlimit=#">UVA had a top-25 offense last season</a>. Their overall team strength is nicely captured by their YUSAG Coefficient, <span class="math inline">\(\beta_{team}\)</span>. <span class="math inline">\(\alpha_{team}\)</span> and <span class="math inline">\(\delta_{team}\)</span> illustrate that Virginia derives it’s strength from suffocating defense, but shouldn’t be used to rank teams offensively and defensively, at least not in a vaccuum. If one feels so inclined to utilize <span class="math inline">\(\alpha_{team}\)</span> and <span class="math inline">\(\delta_{team}\)</span> to comment about an individual team’s offense and defense, they might look at the difference between the two coefficients in an attempt to quantify team balance and see which facet of the game, if any dominates, team play. For example, compare Virginia’s defense first style of play with the more balanced approaches of Villanova, Duke, and Kansas. Not adjusting for tempo is not problematic <strong>provided</strong> that we are clear on the subtleties of interpreting the model coefficients. This is a big enough point that I’ll repeat it again:</p>
+<ul>
+<li>Only <span class="math inline">\(\beta_{team}\)</span> should be used when ranking teams based on team strength. These coefficients CAN be used to make statements such as, “Duke is the best team”, and “the average Ivy League team is worse than the average team from the Missouri Valley Conference”.</li>
+<li><span class="math inline">\(\alpha_{team}\)</span> and <span class="math inline">\(\delta_{team}\)</span> are useful for ranking how many points a team would score/allow relative to average against the average college basketball team at a neutral site. These coefficients should NOT be used to make claims “Virginia has a worse offense than Duke” or “Oklahoma has the second best offense”.</li>
+</ul>
+</div>
+<div id="preseason-priors" class="section level1">
+<h1>Preseason Priors</h1>
+<p>One challenge with any sports rating system is setting rankings at the beginning of a season. This problem is magnified in any college sport, where teams lose a significant number of their key players from year to year due to transfers, graduation, and the NBA draft. Moreover, teams welcome new recruits and incoming transfers, meaning the year to year difference is any given team’s roster can be quite significant. I’ve tried to deal with these <a href="https://sports.sites.yale.edu/ncaa-basketball-prediction-model-methodology">issues in the past at the beginning of a given season</a>, but now that I have three full years of archived rankings (2016-17, 2017-18, and a backcaluated version on 2014-15) I can do a lot better. Let’s look at the year to year stability of our different types of coefficients <span class="math inline">\(\alpha_{team}\)</span>, <span class="math inline">\(\delta_{team}\)</span>, and <span class="math inline">\(\beta_{team}\)</span>.</p>
+<p><img src="/post/hoops_methodology/index_files/figure-html/unnamed-chunk-6-1.png" width="672" /><img src="/post/hoops_methodology/index_files/figure-html/unnamed-chunk-6-2.png" width="672" /><img src="/post/hoops_methodology/index_files/figure-html/unnamed-chunk-6-3.png" width="672" /></p>
+<p>We see that there is higher year to year variability in the offensive coefficients than in the defensive coefficients. So if we can account for some of the year to year variation due to some of the factors surrounding why a team’s roster from year to year, this can help us set good preseason ratings. While my system doesn’t make use of individual player data in-season, I think that it allows us to extract the most information out of how teams change from year to year. All of the the individual level data was graciously given to me by <a href="https://twitter.com/totally_t_bomb">Bart Torvik</a>, who honestly has one of the <a href="http://www.barttorvik.com">coolest sites on the internet</a> if you’re a college hoops fan. Bart keeps track of a player value metric called, <a href="https://www.bigtengeeks.com/new-stat-porpagatu/">“Points Over Replacement Player Per Adjusted Game At That Usage”</a>, or more simply PPG! . Examining returning players who played at least 40% of possible minutes for their teams, I computed team level returing PPG!, departing PPG!, and incoming transfer PPG! . Additionly, Bart provided me with team level percetange of returning minutes. Combining that with <a href="https://github.com/lbenz730/NCAA_Hoops/blob/master/3.0_Files/Info/247_recruiting.csv">my own recruiting data</a> pulled from <a href="https://247sports.com/Season/2018-Basketball/CompositeTeamRankings/">247Sports.com</a>, I used the several variables to predict offensive and defensive coefficients from the the previous years statistics. Regressions were fit on data 2015-16 <span class="math inline">\(\rightarrow\)</span> 2016-17 and 2016-17 <span class="math inline">\(\rightarrow\)</span> 2017-18 using 10-fold cross validiation. The following variables comprised the models.</p>
+<div id="alpha_teamtextyear-i1" class="section level4">
+<h4><span class="math inline">\(\alpha_{team}^{\text{year =} i+1}\)</span></h4>
+<ul>
+<li><span class="math inline">\(\alpha_{team}^{\text{year =} i}\)</span></li>
+<li>247Sports Composite Recruiting Score (for Incoming Recruiting Class)</li>
+<li>Returning PPG!</li>
+<li>Departing PPG!</li>
+<li>Indicator for having at least 1 5-Star Recruit</li>
+<li>Indicator for having at least 3 5-Star Recuits</li>
+<li>Indicator for having at least 3 3-Star, 4-Star or 5-Star Recuits</li>
+</ul>
+<p>Model <span class="math inline">\(R^2 = 0.59\)</span></p>
+</div>
+<div id="delta_teamtextyear-i1" class="section level4">
+<h4><span class="math inline">\(\delta_{team}^{\text{year =} i+1}\)</span></h4>
+<ul>
+<li><span class="math inline">\(\delta_{team}^{\text{year =} i}\)</span></li>
+<li>247Sports Composite Recruiting Score (for Incoming Recruiting Class)</li>
+<li>Returning PPG!</li>
+<li>Departing PPG!</li>
+<li>Indicator for having at least 3 5-Star Recuits</li>
+</ul>
+<p>Model <span class="math inline">\(R^2 = 0.59\)</span></p>
+<p>From this, not only get a much improved preseason estimate of a team’s true strength (<span class="math inline">\(\hat \gamma_{team} = \hat \alpha_{team} + \hat \delta_{team}\)</span>), but we can also get a prior distribution on the these coefficients as well, utilizing the variance of <span class="math inline">\(\hat \gamma_{team}\)</span>. Perhaps not suprisingly, the uncertainty in these distributions is greater for teams with more high level recruits and fewer returning players. Compare the following preseason priors for some of the more interesting teams this year.</p>
+<p><img src="/post/hoops_methodology/index_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>Let’s take a look at the top-25 teams heading into the 2018-19 season.</p>
+<pre><code>##               team yusag_coeff
+## 1   North Carolina    21.29206
+## 2        Villanova    20.00146
+## 3     Michigan St.    19.94314
+## 4         Kentucky    19.14156
+## 5             Duke    18.63643
+## 6           Nevada    18.04865
+## 7           Kansas    17.74140
+## 8         Virginia    17.46613
+## 9        Tennessee    17.42049
+## 10         Gonzaga    17.28193
+## 11         Florida    17.25448
+## 12 Mississippi St.    16.70156
+## 13        Maryland    16.18948
+## 14   West Virginia    15.95730
+## 15        Syracuse    15.93676
+## 16             LSU    15.42715
+## 17          Purdue    14.68644
+## 18   Virginia Tech    14.44185
+## 19        Michigan    14.42888
+## 20         Indiana    14.25695
+## 21             TCU    14.19995
+## 22         Clemson    14.05680
+## 23          Oregon    13.80570
+## 24           Texas    13.77246
+## 25      Kansas St.    13.74995</code></pre>
+<p>Lastly, I should make comment on how rankings were detemined for the two new teams to Division 1 this season, Cal-Baptist and North Alabama. Given that much of these preseason rankings depends on end of season rankings from last year, setting prior rankings for Cal-Bapist and North Alabama required imputing missing values. I looked at the correlation betwen my preseason offensive and defensive coefficients with <a href="http://www.barttorvik.com">T-Rank</a> adjusted offensive and defensive efficiencies. Perhaps I’m beating a dead horese here is reminding the reader that my own coefficients are not measures of efficiency, and one might wonder then why I’d use adjusted efficieny margins to impute preseason rankings for these schools. Overall, even though my coefficients and Bart’s rankings have different interpretations, there is a high correlation, and as such, this gives me a quick and dirty way to impute the preseason ranking for 2 of the 353 D1 teams. Using this imputation yields the following results</p>
+<pre><code>##   rank               team off_coeff def_coeff yusag_coeff
+## 1  338         North Ala. -8.554625 -3.560665   -12.11529
+## 2  346 California Baptist -8.554573 -5.105342   -13.65992</code></pre>
+</div>
+<div id="in-season-updating" class="section level3">
+<h3>In-Season Updating</h3>
+<p>Let <span class="math inline">\(\alpha_{prior}, \delta_{prior}\)</span> and <span class="math inline">\(\gamma_{prior}\)</span> denote a team’s prior season coefficients. We’ll also obtain coeffient estimates from the current season’s games that have already been played, using least squares regression model explained above. I’ll note that in fitting this in-season model, I actually use weights to add a little bit of recency bias. That is, games that have been played are weighted more heavily. Suppose Team A and Team B played a game. It was the <span class="math inline">\(i^{th}\)</span> game of the season for Team A and and the <span class="math inline">\(j^{th}\)</span> game of the season for Team B. Furthermore, suppose that Team A has played <span class="math inline">\(n_a\)</span> games to date and Team B has played <span class="math inline">\(n_b\)</span> games to date. We define the relative recency of a game, <span class="math inline">\(r\)</span> as follows.
+<span class="math display">\[
+r = \frac{1}{2}\biggl(\frac{i}{n_a} + \frac{j}{n_b}\biggr)
+\]</span>
+Finally, the games weight in the model is given by
+<span class="math display">\[
+w = \frac{1}{1 + 0.5^{5r}e^{-r}}
+\]</span>
+<img src="/post/hoops_methodology/index_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p>This bias really only downweights early season games when the majority of the season has already been played.</p>
+<p>Ok so now that we have coefficient estimates for each team prior to the season and estimates from the current season’s worth of data what do we do? Part of the reason the preseason ratings of interesting is that estimates of team coefficients are extremely noisy early in the season. To get around this, we can take a weighted average of a team’s in-season coefficients and preseason coefficients. Suppose a team has <span class="math inline">\(n\)</span> games on it’s schedule, and it’s most recent game played was the <span class="math inline">\(k^{th}\)</span> game on the schedule. Then we have
+<span class="math display">\[
+w = \min\biggl(\frac{2k}{n}, 1\biggr)
+\]</span>
+<span class="math display">\[
+\gamma_{team} = w\gamma_{in\_season} + (1-w)\gamma_{pre\_season}
+\]</span></p>
+<p>Note that we do the same as above for <span class="math inline">\(\alpha_{team}\)</span> and <span class="math inline">\(\delta_{team}\)</span>. Preseason weights fall out completely once a team completes <span class="math inline">\(\frac{1}{2}\)</span> of it’s schedule, as the halfway point is roughly the point in the season by which coefficient estimates begin to stablilize. One might wonder why not take a full Bayesian approach to get posterior distributions for model coefficients. I’m hesitant to take a full Bayesian approach is that the I’m fairly confident my uncertainty estimates are underestimates, meaning these preseason priors would be too informative. I think that after spending this season evaluating the current framework, I’d feel more comfortable setting weaker priors around similarly obtained point estimates to establish a Bayesian framwork. That’s definitely the direction this project is headed but I have to make sure I wouldn’t be setting terrible priors before making such a switch.</p>
+<p>For full 1-353 rankings, <a href="https://sports.sites.yale.edu/ncaa-mens-basketball-power-rankings">click here</a>. Code for this model will be updating shortly <a href="https://github.com/lbenz730/NCAA_Hoops">here</a></p>
+</div>
+</div>
+<div id="acknowledgements" class="section level1">
+<h1>Acknowledgements</h1>
+<p>I can’t finish this post without thanking Bart Torvik one final time. Bart provided me with a lot of his proprietary data over the summer and answered many many questions I had in setting priors. Be sure to check out <a href="http://www.barttorvik.com">his site</a> if you haven’t yet!</p>
+</div>

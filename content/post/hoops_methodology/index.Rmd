@@ -1,0 +1,395 @@
+---
+title: "NCAA Hoops Model Methodology"
+author: 
+  - admin
+date: "2018-10-21"
+output: html_document
+tag: "NCAA Basketball"
+---
+# Introduction
+For the past two years, I've been maintaining a men's college basketball prediction model that I first built for the [Yale Undergraduate Sports Analytics Group](http://sports.sites.yale.edu) (YUSAG) during my sophomore year of college. The model has done objectively quite well over the past two seasons. It correctly predicted last year's National Champion, Villanova, and accurately predicted North Carolina and Gonzaga as the most likely finalists in the 2017 title game. Brackets filled out using model derived predictions have finished above the 90th percentile on ESPN each of the past two seasons. Using my model, I even won the [2018 American Statsitical Association Statsketball Tournament](http://thisisstatistics.org/statsketball-2018-congratulations-to-our-winners/). Having two seasons of experience with this project under my belt, there are a number of additional features I've been interested in adding/changing for the 2018-19 season.
+
+# Background
+Before we get into what's different this year, we need to look at the way the YUSAG model has worked in the past. The core of the model is linear regression, specified by
+$$
+Y =  \beta_{team}X_{team} - \beta_{opp}X_{opp} + \beta_{loc}X_{loc} + \epsilon
+$$
+
+where $X_{team, i}, X_{opp, i}$, and  $X_{loc, i}$ are indicator vectors for the $i^{th}$ game's ```team```, ```opponent```, and ```location``` (Home, Away, Neutral) from the perspective of ```team```, and $Y_i$ is game's the score-differential. The key assumptions for this model are that game outcomes are independent of one another, and that our error $\epsilon \sim N(0, \sigma^2)$.
+
+$\beta_{team}$, nicknamed "YUSAG Coefficients", were scaled to represent the points better or worse a team was the average college team basketball team on a neutral court. Lastly, $\beta_{loc}$ is a parameter indicating home-court advantage, estimated to be about 3.2 points. 
+
+_Note that the coefficients_ $\beta_{opp}$ _have the same values and interpretation as_ $\beta_{team}$. _I'll note that when this model is actually fit,_ $\beta_{opp} = -\beta_{team}$ _but in the interest of easy interpretation in these methodology notes, I have flipped the signs of the_ $\beta_{opp}$ _coefficients and added a minus sign to the model formulation above._
+
+Let's walk through an example to see how this all works. Say Yale is hosting Harvard, and we'd like to predict score differential. $\widehat\beta_{team = Yale} = -2.1$ and $\widehat\beta_{opp = Harvard} = 1.9$. This means that on a neutral court, Yale is 2.1 points worse than the average college basketball team, and Harvard is 1.9 point better. Our predicted outcome for this game would be as follows:
+$$
+\widehat Y_i = \widehat \beta_{team = Yale} - \widehat \beta_{opp = Harvard} + \widehat \beta_{loc = Home} = -2.1 - 1.9 + 3.2 = -0.8
+$$
+Hence, we'd expect Harvard to win this game by roughly 0.8 points. Of course, we could've predicted the game from the perspective of Harvard as well, and we'd get exactly the same answer. Since $\beta_{opp = Yale} = \beta_{team = Yale}$ and $\beta_{team = Harvard} = \beta_{opp = Harvard}$, we have
+$$
+\widehat Y_i = \widehat \beta_{team = Harvard} - \widehat \beta_{opp = Yale} + \widehat \beta_{loc = Away} = 1.9 - (-2.1) - 3.2 = 0.8
+$$
+
+We recover the Harvard by 0.8 predicted scoreline, and hence, it doesn't matter which school we use as "team" or "opponent" because the results are identical. Once we have a predicted score differential, we can convert this to a win probability using [logistic regression](https://en.wikipedia.org/wiki/Logistic_regression). I won't get into the specifics how logistic regressions works in this post, but for the purposes of this example, just think about it as a translation between predicted point spread and predicted win probability. 
+
+```{r, echo = F, warning = F, message = F}
+library(dplyr)
+source("helpers.R")
+y <- read.csv("Results/2017-18/NCAA_Hoops_Results_2018_Final.csv", as.is = T)
+y <- y %>%
+  mutate(scorediff = teamscore - oppscore, predscorediff = NA, wins = NA,
+         season_id = "2017-18", game_id = NA, opp_game_id = NA, 
+         team_conf = NA, opp_conf = NA, conf_game = NA, GEI = NA)
+
+teams <- unique(y$team)
+for(i in 1:length(teams)) {
+  
+  y[y$team == teams[i],] <- y %>%
+    filter(team == teams[i]) %>%
+    mutate(game_id = seq(1, sum(team == teams[i]), 1))
+}
+
+for(i in 1:nrow(y)) {
+  y$opp_game_id[i] <- get_opp_id(y, i)[1]
+}
+
+for(i in 1:nrow(y)) {
+  w_team <- 1 - (max(c(0, y$game_id[y$team == y$team[i] & !is.na(y$scorediff)])) - y$game_id[i])/
+    max(c(1, y$game_id[y$team == y$team[i] & !is.na(y$scorediff)]))
+  w_opponent <- 1 - (max(c(0, y$game_id[y$team == y$opponent[i] & !is.na(y$scorediff)])) - y$opp_game_id[i])/
+    max(c(1, y$game_id[y$team == y$opponent[i] & !is.na(y$scorediff)]))
+  rr <- mean(c(w_team, w_opponent))
+  y$weights[i] <- 1/(1 + (0.5^(5 * rr)) * exp(-rr))
+}   
+
+lm.hoops <- lm(scorediff ~ team + opponent + location, weights = weights, data = y) 
+
+y$predscorediff <- predict(lm.hoops, newdata = y)
+y$win <- ifelse(y$scorediff > 0, 1, 0)
+glm.pointspread <- glm(win ~ predscorediff, data = y, family = "binomial")
+y$winprob <- predict(glm.pointspread, newdata = y, type = "response")
+
+library(ggplot2) 
+ggplot(y, aes(x = predscorediff, y = winprob)) + 
+  geom_point(aes(color = as.factor(win))) + theme_bw() +
+  theme(axis.text = element_text(size = 14), 
+        plot.title = element_text(hjust = 0.5, size = 16)) + 
+  labs(x = "Predicted Score Differential", y = "Win Probability",
+       color = "Result", title = "Pre-Game Win Probability Model") + 
+  scale_color_manual(values = c("midnightblue", "aquamarine1"), labels = c("Loss", "Win"))
+
+```
+
+One thing that we check to see is that the win probability model is well calibrated. That is, if we predict a team has a 75% chance of winning, then we should see them win about 75% of the time on out of sample data. To see that the model is well tuned, I've fit the logistic regression on data from the 2017-18 season, and then made predictions of win probability from prior predicted score differentials for the 2016-17 season. We don't see any drastic deviations from the line denoting perfect correspondence between predcited and observed win probability. This is good--it means teams are winning about as often as we predict they are winning!
+
+```{r echo = F, warning = F, message = F}
+library(dplyr)
+y <- read.csv("Results/2016-17/NCAA_Hoops_Results_2017_Final.csv", as.is = T)
+source("helpers.R")
+y <- y %>%
+  mutate(scorediff = teamscore - oppscore, predscorediff = NA, wins = NA,
+         season_id = "2017-18", game_id = NA, opp_game_id = NA, 
+         team_conf = NA, opp_conf = NA, conf_game = NA, GEI = NA)
+
+teams <- unique(y$team)
+for(i in 1:length(teams)) {
+  
+  y[y$team == teams[i],] <- y %>%
+    filter(team == teams[i]) %>%
+    mutate(game_id = seq(1, sum(team == teams[i]), 1))
+}
+
+for(i in 1:nrow(y)) {
+  y$opp_game_id[i] <- get_opp_id(y, i)[1]
+}
+
+for(i in 1:nrow(y)) {
+  w_team <- 1 - (max(c(0, y$game_id[y$team == y$team[i] & !is.na(y$scorediff)])) - y$game_id[i])/
+    max(c(1, y$game_id[y$team == y$team[i] & !is.na(y$scorediff)]))
+  w_opponent <- 1 - (max(c(0, y$game_id[y$team == y$opponent[i] & !is.na(y$scorediff)])) - y$opp_game_id[i])/
+    max(c(1, y$game_id[y$team == y$opponent[i] & !is.na(y$scorediff)]))
+  rr <- mean(c(w_team, w_opponent))
+  y$weights[i] <- 1/(1 + (0.5^(5 * rr)) * exp(-rr))
+}   
+
+lm.hoops <- lm(scorediff ~ team + opponent + location, weights = weights, data = y) 
+
+y$predscorediff <- predict(lm.hoops, newdata = y)
+y$win <- ifelse(y$scorediff > 0, 1, 0)
+
+y$winprob <- predict(glm.pointspread, newdata = y, type = "response")
+
+probs <- seq(0, 1, 0.05)
+obs <- rep(NA, length(probs) - 1)
+for(i in 1:(length(probs) - 1)) {
+  obs[i] <- mean(y$win[y$winprob < probs[i + 1] & y$winprob > probs[i]])
+}
+probs2 <- seq(0.025, 1, 0.05)
+qplot(x = probs2, y = obs, col = "red", xlab = "Predicted Win Probability", 
+      ylab = "Observed Win Probability", main = "Win Probability Calibration") + 
+  geom_abline(slope = 1, intercept = 0) + theme_bw() + labs(subtitle = "(Out of Sample Data)") + 
+  theme(plot.title = element_text(hjust = 0.5, size = 16),
+        plot.subtitle = element_text(hjust = 0.5, size = 12),
+        axis.title = element_text(size = 14)) + scale_color_manual(values = "red", guide = F)
+```
+
+# Offense and Defense Specific Models
+Now that we have the basics of model, we can dive into what's new for this season. In the past, I've only been interesting in predicting game _score differential_, $Y_i$. In fact, we can rewrite score differentials as $Y_i = T_i - O_i$, where $T_i$ denotes ```team_score``` and $O_i$ denotes ```opp_score``` for game $i$, respectively. Not only is the distribution of ```score_differential``` normally distributed, but so too is the distribution of ```team_score```. I'll note that the gap around 0 in the distribution of ```score_differential``` is due to the fact that games can't end in ties. I'll also comment that the distribution of ```opp_score``` is identical to that of ```team_score``` as each game is entered twice in the database, so there is a direct one-to-one correspondence between each value of ```team_score``` and ```opp_score```.
+
+```{r, echo = F, message = F, warning = F}
+y <- read.csv("Results/2017-18/NCAA_Hoops_Results_2018_Final.csv", as.is = T)
+y <- y %>%
+  mutate(scorediff = teamscore - oppscore, predscorediff = NA, wins = NA,
+         season_id = "2017-18", game_id = NA, opp_game_id = NA, 
+         team_conf = NA, opp_conf = NA, conf_game = NA, GEI = NA)
+
+ggplot(y, aes(x = scorediff)) + 
+  geom_histogram(col = "orange", fill = "orange", bins = 72) + theme_bw() + 
+  theme(axis.text = element_text(size = 14), 
+        plot.subtitle = element_text(hjust = 0.5, size = 12),
+        plot.title = element_text(hjust = 0.5, size = 16)) +
+  labs(x = "Score Differential", y = "Count",
+       title = "Histogram of NCAA Basketball Score Differentials",
+       subtitle = "2017-2018")
+
+ggplot(y, aes(x = teamscore)) + 
+  geom_histogram(col = "orange", fill = "orange", bins = 40) +   
+  theme_bw() + 
+  theme(axis.text = element_text(size = 14),              
+        plot.subtitle = element_text(hjust = 0.5, size = 12),                 
+        plot.title = element_text(hjust = 0.5, size = 16)) +
+  labs(x = "Points Scored", y = "Count",
+       title = "Histogram of NCAA Basketball Scores",
+       subtitle = "2017-2018") + 
+  geom_vline(xintercept = mean(y$teamscore), lty = 2, size = 1.2)
+
+
+```
+
+Recall, the [sum of two normal random variables is also normally distributed](https://en.wikipedia.org/wiki/Sum_of_normally_distributed_random_variables), even if they are not indepent of one another. Thus, using the same linear model framework, we can predict for each game $T_i$ and $O_i$. That is, in addition to a predicted score differential, we can actually predict the number of points each team will score. As a consqeuence, we can obtaining estimates of team offensive and defensive coefficeints, $\alpha_{team}$ and $\delta_{team}$, respectively. To be clear, this is not necessarily a different model, but a reparameterization that allows us to learn more informations about the contributions of team strength.
+
+$$
+Y = \beta_{team}X_{team} - \beta_{opp}X_{opp} + \beta_{loc}X_{loc}\\
+(T - O) = \beta_{team}X_{team} - \beta_{opp}X_{opp} + \beta_{loc}X_{loc} \\
+T - O = (\alpha_{team} - \delta_{team})X_{team} - (\alpha_{opp} - \delta_{opp})X_{opp} + \beta_{loc}X_{loc} \\
+T - O = (\alpha_{team} - \delta_{team})X_{team} - (\alpha_{opp} - \delta_{opp})X_{opp} + \beta_{loc}X_{loc} + (\beta_0 - \beta_0) \\
+$$
+Specifically, we can split the above equation into the following two equations
+$$
+T = \beta_0 + \alpha_{team}X_{team} - \delta_{opp}X_{opp} + \beta_{loc, off}X_{loc}\\
+O = \beta_0 -\delta_{team}X_{team} + \alpha_{opp}X_{opp} + \beta_{loc, def}X_{loc}
+$$
+where $\beta_{loc, off}$ and $\beta_{loc, def}$ denote the contributions to home court advantage to offense and defense, respectively, and $\beta_0$ is the average number of points scored (for one team) per game across all of college basketball, roughly 73 points. So what is this actually saying? For a given game we predict $T$, the number of points a team will score by
+
+1. Begin with the baseline average number of points scored, $\beta_0$
+2. Add a team specific offensive term, $\alpha_{team}$. We can interpret $\alpha_{team}$ as the number of points __more__ than the baseline ($\beta_0$) our desired team would score against __the average college basketball team on a neutral floor__.
+3. Subtract an opponent specific defensive term, $\delta_{opp}$. We can interpret $\delta_{opp}$ as the number of points __fewer__ than the baseline ($\beta_0$) our desired team's opponent would allow against __the average college basketball team on a neutral floor__.
+4. Add an term to adjust for home court advantage.
+
+By symmetry, our prediction of the number of points our desired team allows, $O$, is calculated in almost exactly the same way. Perhaps the math unnecessarily overcomplicates something fairly straightforward, but I think that the derivation of these formulae show _how_ these offensive and defensive coefficients should be interpreted. It's easy to want to interpret these as meaures of offensive and defensive strength, but it's extremely important we don't fall for this temptation. Rather, we should view $\beta_{team}$ as estimates of overall team strength, and $\alpha_{team}$ and $\delta_{team}$ as indicators of how teams derive their strength. For example, consider the top six teams from the end of the 2017-18 season by offensive and defensive coefficients.
+
+_Top_ $\alpha_{team}$
+```{r, echo = F, warning = F, message = F}
+x <- read.csv("Info/2018_yusag_coefficients.csv")
+x <- arrange(x, desc(yusag_coeff))
+x$overall_rank <- 1:nrow(x)
+x$def_coeff <- -x$def_coeff
+head(arrange(x, desc(off_coeff)))
+```
+
+_Top_ $\delta_{team}$
+```{r, echo = F, warning = F, message = F}
+head(arrange(x, desc(def_coeff)))
+```
+We see the pitfall of interpreting $\alpha_{team}$ and $\delta_{team}$ as direct measures of offensive and defensive strength most noticably in the case of Virginia. We might be tempted to say that Virgina had a below average offense in 2017-18. This is not exactly the case. On a points per game basis, UVA scored fewer points than the average college basketball team, but this is because their elite defense would often slow down the game, leaving fewer possessions for their offense to score. Adjusted for tempo, [UVA had a top-25 offense last season](http://barttorvik.com/trankslice.php?year=2018&sort=&conlimit=#). Their overall team strength is nicely captured by their YUSAG Coefficient, $\beta_{team}$. $\alpha_{team}$ and $\delta_{team}$ illustrate that Virginia derives it's strength from suffocating defense, but shouldn't be used to rank teams offensively and defensively, at least not in a vaccuum. If one feels so inclined to utilize $\alpha_{team}$ and $\delta_{team}$ to comment about an individual team's offense and defense, they might look at the difference between the two coefficients in an attempt to quantify team balance and see which facet of the game, if any dominates, team play. For example, compare Virginia's defense first style of play with the more balanced approaches of Villanova, Duke, and Kansas. Not adjusting for tempo is not problematic __provided__ that we are clear on the subtleties of interpreting the model coefficients. This is a big enough point that I'll repeat it again:
+
+* Only $\beta_{team}$ should be used when ranking teams based on team strength. These coefficients CAN be used to make statements such as, "Duke is the best team", and "the average Ivy League team is worse than the average team from the Missouri Valley Conference".
+* $\alpha_{team}$ and $\delta_{team}$ are useful for ranking how many points a team would score/allow relative to average against the average college basketball team at a neutral site. These coefficients should NOT be used to make claims "Virginia has a worse offense than Duke" or "Oklahoma has the second best offense". 
+
+# Preseason Priors
+One challenge with any sports rating system is setting rankings at the beginning of a season. This problem is magnified in any college sport, where teams lose a significant number of their key players from year to year due to transfers, graduation, and the NBA draft. Moreover, teams welcome new recruits and incoming transfers, meaning the year to year difference is any given team's roster can be quite significant. I've tried to deal with these [issues in the past at the beginning of a given season](https://sports.sites.yale.edu/ncaa-basketball-prediction-model-methodology), but now that I have three full years of archived rankings (2016-17, 2017-18, and a backcaluated version on 2014-15) I can do a lot better. Let's look at the year to year stability of our different types of coefficients $\alpha_{team}$, $\delta_{team}$, and $\beta_{team}$.
+
+```{r, echo = F, message = F, warning = F}
+stats_2016 <- read.csv("Info/stats_2016.csv", as.is = T)
+stats_2017 <- read.csv("Info/stats_2017.csv", as.is = T)
+stats_2018 <- read.csv("Info/stats_2018.csv", as.is = T)
+
+
+stats_2016$off_coeff_next <- stats_2017$off_coeff
+stats_2016$def_coeff_next <- stats_2017$def_coeff
+stats_2016$yusag_coeff_next <- stats_2017$yusag_coeff
+
+index <- stats_2018$team %in% stats_2017$team 
+stats_2017$off_coeff_next <- stats_2018$off_coeff[index]
+stats_2017$def_coeff_next <- stats_2018$def_coeff[index]
+stats_2017$yusag_coeff_next <- stats_2018$yusag_coeff[index]
+
+x <- rbind(mutate(stats_2016, year = 2016), mutate(stats_2017, year = 2017))
+confs <- read.csv("Info/conferences.csv", as.is = T)
+x <- merge(x, confs, "team")
+
+ggplot(x, aes(x = off_coeff, y = off_coeff_next)) + 
+  geom_point(aes(color = mid_major)) + 
+  geom_smooth(method = "loess", color = "black") + 
+  theme_bw() + 
+  theme(axis.text = element_text(size = 14), 
+        plot.subtitle = element_text(hjust = 0.5, size = 12),
+        plot.title = element_text(hjust = 0.5, size = 16)) +
+  labs(x = "Year i Offensive Coefficient", y = "Year i + 1 Offensive Coefficient",
+       title = "Stability of Offensive Coefficients",
+       subtitle = "2015-16 through 2017-18",
+       color = "Mid-Major") 
+
+ggplot(x, aes(x = def_coeff, y = def_coeff_next)) + 
+  geom_point(aes(color = mid_major)) + 
+  geom_smooth(method = "loess", color = "black") + 
+  theme_bw() + 
+  theme(axis.text = element_text(size = 14), 
+        plot.subtitle = element_text(hjust = 0.5, size = 12),
+        plot.title = element_text(hjust = 0.5, size = 16)) +
+  labs(x = "Year i Defensive Coefficient", y = "Year i + 1 Defensive Coefficient",
+       title = "Stability of Defensive Coefficients",
+       subtitle = "2015-16 through 2017-18",
+       color = "Mid-Major") 
+
+ggplot(x, aes(x =  yusag_coeff, y = yusag_coeff_next)) + 
+  geom_point(aes(color = mid_major)) + 
+  geom_smooth(method = "loess", color = "black") + 
+  theme_bw() + 
+  theme(axis.text = element_text(size = 14), 
+        plot.subtitle = element_text(hjust = 0.5, size = 12),
+        plot.title = element_text(hjust = 0.5, size = 16)) +
+  labs(x = "Year i Coefficient", y = "Year i + 1  Coefficient",
+       title = "Stability of Team Strength (YUSAG) Coefficients",
+       subtitle = "2015-16 through 2017-18",
+       color = "Mid-Major") 
+
+```
+
+We see that there is higher year to year variability in the offensive coefficients than in the defensive coefficients. So if we can account for some of the year to year variation due to some of the factors surrounding why a team's roster from year to year, this can help us set good preseason ratings. While my system doesn't make use of individual player data in-season, I think that it allows us to extract the most information out of how teams change from year to year. All of the the individual level data was graciously given to me by [Bart Torvik](https://twitter.com/totally_t_bomb), who honestly has one of the [coolest sites on the internet](http://www.barttorvik.com) if you're a college hoops fan. Bart keeps track of a player value metric called, ["Points Over Replacement Player Per Adjusted Game At That Usage"](https://www.bigtengeeks.com/new-stat-porpagatu/), or more simply PPG! . Examining returning players who played at least 40% of possible minutes for their teams, I computed team level returing PPG!, departing PPG!, and incoming transfer PPG! . Additionly, Bart provided me with team level percetange of returning minutes. Combining that with [my own recruiting data](https://github.com/lbenz730/NCAA_Hoops/blob/master/3.0_Files/Info/247_recruiting.csv) pulled from [247Sports.com](https://247sports.com/Season/2018-Basketball/CompositeTeamRankings/), I used the several variables to predict offensive and defensive coefficients from the the previous years statistics. Regressions were fit on data 2015-16 $\rightarrow$ 2016-17 and 2016-17 $\rightarrow$ 2017-18 using 10-fold cross validiation. The following variables comprised the models.
+
+#### $\alpha_{team}^{\text{year =} i+1}$
+
+* $\alpha_{team}^{\text{year =} i}$
+* 247Sports Composite Recruiting Score (for Incoming Recruiting Class)
+* Returning PPG!
+* Departing PPG!
+* Indicator for having at least 1 5-Star Recruit
+* Indicator for having at least 3 5-Star Recuits
+* Indicator for having at least 3 3-Star, 4-Star or 5-Star Recuits
+
+Model $R^2 = 0.59$
+
+#### $\delta_{team}^{\text{year =} i+1}$
+
+* $\delta_{team}^{\text{year =} i}$
+* 247Sports Composite Recruiting Score (for Incoming Recruiting Class)
+* Returning PPG!
+* Departing PPG!
+* Indicator for having at least 3 5-Star Recuits
+
+Model $R^2 = 0.59$
+
+From this, not only get a much improved preseason estimate of a team's true strength ($\hat \gamma_{team} = \hat \alpha_{team} + \hat \delta_{team}$), but we can also get a prior distribution on the these coefficients as well, utilizing the variance of $\hat \gamma_{team}$. Perhaps not suprisingly, the uncertainty in these distributions is greater for teams with more high level recruits and fewer returning players. Compare the following preseason priors for some of the more interesting teams this year.
+
+```{r, warning = F, message = F, echo = F}
+priors <- read.csv("Info/prior.csv", as.is = T)
+
+prior_plot <- function(schools, colors, lim) {
+  t <- filter(priors, team %in% schools)
+  colors <- colors[order(schools)]
+  mu <- t$yusag_coeff
+  colors <- colors[order(mu, decreasing = T)]
+  s <- t$yusag_sd
+  for(i in 1:length(schools)) {
+    if(i == 1) {
+      df <- data.frame("x" = seq(mu[i] - 4 * s[i], mu[i] + 4 * s[i], 0.01),
+                       "density" = dnorm(seq(mu[i] - 4 * s[i], mu[i] + 4 * s[i], 0.01), mu[i], s[i]),
+                       "team" = t$team[i])
+    }
+    else{
+      df <- rbind(df, data.frame("x" = seq(mu[i] - 4 * s[i], mu[i] + 4 * s[i], 0.01),
+                                 "density" = dnorm(seq(mu[i] - 4 * s[i], mu[i] + 4 * s[i], 0.01), mu[i], s[i]),
+                                 "team" = t$team[i]))
+      
+    }
+  }
+  
+  sortteams <- unique(df$team)[order(mu, decreasing = T)]
+  counts <- group_by(df, team) %>% summarise("count" = n()) %>% pull(count)
+  levels <- sapply(unique(df$team), function(x) {which(sortteams == x)})
+  df$team <- reorder(as.factor(df$team), 
+                     rep(levels, counts))
+  ggplot(df, aes(x = x, y = density, fill = team)) + 
+    facet_wrap(~team) + 
+    geom_area() + 
+    theme_bw() +
+    xlim(lim) + 
+    theme(axis.text = element_text(size = 12), 
+          plot.subtitle = element_text(hjust = 0.5, size = 10),
+          plot.title = element_text(hjust = 0.5, size = 12)) + 
+    labs(x = "Points Above Avg. Team",
+         y = "Density",
+         title = "Preseason Team Strength \n Prior Distributions") + 
+    scale_fill_manual(guide = F, values = colors)
+  
+}  
+
+schools <- arrange(select(priors, team, yusag_coeff), desc(yusag_coeff))$team[1:25]
+colors <- c("skyblue", "navy", "springgreen4", "blue", "blue", "navy", "red", 
+            "chocolate1", "orange", "grey", "orange", "#660000", "red", "#EAAA00",
+            "orange", "purple", "#CEB888", "#6A2C3E", "yellow", "firebrick2", "purple",
+            "orange", "springgreen3", "orange", "purple")
+prior_plot(schools, colors, c(10,25))
+
+```
+
+
+Let's take a look at the top-25 teams heading into the 2018-19 season.
+
+```{r, echo = F, message = F, warning = F}
+head(arrange(select(priors, team, yusag_coeff), desc(yusag_coeff)), 25)
+```
+
+Lastly, I should make comment on how rankings were detemined for the two new teams to Division 1 this season, Cal-Baptist and North Alabama. Given that much of these preseason rankings depends on end of season rankings from last year, setting prior rankings for Cal-Bapist and North Alabama required imputing missing values. I looked at the correlation betwen my preseason offensive and defensive coefficients with [T-Rank](http://www.barttorvik.com) adjusted offensive and defensive efficiencies. Perhaps I'm beating a dead horese here is reminding the reader that my own coefficients are not measures of efficiency, and one might wonder then why I'd use adjusted efficieny margins to impute preseason rankings for these schools. Overall, even though my coefficients and Bart's rankings have different interpretations, there is a high correlation, and as such, this gives me a quick and dirty way to impute the preseason ranking for 2 of the 353 D1 teams. Using this imputation yields the following results
+
+```{r, warning=F, echo=F, message = F}
+arrange(priors, desc(yusag_coeff)) %>% 
+  mutate(rank = 1:353) %>%
+  filter(team %in% c("North Ala.", "California Baptist")) %>%
+  select(rank, team, off_coeff, def_coeff, yusag_coeff)
+```
+
+### In-Season Updating
+Let $\alpha_{prior}, \delta_{prior}$ and $\gamma_{prior}$ denote a team's prior season coefficients. We'll also obtain coeffient estimates from the current season's games that have already been played, using least squares regression model explained above. I'll note that in fitting this in-season model, I actually use weights to add a little bit of recency bias. That is, games that have been played are weighted more heavily. Suppose Team A and Team B played a game. It was the $i^{th}$ game of the season for Team A and and the $j^{th}$ game of the season for Team B. Furthermore, suppose that Team A has played $n_a$ games to date and Team B has played $n_b$ games to date. We define the relative recency of a game, $r$ as follows.
+$$
+r = \frac{1}{2}\biggl(\frac{i}{n_a} + \frac{j}{n_b}\biggr)
+$$
+Finally, the games weight in the model is given by
+$$
+w = \frac{1}{1 + 0.5^{5r}e^{-r}}
+$$
+```{r, echo = F}
+rr <- seq(0, 1, 0.01)
+w <- 1/(1 + (0.5^(5 * rr)) * exp(-rr))
+qplot(rr,w) + 
+  theme_bw() + 
+  labs(x = "Relative Recency", y = "Game Weight")
+```
+
+This bias really only downweights early season games when the majority of the season has already been played.
+
+Ok so now that we have coefficient estimates for each team prior to the season and estimates from the current season's worth of data what do we do? Part of the reason the preseason ratings of interesting is that estimates of team coefficients are extremely noisy early in the season. To get around this, we can take a weighted average of a team's in-season coefficients and preseason coefficients. Suppose a team has $n$ games on it's schedule, and it's most recent game played was the $k^{th}$ game on the schedule. Then we have 
+$$
+w = \min\biggl(\frac{2k}{n}, 1\biggr)
+$$
+$$
+\gamma_{team} = w\gamma_{in\_season} + (1-w)\gamma_{pre\_season}
+$$
+
+Note that we do the same as above for $\alpha_{team}$ and $\delta_{team}$. Preseason weights fall out completely once a team completes $\frac{1}{2}$ of it's schedule, as the halfway point is roughly the point in the season by which coefficient estimates begin to stablilize. One might wonder why not take a full Bayesian approach to get posterior distributions for model coefficients. I'm hesitant to take a full Bayesian approach is that the I'm fairly confident my uncertainty estimates are underestimates, meaning these preseason priors would be too informative. I think that after spending this season evaluating the current framework, I'd feel more comfortable setting weaker priors around similarly obtained point estimates to establish a Bayesian framwork. That's definitely the direction this project is headed but I have to make sure I wouldn't be setting terrible priors before making such a switch.
+
+For full 1-353 rankings, [click here](https://sports.sites.yale.edu/ncaa-mens-basketball-power-rankings). Code for this model will be updating shortly [here](https://github.com/lbenz730/NCAA_Hoops)
+
+# Acknowledgements
+I can't finish this post without thanking Bart Torvik one final time. Bart provided me with a lot of his proprietary data over the summer and answered many many questions I had in setting priors. Be sure to check out [his site](http://www.barttorvik.com) if you haven't yet!

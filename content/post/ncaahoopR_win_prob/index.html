@@ -1,0 +1,68 @@
+---
+title: "A New ncaahoopR Win Probability Model"
+author: 
+  - admin
+date: "2019-10-16"
+tags: ["ncaahoopR"]
+---
+
+
+
+
+<p>As part of my <a href="https://github.com/lbenz730/Senior-Thesis">thesis</a> this past spring, I improved on the win probability built into my <a href="https://github.com/lbenz730/ncaahoopR"><code>ncaahoopR</code> package</a>. The new win probability model has now been integrated into the package for the upcoming 2019-20 college basketball season. In this post, I provide some background on the statistical details of the model.</p>
+<div id="win-probability-model-framework" class="section level2">
+<h2>Win Probability Model Framework</h2>
+<p>Let <span class="math inline">\(p_{ikt}\)</span> denote the probability that team <span class="math inline">\(i\)</span> wins game <span class="math inline">\(k\)</span> with time <span class="math inline">\(t\)</span> remaining in the game. Let <span class="math inline">\(Y_{ik}\)</span> be an indicator whether team <span class="math inline">\(i\)</span> won the game <span class="math inline">\(k\)</span>. The following model is assumed:
+<span class="math display">\[
+\begin{aligned}
+Y_{ik} | p_{ikt} &amp;\sim \text{Bernoulli}(p_{ikt}) \\
+\text{logit}(p_{ikt}) &amp;= {X}_{ikt}^{\scriptstyle T}\beta_t + \epsilon_{ikt} \\
+\epsilon_{ikt} &amp;\sim N(0, \sigma^2)
+\end{aligned}
+\]</span>
+In the above model, observations are of the form $ X_{ikt}, Y_{ik})$, where $ X_{ikt}$ denotes a vector of covariates of interest with time <span class="math inline">\(t\)</span> remaining in game <span class="math inline">\(k\)</span> and, <span class="math inline">\(Y_{ik}\)</span> is an indicator whether team <span class="math inline">\(i\)</span> won <span class="math inline">\((Y_{ik} = 1)\)</span> or lost <span class="math inline">\((Y_{ik} = 0)\)</span> the game in question. <span class="math inline">\(X_{ikt}\)</span> occur at discrete, non-regular time points <span class="math inline">\(t\)</span>, as observations are only available after the occurrence of certain game events (such as a made basket, foul, turnover, or timeout) which don’t adhere to a regular time schedule.</p>
+<p><span class="math inline">\(\beta_t\)</span> represents the vector of coefficients for the covariates of interest with time <span class="math inline">\(t\)</span> remaining. One challenge in fitting the above model is that the covariates of interest, such as score differential and pre-game point spread, have non-linear dependencies on the amount of time remaining in the game. While time remaining is not explicitly a covariate in any version of this model, coefficient estimates for covariates of interest are obtained at various values of time remaining <span class="math inline">\(t\)</span>.
+To combat covariates’ non-linear dependence on time, various versions of this type of college basketball win probability model, including work by <a href="https://bit.ly/1FJIjd4">Brian Burke</a> and <a href="http://adamcwisports.blogspot.com/2017/07/how-i-built-crappy-basketball-win.html">Bart Torvik</a> have broken the game into discrete time chunks, over which the coefficients are assumed to be constant.</p>
+<p>However, numerous problems can arise when one categorizes or makes discrete a continuous variable. To get around this problem, I fit several versions of this model were over discrete time intervals which overlapped by 90%. LOESS smoothing was then applied to the resulting coefficient estimates to obtain smooth coefficient functions over time. Coefficient estimates represent the increase in the log odds of winning a game while holding all of the other covariates in the model constant.</p>
+<p>I trained and tested several variations of this kind of model, which you can read about <a href="https://github.com/lbenz730/Senior-Thesis/blob/master/luke_benz_senior_thesis.pdf">here</a>. The model ultimately settled on is as follows:</p>
+<p>For each interval of the form <span class="math inline">\((t - \Delta, t]\)</span>, a logistic regression fit with covariates Pre Game Point Spread (<code>favored_by</code>) and Score Differential (<code>score_diff</code>) such that <span class="math inline">\(t - \Delta \leq\)</span> <code>time_remaining</code> <span class="math inline">\(\leq t\)</span>. Consecutive intervals overlap one another by 90%. As the time remaining, <span class="math inline">\(t\)</span> approaches <span class="math inline">\(0\)</span>, the rate at which model coefficients change with time increases. As such, <span class="math inline">\(\Delta\)</span> is decreased in order to properly capture the manner in which these coefficients vary as a function of time.</p>
+<table>
+<colgroup>
+<col width="35%" />
+<col width="64%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Variables Included</th>
+<th align="center">Time Interval Structure <span class="math inline">\((t - \Delta, t]\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><ul>
+<li>Score Differential</li>
+<li>Pre Game Point Spread</li>
+</ul></td>
+<td align="center"><ul>
+<li><span class="math inline">\(\Delta =\)</span> 100, <span class="math inline">\(600 \leq t \leq 2400\)</span></li>
+<li><span class="math inline">\(\Delta =\)</span> 50, <span class="math inline">\(100 \leq t \leq 600\)</span></li>
+<li><span class="math inline">\(\Delta =\)</span> 10, <span class="math inline">\(10 \leq t \leq 100\)</span></li>
+<li><span class="math inline">\(\Delta =\)</span> 2, <span class="math inline">\(1 \leq t \leq 10\)</span></li>
+<li><span class="math inline">\(\Delta =\)</span> 1, <span class="math inline">\(0 \leq t \leq 1\)</span></li>
+</ul></td>
+</tr>
+</tbody>
+</table>
+<p>Essentially, this method is related to a Generalized Additive Model (GAM). In simple terms a GAM is a linear combination of some unknown smoothed functions over the covariates. What I have done is essentially reverse the steps–I fit linear combinations of predictors (with logit link function) and then smooth over the time dependent results. This was done to gain a little bit more interpretability of the coefficient values, although I think a GAM could be fit and obtain vary similar results.</p>
+<p>We see in the coefficient trace plot below the obvious result that as the game progresses, the pregame line becomes less important in predicting win probability and the current score differential becomes increasingly more important
+<img src="/img/wp_coeffs.png" /></p>
+</div>
+<div id="model-calibration" class="section level2">
+<h2>Model Calibration</h2>
+<p>The model above was trained on <a href="https://github.com/lbenz730/Senior-Thesis/tree/master/pbp_data">10,949 games from the 2016-17 and 2017-18 seasons</a> and tested on <a href="https://github.com/lbenz730/Senior-Thesis/tree/master/test_pbp_data">3,625 games from the first part of the 2018-19 season</a>. Using the idea of calibration plots from Michael Lopez’s <a href="https://statsbylopez.com/2017/03/08/all-win-probability-models-are-wrong-some-are-useful/">win probability post after the 2017 Super Bowl</a>, I compare bins of predicted and observed probability over the course of the game. We see that the model is well calibrated for all situations.</p>
+<p><img src="/img/calibration_plot.png" /></p>
+</div>
+<div id="summary" class="section level2">
+<h2>Summary</h2>
+<p>Compared to the <a href="https://sports.sites.yale.edu/ncaa-basketball-win-probability-model">older win probability model</a>, the new win probability model is smoother and a little bit more interpretable. It is trained on a larger sample of data and is better calibrated, especially in late game situations. I still think there are some improvements that can be made in the future, especially accounting for possession in the final few minutes of the game. Nevertheless, it’s nice to see something fairly simple performing so well, and to integrate something I worked on for my thesis into the package. Be on the lookout for new win probability charts dropping at the beginning of this season!</p>
+</div>
