@@ -8,7 +8,6 @@ tags: ["ncaahoopR"]
 \usepackage{graphicx,latexsym}
 \usepackage{amssymb,amsthm,amsmath,fixmath}
 \usepackage{longtable,booktabs,setspace,array}
-\newcommand{\mb}{\mathbold}
 \newcommand{\trans}{{\scriptstyle T}}
 
 As part of my [thesis](https://github.com/lbenz730/Senior-Thesis) this past spring, I improved on the win probability built into my [`ncaahoopR` package](https://github.com/lbenz730/ncaahoopR). The new win probability model has now been integrated into the package for the upcoming 2019-20 college basketball season. In this post, I provide some background on the statistical details of the model.
@@ -19,7 +18,7 @@ Let $p_{ikt}$ denote the probability that team $i$ wins game $k$ with time $t$ r
 $$
 \begin{aligned}
 Y_{ik} | p_{ikt} &\sim \text{Bernoulli}(p_{ikt}) \\
-\text{logit}(p_{ikt}) &= \mb{X}_{ikt}^\trans\mb\beta_t + \epsilon_{ikt} \\
+\text{logit}(p_{ikt}) &= X_{ikt}^\trans\beta_t + \epsilon_{ikt} \\
 \epsilon_{ikt} &\sim N(0, \sigma^2)
 \end{aligned}
 $$
