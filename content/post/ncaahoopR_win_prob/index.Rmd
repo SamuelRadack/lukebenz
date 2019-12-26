@@ -19,7 +19,7 @@ Let $p_{ikt}$ denote the probability that team $i$ wins game $k$ with time $t$ r
 $$
 \begin{aligned}
 Y_{ik} | p_{ikt} &\sim \text{Bernoulli}(p_{ikt}) \\
-\text{logit}(p_{ikt}) &= {X}_{ikt}^\trans\beta_t + \epsilon_{ikt} \\
+\text{logit}(p_{ikt}) &= \mb{X}_{ikt}^\trans\mb\beta_t + \epsilon_{ikt} \\
 \epsilon_{ikt} &\sim N(0, \sigma^2)
 \end{aligned}
 $$
