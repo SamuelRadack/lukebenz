@@ -9,7 +9,8 @@ title: Basketball Shiny Apps
 A collection of links to various basketball related shiny apps
 
 ### Recspecs730 Basketball Central
-An R Shiny Application containing:
+An R Shiny Application containing NCAA Basketball:
+
 - Power Rankings
 - Conference Simulations and Breakdowns
 - Team Breakdowns
