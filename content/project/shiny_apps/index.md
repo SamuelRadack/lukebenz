@@ -8,6 +8,16 @@ title: Basketball Shiny Apps
 
 A collection of links to various basketball related shiny apps
 
+### Recspecs730 Basketball Central
+An R Shiny Application containing:
+- Power Rankings
+- Conference Simulations and Breakdowns
+- Team Breakdowns
+- Game Projections
+- Bracketology
+
+[Application](https://lbenz730.shinyapps.io/recspecs_basketball_central/)
+
 ### Ivy League TiebreakR
 An R Shiny Application for determining playoff seed for Ivy Madness based on user-input game outcomes.
 
