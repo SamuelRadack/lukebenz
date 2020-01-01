@@ -1,0 +1,127 @@
+---
+title: "What's New in ncaahoopR Version 1.5"
+author: 
+  - admin
+date: "2020-01-01"
+tags: ["ncaahoopR"]
+---
+
+
+
+<p>I’m excited to release <a href="https://github.com/lbenz730/ncaahoopR">ncaahoopR</a> version 1.5 today. ncaahoopR started off as me putting together a few of my side projects into a single place. It was convenient for my work flow, and I wasn’t too sure other people would even use it. Fast forward a year and half, and the current number of people using the package far exceeds what I ever could have imagined. The uptick in users, particuarly during this current season, has made me really excited about the possibilities that lie ahead.</p>
+<p>ncaahoopR is being used by managers and assistant coaches at Division 1 schools, by journalists, and by casual fans like myself. Version 1.5 of the package brings the biggest changes to the package since Verion 1.0 was released. The package has enough users around the web that beginning with this version, I will be doing better version control by keeping a developmental branch and releasing changelogs for big updates. So, let’s take a tour of what’s new in ncaahoopR version 1.5.</p>
+<hr />
+<div id="possession-parsing" class="section level1">
+<h1>Possession Parsing</h1>
+<p>The biggest update to the package is that two new columns (<code>possession_before</code> and <code>possession_after</code>) demarcate which team has possession before and after each play. ESPN play-by-plays logs don’t automatically tag pre- and post-play possession, so using team rosters, I parse possessions applying the following set of assumptions:</p>
+<ol style="list-style-type: decimal">
+<li>Shooting teams have possesion on the play before they shoot.</li>
+<li>On made shots (non-free throws), the possession after the play switches to the other team.</li>
+<li>For missed shots, the correct rebound is the first possible rebound that is:</li>
+</ol>
+<ul>
+<li>In the same half</li>
+<li>Before any future shot</li>
+</ul>
+<ol start="4" style="list-style-type: decimal">
+<li>All actions between a missed shot and rebound maintain the same before/after possession team</li>
+<li>Turnovers/Steals:</li>
+</ol>
+<ul>
+<li>If steal, possesion go to stealing team from other team</li>
+<li>If turnover, possesion goes from turnover team to other team</li>
+</ul>
+<ol start="6" style="list-style-type: decimal">
+<li>Fouls: Foul gives possession to non-foul committing team</li>
+<li>Missed Free Throws are rebounded by the next unmapped rebound before next shot. Then proceed as assumption 4.</li>
+<li>Deadball Team Rebounds implies possesion after for the deadball rebounding team.</li>
+<li>All non-Free Throw sequences occuring at the same time not yet tagged get the same before possesion mapping as the first event at that time period and the same after possesion mapping as the last event at that time period.</li>
+<li>All Remaining sequences don’t involve change of possession.</li>
+</ol>
+<p>While these assumptions have been carefully considered, they probably miss some corner cases. If you encounter any play-by-play logs where you think possession has been incorrectly parsed, please let me know by opening an issue on GitHub or commenting on Twitter.</p>
+</div>
+<div id="shot-data" class="section level1">
+<h1>Shot Data</h1>
+<p>ncaahoopR has always had shot data courtesy of <a href="https://github.com/meysubb">Meyappan Subbaiah</a>, but it has always been seperate from play-by-plays logs…until now! Now, the default behavior for the <code>get_pbp_game()</code> function is to include the following columns of shot-related data.</p>
+<ul>
+<li><code>shot_x</code>: The half-court x coordinate of shot.</li>
+<li><code>shot_y</code>: The half-court y coordinate of shot.</li>
+<li><code>shot_team</code>: Name of team taking shot.</li>
+<li><code>shot_outcome</code>: Whether the shot was <code>made</code> or <code>missed</code>.</li>
+<li><code>shooter</code>: Name of player taking shot.</li>
+<li><code>assist</code>: Name of player asssisting shot (assisted shots only)</li>
+<li><code>three_pt</code>: Logical, if shot is 3-point field goal attempt.</li>
+<li><code>three_pt</code>: Logical, if shot is free throw attempt.</li>
+</ul>
+<p>For (<code>shot_x</code>, <code>shot_y</code>) pairs, (0,0) represents the bottom left corner and (50, 47) represents the top right corner (from persepective of standing under hoop). Note that shot locations are usually only avaialble for high-major teams, and are left as <code>NA</code> if not available.</p>
+<p>Both the possession parsing and shot location linkage cause <code>get_pbp_game()</code> to take a few additional seconds per game. If you don’t need these variables and want to speed up the scraping, simply pass in <code>extra_parse = FALSE</code> to the function.</p>
+</div>
+<div id="historical-coverage" class="section level1">
+<h1>Historical Coverage</h1>
+<p>While ncaahoopR has always been able to scrape play-by-play data for any valid <code>game_id</code> a user provided, finding historical <code>game_id</code> values further back than the current season wasn’t possible in previous verions of the package. Now, all of the following functions accept an optional <code>season</code> argument to overide the default current season (in the form “YYYY-YY”).</p>
+<ul>
+<li><code>get_roster(team, season = current_season)</code>: Available through 2007-08</li>
+<li><code>get_schedule(team, season = current_season)</code>: Available through 2002-03</li>
+<li><code>get_game_ids(team, season = current_season)</code>: Available through 2002-03</li>
+<li><code>get_pbp(team, season = current_season)</code>: Available through 2002-03</li>
+</ul>
+<p>Additionally, the <code>assist_net</code> and <code>circle_assist_net</code> now go back through the 2007-08 season given the historical roster coverage. Unlike schedules, rosters from past seasons are not archived on ESPN. Historical coverage of rosters comes from <a href="http://www.barttorvik.com/%22">Bart Torvik’s site</a>.</p>
+</div>
+<div id="naive-win-probability" class="section level1">
+<h1>Naive Win Probability</h1>
+<p>Right before version 1.5, I added the <code>naive_win_prob</code>, a version of win probability starting at 50-50 and not using any information about pre-game spread, to the play-by-play logs. Now users, have the option to select whether to use <code>naive_win_prob</code> instead of the default <code>win_prob</code> by setting <code>include_spread = FALSE</code> in the following functions:</p>
+<ul>
+<li><code>wp_chart</code></li>
+<li><code>gg_wp_chart</code></li>
+<li><code>game_excitement_index</code></li>
+<li><code>average_win_prob</code></li>
+</ul>
+<pre class="r"><code>library(ncaahoopR)
+library(patchwork)
+osu_color &lt;- ncaa_colors$primary_color[ncaa_colors$ncaa_name == &quot;Ohio St.&quot;]
+uk_color &lt;- ncaa_colors$primary_color[ncaa_colors$ncaa_name == &quot;Kentucky&quot;]
+
+### Classic 
+gg_wp_chart(401166125, home_col = uk_color, away_col = osu_color, 
+            include_spread = T, show_labels = F)</code></pre>
+<p><img src="/post/ncaahoopR_v1.5/index_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<pre class="r"><code>### Naive
+gg_wp_chart(401166125, home_col = uk_color, away_col = osu_color, 
+            include_spread = F, show_labels = F)</code></pre>
+<p><img src="/post/ncaahoopR_v1.5/index_files/figure-html/unnamed-chunk-1-2.png" width="672" /></p>
+</div>
+<div id="smaller-changes" class="section level1">
+<h1>Smaller Changes</h1>
+<p>There are several other small improvements to the package.</p>
+<ul>
+<li><code>get_master_schedule(date)</code> now takes a single date argument, and is robust to future dates.</li>
+<li><code>play_length</code> variable was fixed so it relfects the time (in seconds) from the previous play to the current play, rather than the current play to the next play (as the description usually represents the end of a play and not the beginning).</li>
+<li>Rows where the score differential changes w/out any shot being made are now removed. This fixes <a href="https://github.com/lbenz730/ncaahoopR/issues/21">a bug</a> in ESPN data from the current season where certain events are given incorrect times.</li>
+<li>Colors for remaining 105 schools and logos for all 353 schools added to <code>ncaa_colors</code> data frame courtsey of <a href="https://github.com/morrisLuke">Luke Morris</a>.</li>
+</ul>
+<p><img src="/img/ncaa_colors.png" /></p>
+</div>
+<div id="data-repository" class="section level1">
+<h1>Data Repository</h1>
+<p>In case you don’t like R or don’t know R, or don’t want to have to scrape thounsands of games worth of data, I’ve uploaded lots of historical data to the following <a href="https://github.com/lbenz730/ncaahoopR_data">GitHub repository</a>.</p>
+<ul>
+<li>Over 50,000 Play-by-play logs dating back to 2002-03</li>
+<li>Schedules back to 2002-03</li>
+<li>Rosters back to 2007-08</li>
+</ul>
+<p>Data includes possession and shot variables only as far back as 2017-18 due to increased scraping time.</p>
+</div>
+<div id="so-whats-coming-in-v1.6" class="section level1">
+<h1>So What’s Coming in v1.6</h1>
+<p>While a lot as been added in the lastest version of the package, I think it is just the beginning of what is still to come. Here are some things I’d like to add to the package in 1.6, but I’d love to hear what features ncaahoopR users would like to see as well.</p>
+<ul>
+<li>Box Scores</li>
+<li>Once possesion parsing has undergone greater quality control checks, I hope to :
+<ul>
+<li>Re-train win probability models to include possesion (which is huge factor in end of game scenarios)</li>
+<li>Add win probability added (WPA) framework, stats, and graphics</li>
+</ul></li>
+<li>Best guess at “time on shot clock”</li>
+</ul>
+<p>Thanks for using ncaahoopR. Be sure to use #ncaahoopR if you share your work on Twitter so I can keep tabs on the package in the wild and promote your work within the community.</p>
+</div>

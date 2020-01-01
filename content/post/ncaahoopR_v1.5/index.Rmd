@@ -1,0 +1,117 @@
+---
+title: "What's New in ncaahoopR Version 1.5"
+author: 
+  - admin
+date: "2020-01-01"
+tags: ["ncaahoopR"]
+---
+I'm excited to release [ncaahoopR](https://github.com/lbenz730/ncaahoopR) version 1.5 today. ncaahoopR started off as me putting together a few of my side projects into a single place. It was convenient for my work flow, and I wasn't too sure other people would even use it. Fast forward a year and half, and the current number of people using the package far exceeds what I ever could have imagined. The uptick in users, particuarly during this current season, has made me really excited about the possibilities that lie ahead. 
+
+ncaahoopR is being used by managers and assistant coaches at Division 1 schools, by journalists, and by casual fans like myself. Version 1.5 of the package brings the biggest changes to the package since Verion 1.0 was released. The package has enough users around the web that beginning with this version, I will be doing better version control by keeping a developmental branch and releasing changelogs for big updates. So, let's take a tour of what's new in ncaahoopR version 1.5.
+
+---
+
+# Possession Parsing
+The biggest update to the package is that two new columns (`possession_before` and `possession_after`) demarcate which team has possession before and after each play. ESPN play-by-plays logs don't automatically tag pre- and post-play possession, so using team rosters, I parse possessions applying the following set of assumptions:
+
+1. Shooting teams have possesion on the play before they shoot.
+2. On made shots (non-free throws), the possession after the play switches to the other team.
+3. For missed shots, the correct rebound is the first possible rebound that is:
+- In the same half
+- Before any future shot
+4. All actions between a missed shot and rebound maintain the same before/after possession team
+5. Turnovers/Steals:
+- If steal, possesion go to stealing team from other team
+- If turnover, possesion goes from turnover team to other team
+6. Fouls: Foul gives possession to non-foul committing team
+7. Missed Free Throws are rebounded by the next unmapped rebound before next shot. Then proceed as assumption 4.
+8. Deadball Team Rebounds implies possesion after for the deadball rebounding team.
+9. All non-Free Throw sequences occuring at the same time not yet tagged get the same before possesion mapping as the first event at that time period and the same after possesion mapping as the last event at that time period.
+10. All Remaining sequences don't involve change of possession.
+
+While these assumptions have been carefully considered, they probably miss some corner cases. If you encounter any play-by-play logs where you think possession has been incorrectly parsed, please let me know by opening an issue on GitHub or commenting on Twitter.
+
+# Shot Data
+ncaahoopR has always had shot data courtesy of [Meyappan Subbaiah](https://github.com/meysubb), but it has always been seperate from play-by-plays logs...until now! Now, the default behavior for the `get_pbp_game()` function is to include the following columns of shot-related data.
+
+* `shot_x`: The half-court x coordinate of shot. 
+* `shot_y`: The half-court y coordinate of shot. 
+* `shot_team`: Name of team taking shot.
+* `shot_outcome`: Whether the shot was `made` or `missed`.
+* `shooter`: Name of player taking shot.
+* `assist`: Name of player asssisting shot (assisted shots only)
+* `three_pt`: Logical, if shot is 3-point field goal attempt.
+* `three_pt`: Logical, if shot is free throw attempt.
+
+For (`shot_x`, `shot_y`) pairs, (0,0) represents the bottom left corner and (50, 47) represents the top right corner (from persepective of standing under hoop). Note that shot locations are usually only avaialble for high-major teams, and are left as `NA` if not available.
+
+Both the possession parsing and shot location linkage cause `get_pbp_game()` to take a few additional seconds per game. If you don't need these variables and want to speed up the scraping, simply pass in `extra_parse = FALSE` to the function.
+
+# Historical Coverage
+While ncaahoopR has always been able to scrape play-by-play data for any valid `game_id` a user provided, finding historical `game_id` values further back than the current season wasn't possible in previous verions of the package. Now, all of the following functions accept an optional `season` argument to overide the default current season (in the form "YYYY-YY").
+
+* `get_roster(team, season = current_season)`: Available through 2007-08
+* `get_schedule(team, season = current_season)`: Available through 2002-03
+* `get_game_ids(team, season = current_season)`: Available through 2002-03
+* `get_pbp(team, season = current_season)`: Available through 2002-03
+
+
+Additionally, the `assist_net` and `circle_assist_net` now go back through the 2007-08 season given the historical roster coverage. Unlike schedules, rosters from past seasons are not archived on ESPN. Historical coverage of rosters comes from [Bart Torvik's site](http://www.barttorvik.com/").
+
+# Naive Win Probability
+Right before version 1.5, I added the `naive_win_prob`, a version of win probability starting at 50-50 and not using any information about pre-game spread, to the play-by-play logs. Now users, have the option to select whether to use `naive_win_prob` instead of the default `win_prob` by setting `include_spread = FALSE` in the following functions:
+
+* `wp_chart`
+* `gg_wp_chart`
+* `game_excitement_index`
+* `average_win_prob`
+
+```{r, warning = F, message = F}
+library(ncaahoopR)
+library(patchwork)
+osu_color <- ncaa_colors$primary_color[ncaa_colors$ncaa_name == "Ohio St."]
+uk_color <- ncaa_colors$primary_color[ncaa_colors$ncaa_name == "Kentucky"]
+
+### Classic 
+gg_wp_chart(401166125, home_col = uk_color, away_col = osu_color, 
+            include_spread = T, show_labels = F)
+
+### Naive
+gg_wp_chart(401166125, home_col = uk_color, away_col = osu_color, 
+            include_spread = F, show_labels = F)
+
+
+```
+
+# Smaller Changes
+There are several other small improvements to the package.
+
+* `get_master_schedule(date)` now takes a single date argument, and is robust to future dates.
+* `play_length` variable was fixed so it relfects the time (in seconds) from the previous play to the current play, rather than the current play to the next play (as the description usually represents the end of a play and not the beginning). 
+* Rows where the score differential changes w/out any shot being made are now removed. This fixes [a bug](https://github.com/lbenz730/ncaahoopR/issues/21) in ESPN data from the current season where certain events are given incorrect times. 
+* Colors for remaining 105 schools and logos for all 353 schools added to `ncaa_colors` data frame courtsey of [Luke Morris](https://github.com/morrisLuke).
+
+![](/img/ncaa_colors.png)
+
+
+# Data Repository
+In case you don't like R or don't know R, or don't want to have to scrape thounsands of games worth of data, I've uploaded lots of historical data to the following [GitHub repository](https://github.com/lbenz730/ncaahoopR_data).
+
+* Over 50,000 Play-by-play logs dating back to 2002-03
+* Schedules back to 2002-03
+* Rosters back to 2007-08
+
+Data includes possession and shot variables only as far back as 2017-18 due to increased scraping time.
+
+
+# So What's Coming in v1.6
+While a lot as been added in the lastest version of the package, I think it is just the beginning of what is still to come. Here are some things I'd like to add to the package in 1.6, but I'd love to hear what features ncaahoopR users would like to see as well. 
+
+* Box Scores
+* Once possesion parsing has undergone greater quality control checks, I hope to :
+    * Re-train win probability models to include possesion (which is huge factor in end of game scenarios)
+    * Add win probability added (WPA) framework, stats, and graphics
+* Best guess at "time on shot clock"    
+
+
+Thanks for using ncaahoopR. Be sure to use #ncaahoopR if you share your work on Twitter so I can keep tabs on the package in the wild and promote your work within the community.
