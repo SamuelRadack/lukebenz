@@ -1,0 +1,238 @@
+---
+title: "Could an AFL Style Tournament Structure be Utilized in College Basketball"
+author: 
+  - admin
+date: "2020-03-25"
+output: html_document
+tags: ["NCAA Basketball", "AFL"]
+---
+# Introduction
+While Australian Rules Football (AFL) recently suspended its season, it was for a brief moment in time, the most popular sports league in the world (if only due to the fact the every other major sports league had already shut down). AFL is actually really fun to watch, and I'd highly recommend checking it out once its season returns. One of the parts of AFL that has always interested me is its unique playoff structure--an eight team playoff that is a hybrid of single elimination (for seeds 5-8) and "psuedo" double elimination (for seeds 1:4).
+
+![](/img/afl_playoff_structure.png)
+
+This tournament structure is super interesting in the context of college basketball conference tournaments. Every win a team earns in the NCAA tournament nets its conference about [1.7 million dollars](https://www.washingtonpost.com/graphics/sports/ncaa-money/) split equally amongst each member school. Hence, conferences (particularly those mid-major conferences which only send one representive to the big dance) have big incentives to send their best team to the NCAA tournament. 
+
+Does the AFL playoff structure better protect top seeds compared to the two most common tournament formats currently used by conferences (neutral site tournament and higher seed home court advantage). On one hand, the top seed(s) have the advantage of a mulligan in the case of a first round slip up, but simultaneously have a more difficult first round (and possibly semi-final) matchup. The answer to this question is somewhat dependent on the distribution of team stength across the tournament. To examine this question, I ran the following simulation.
+
+1. Take the top 8 teams in each of the 32 conferences by record (ties broken using my ranking system found [here](https://lbenz730.shinyapps.io/recspecs_basketball_central/)).
+2. Simulate 8 team, single elimination tournament where the home court advantage is given to the higher seed in each matchup. Repeat 1000 times for each conference.
+3. Simulate 8 team, single elimination tournament where the the entire tournament is hosted at a neutral site. Repeat 1000 times for each conference.
+4. Simulate 8 team, AFL style tournament. Repeat 1000 times for each conference.
+
+Of course, most conference tournaments have more than 8 participants, but those that do usually eventually result in 8 remaining teams (usually at a neutral site), and 8 teams is the easiest way to compare formats with the 8 team AFL style.
+
+# Simulation Results
+First, we must start by comparing the standard single elimination 8 team formats. It's little suprise to see that giving the better seed in each matchup home court advatage is beneficial to these higher seeds. Every single conference's top seed is more likely to win the tournament with the option to host as long as they keeping, and similarly for the top 2 seeds chance's of reaching the finals.
+```{r, warning = F, message = F, echo = F}
+library(tidyverse)
+library(patchwork)
+
+x <- read_csv("sims.csv")
+y <- 
+  filter(x, loc_type == "N") %>%
+  select(-loc_type) %>%
+  rename("finals_N" = finals,
+         "champ_N" = champ) %>%
+  inner_join(
+    filter(x, loc_type == "H") %>%
+      select(-loc_type) %>%
+      rename("finals_H" = finals,
+             "champ_H" = champ)) %>% 
+  inner_join(
+    filter(x, loc_type == "AFL") %>%
+      select(-loc_type) %>%
+      rename("finals_afl" = finals,
+             "champ_afl" = champ))
+
+p1 <- ggplot(y, aes(x = champ_H, y = champ_N)) +
+  geom_point(aes(color = as.character(seed)), size = 3, alpha = 0.7) +
+  geom_abline(slope = 1, intercept = 0) +
+  scale_x_continuous(labels = function(x) {paste(100 * x, "%")}, limits = c(0,1)) +
+  scale_y_continuous(labels = function(x) {paste(100 * x, "%")}, limits = c(0,1)) +
+  theme_bw() +
+  theme(axis.title = element_text(size = 14, hjust = 0.5),
+        plot.title = element_text(size = 16, hjust = 0.5),
+        legend.position = "bottom") +
+  labs(x = "Higher Seed Home Court",
+       y = "Neutral Site",
+       color = "Seed",
+       title = "Probability of \nWinning Tournament")
+
+p2 <- ggplot(y, aes(x = finals_H, y = finals_N)) +
+  geom_point(aes(color = as.character(seed)), size = 3, alpha = 0.7) +
+  geom_abline(slope = 1, intercept = 0) +
+  scale_x_continuous(labels = function(x) {paste(100 * x, "%")}, limits = c(0,1)) +
+  scale_y_continuous(labels = function(x) {paste(100 * x, "%")}, limits = c(0,1)) +
+  theme_bw() +
+  theme(axis.title = element_text(size = 14, hjust = 0.5),
+        plot.title = element_text(size = 16, hjust = 0.5),
+        legend.position = "bottom") +
+  labs(x = "Higher Seed Home Court",
+       y = "Neutral Site",
+       color = "Seed",
+       title = "Probability of \nReaching Tournament Finals")
+
+
+p3 <- ggplot(y, aes(x = champ_N, y = champ_afl)) +
+  geom_point(aes(color = as.character(seed)), size = 3, alpha = 0.7) +
+  geom_abline(slope = 1, intercept = 0) +
+  scale_x_continuous(labels = function(x) {paste(100 * x, "%")}, limits = c(0,1)) +
+  scale_y_continuous(labels = function(x) {paste(100 * x, "%")}, limits = c(0,1)) +
+  theme_bw() +
+  theme(axis.title = element_text(size = 14, hjust = 0.5),
+        plot.title = element_text(size = 16, hjust = 0.5),
+        legend.position = "bottom") +
+  labs(x = "Neutral Site",
+       y = "AFL Style",
+       color = "Seed",
+       title = "Probability of \nWinning Tournament")
+
+p4 <- ggplot(y, aes(x = finals_N, y = finals_afl)) +
+  geom_point(aes(color = as.character(seed)), size = 3, alpha = 0.7) +
+  geom_abline(slope = 1, intercept = 0) +
+  scale_x_continuous(labels = function(x) {paste(100 * x, "%")}, limits = c(0,1)) +
+  scale_y_continuous(labels = function(x) {paste(100 * x, "%")}, limits = c(0,1)) +
+  theme_bw() +
+  theme(axis.title = element_text(size = 14, hjust = 0.5),
+        plot.title = element_text(size = 16, hjust = 0.5),
+        legend.position = "bottom") +
+  labs(x = "Neutral Site",
+       y = "AFL Style",
+       color = "Seed",
+       title = "Probability of Reaching \nTournament Finals")
+
+
+p5 <- ggplot(y, aes(x = champ_H, y = champ_afl)) +
+  geom_point(aes(color = as.character(seed)), size = 3, alpha = 0.7) +
+  geom_abline(slope = 1, intercept = 0) +
+  scale_x_continuous(labels = function(x) {paste(100 * x, "%")}, limits = c(0,1)) +
+  scale_y_continuous(labels = function(x) {paste(100 * x, "%")}, limits = c(0,1)) +
+  theme_bw() +
+  theme(axis.title = element_text(size = 14, hjust = 0.5),
+        plot.title = element_text(size = 16, hjust = 0.5),
+        legend.position = "bottom") +
+  labs(x = "Higher Seed Home Court",
+       y = "AFL Style",
+       color = "Seed",
+       title = "Probability of \nWinning Tournament")
+
+p6 <- ggplot(y, aes(x = finals_H, y = finals_afl)) +
+  geom_point(aes(color = as.character(seed)), size = 3, alpha = 0.7) +
+  geom_abline(slope = 1, intercept = 0) +
+  scale_x_continuous(labels = function(x) {paste(100 * x, "%")}, limits = c(0,1)) +
+  scale_y_continuous(labels = function(x) {paste(100 * x, "%")}, limits = c(0,1)) +
+  theme_bw() +
+  theme(axis.title = element_text(size = 14, hjust = 0.5),
+        plot.title = element_text(size = 16, hjust = 0.5),
+        legend.position = "bottom") +
+  labs(x = "Higher Seed Home Court",
+       y = "AFL Style",
+       color = "Seed",
+       title = "Probability of Reaching \nTournament Finals")
+
+
+(p1 + p2) + 
+  plot_annotation(title = "Higher Seed HCA vs. Neutral Site",
+                  theme = theme(legend.position = "bottom",
+                                plot.title = element_text(size = 24, hjust = 0.5))) +
+  plot_layout(guides = 'collect')
+
+```
+
+Given that the majority of conference play neutral site conference tournaments, we are perhaps most interested in comparing that tournament format to the unique AFL tournament style. Clearly, the AFL tournament provides some benefit to the top seeds in the tournament. Some of the may be driven by hosting games, but likely the majority of it is driven by first round mulligan alloted to the top-4 seeds. Compare the differences between the 4- and 5- seed in these 2 tournament formats. The 4- seed does not host its first round game while the 5- seed does, but the 4- seed seems an improvement in its odds of reaching/winning the finals because it survives a first round loss.
+
+```{r, warning = F, message = F, echo = F} 
+(p3 + p4) + 
+  plot_annotation(title = "Neutral Site vs. AFL Style",
+                  theme = theme(legend.position = "bottom",
+                                plot.title = element_text(size = 24, hjust = 0.5))) +
+  plot_layout(guides = 'collect')
+```
+
+Finally, we compare the simulated probabilities of winning/reaching a tournament final between the higher seed always getting home court and the AFL style. While there isn't a huge difference in the chances of the top 2 seeds reaching the finals between the two scenarios, the 3- and 4- seeds are much likelier to reach the finals in the AFL style tournament. Across the board, however, the top seed is less likely to win the AFL style tournament. This is because in the AFL style tournament, the final is played at a neutral site compared to the higher seed getting to host the championship game.
+
+```{r, warning = F, message = F, echo = F}
+(p5 + p6) + 
+  plot_annotation(title = "Higher Seed HCA vs. AFL Style",
+                  theme = theme(legend.position = "bottom",
+                                plot.title = element_text(size = 24, hjust = 0.5))) +
+  plot_layout(guides = 'collect')
+```
+
+So it seems that the home court advantage format makes it most likely for a conference to send its best team to the NCAA tournament (at least via automatic bid). But maybe this is not what's best for the conference. Maybe instead, it would rather send the best team in expectation. That is, maybe it would rather maximize the chances that a top-4 team would make the tournament. We can quantify this in terms of the expected value of conference champion team strength. 
+
+Let $\gamma_i$ denote the team strength of team $i$. Specifically, $gamma_i$ denotes the number of points team $i$ would be expected to win/loss by against an average team on a neutral floor. If you're interested in the math behind estimating $\gamma_i$, check out [this post](https://lukebenz.com/post/hoops_methodology/). 
+
+Let $C$ denote the team strength of the conference champion. We see that 
+$$
+E(C) = \sum_{i \in \text{conference}} \gamma_i p_i
+$$
+where $p_i$ denotes the chances that team $i$ wins its conference tournament. Now, we can compare $E(C)$ for each conference under the 3 different types of tournament simulations.
+
+```{r, warning = F, message = F, echo = F}
+
+ev <- group_by(y, conference) %>%
+  summarise("exp_champ_H" = sum(champ_H * yusag_coeff),
+            "exp_champ_afl" = sum(champ_afl * yusag_coeff),
+            "exp_champ_N" = sum(champ_N * yusag_coeff))
+
+gather(ev, type, value, -conference) %>%
+  ggplot(aes(x = reorder(conference, value), y = value, fill = fct_relevel(type, 
+                                                                           "exp_champ_afl", 
+                                                                           "exp_champ_N",
+                                                                           "exp_champ_H"))) +
+  geom_col(position = "dodge") + 
+  scale_fill_discrete(labels = c("AFL Style", "Neutral Court", "Seed HCA")) +
+  coord_flip() +
+  theme_bw() +
+  theme(axis.title = element_text(size = 14, hjust = 0.5),
+        plot.title = element_text(size = 16, hjust = 0.5),
+        legend.position = "bottom") +
+  labs(x = "Conference",
+       y = "Expected Points Above Average of Champion",
+       fill = "Tournament Format",
+       title = "Expected Strength of Tournament Champion \nby Tournament Type")
+```
+
+In 8 of the 32 conferences, the AFL style tournament yields the highest expected champion $E(C)$, while the higher seed HCA format yields the highest expected champion in the remaining 24 conferences.
+
+```{r, echo = F}
+filter(ev, exp_champ_afl > exp_champ_H) %>%
+  mutate("exp_champ_H" = round(exp_champ_H, 2),
+         "exp_champ_afl" = round(exp_champ_afl, 2),
+         "exp_champ_N" = round(exp_champ_N, 2)) %>%
+  knitr::kable()
+```
+
+What do these 8 conferences all have in common? We can compare standardized team strength (Z-score of $\gamma_i$ across conference) by seed, and see that all of these conferences have weaker top seeds with better spread of talent across the top 3 or 4 seeds. 
+
+```{r, echo = F}
+confs <- filter(ev, exp_champ_afl > exp_champ_H) %>% 
+  pull(conference)
+
+y <- y %>% 
+  inner_join(
+    group_by(y, conference) %>%
+      summarise("yusag_mean" = mean(yusag_coeff),
+                "yusag_sd" = sd(yusag_coeff))
+  ) %>%
+  mutate("rtg_std" = (yusag_coeff - yusag_mean)/yusag_sd)
+
+
+ggplot(y, aes(x = rtg_std, y = seed)) +
+  geom_point(aes(color = conference %in% confs)) +
+  theme_bw() +
+  theme(axis.title = element_text(size = 14, hjust = 0.5),
+        plot.title = element_text(size = 16, hjust = 0.5),
+        legend.position = "bottom") +
+  scale_color_discrete(labels = c("Higher Seed HCA", "AFL Style")) +
+  labs(x = "Standardized Team Stength",
+       y = "Seed",
+       color = "Better Tournament Format",
+       title = "Standardized Team Strength by Seed")
+```
+
+# Summary
+The AFL style tournament offers a unique style of top-seed protection from what currently exists. It is clearly superior to the neutral site single elimination format, and even is an improvement on the higher seed HCA format in some cases. Overall, the full extent of the advantages that this format provides is dependent on how talent is distributed across the conference. It probably doesn't help much for conferences with one team far superior to the rest (New Mexico State in the WAC, Vermont in the America East for example), but it does help in conferences with talent pretty well distributed across the top 4 seeds in the conference (and possibly a weak top seed). I'd imagine that neutral site tournaments are a big source of revenue for these conferences, perhaps enough to offset the potential gains of winning money from NCAA tournament games. Furthermore, there is just something so nice about single elimination tournaments--it's what makes March Madness crazy. The purpose of March Madness is not to crown the __best__ team, so it seems like the adoption of this hybrid AFL format would be far-fetched. One can hope though, and in the mean time, I'd like to see more formats like the [triple-bye to top seeds in the WCC](https://en.wikipedia.org/wiki/2020_West_Coast_Conference_Men%27s_Basketball_Tournament).
+

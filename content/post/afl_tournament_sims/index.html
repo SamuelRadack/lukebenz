@@ -1,0 +1,110 @@
+---
+title: "Could an AFL Style Tournament Structure be Utilized in College Basketball"
+author: 
+  - admin
+date: "2020-03-25"
+output: html_document
+tags: ["NCAA Basketball", "AFL"]
+---
+
+
+
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>While Australian Rules Football (AFL) recently suspended its season, it was for a brief moment in time, the most popular sports league in the world (if only due to the fact the every other major sports league had already shut down). AFL is actually really fun to watch, and I’d highly recommend checking it out once its season returns. One of the parts of AFL that has always interested me is its unique playoff structure–an eight team playoff that is a hybrid of single elimination (for seeds 5-8) and “psuedo” double elimination (for seeds 1:4).</p>
+<p><img src="/img/afl_playoff_structure.png" /></p>
+<p>This tournament structure is super interesting in the context of college basketball conference tournaments. Every win a team earns in the NCAA tournament nets its conference about <a href="https://www.washingtonpost.com/graphics/sports/ncaa-money/">1.7 million dollars</a> split equally amongst each member school. Hence, conferences (particularly those mid-major conferences which only send one representive to the big dance) have big incentives to send their best team to the NCAA tournament.</p>
+<p>Does the AFL playoff structure better protect top seeds compared to the two most common tournament formats currently used by conferences (neutral site tournament and higher seed home court advantage). On one hand, the top seed(s) have the advantage of a mulligan in the case of a first round slip up, but simultaneously have a more difficult first round (and possibly semi-final) matchup. The answer to this question is somewhat dependent on the distribution of team stength across the tournament. To examine this question, I ran the following simulation.</p>
+<ol style="list-style-type: decimal">
+<li>Take the top 8 teams in each of the 32 conferences by record (ties broken using my ranking system found <a href="https://lbenz730.shinyapps.io/recspecs_basketball_central/">here</a>).</li>
+<li>Simulate 8 team, single elimination tournament where the home court advantage is given to the higher seed in each matchup. Repeat 1000 times for each conference.</li>
+<li>Simulate 8 team, single elimination tournament where the the entire tournament is hosted at a neutral site. Repeat 1000 times for each conference.</li>
+<li>Simulate 8 team, AFL style tournament. Repeat 1000 times for each conference.</li>
+</ol>
+<p>Of course, most conference tournaments have more than 8 participants, but those that do usually eventually result in 8 remaining teams (usually at a neutral site), and 8 teams is the easiest way to compare formats with the 8 team AFL style.</p>
+</div>
+<div id="simulation-results" class="section level1">
+<h1>Simulation Results</h1>
+<p>First, we must start by comparing the standard single elimination 8 team formats. It’s little suprise to see that giving the better seed in each matchup home court advatage is beneficial to these higher seeds. Every single conference’s top seed is more likely to win the tournament with the option to host as long as they keeping, and similarly for the top 2 seeds chance’s of reaching the finals.
+<img src="/post/afl_tournament_sims/index_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<p>Given that the majority of conference play neutral site conference tournaments, we are perhaps most interested in comparing that tournament format to the unique AFL tournament style. Clearly, the AFL tournament provides some benefit to the top seeds in the tournament. Some of the may be driven by hosting games, but likely the majority of it is driven by first round mulligan alloted to the top-4 seeds. Compare the differences between the 4- and 5- seed in these 2 tournament formats. The 4- seed does not host its first round game while the 5- seed does, but the 4- seed seems an improvement in its odds of reaching/winning the finals because it survives a first round loss.</p>
+<p><img src="/post/afl_tournament_sims/index_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p>Finally, we compare the simulated probabilities of winning/reaching a tournament final between the higher seed always getting home court and the AFL style. While there isn’t a huge difference in the chances of the top 2 seeds reaching the finals between the two scenarios, the 3- and 4- seeds are much likelier to reach the finals in the AFL style tournament. Across the board, however, the top seed is less likely to win the AFL style tournament. This is because in the AFL style tournament, the final is played at a neutral site compared to the higher seed getting to host the championship game.</p>
+<p><img src="/post/afl_tournament_sims/index_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p>So it seems that the home court advantage format makes it most likely for a conference to send its best team to the NCAA tournament (at least via automatic bid). But maybe this is not what’s best for the conference. Maybe instead, it would rather send the best team in expectation. That is, maybe it would rather maximize the chances that a top-4 team would make the tournament. We can quantify this in terms of the expected value of conference champion team strength.</p>
+<p>Let <span class="math inline">\(\gamma_i\)</span> denote the team strength of team <span class="math inline">\(i\)</span>. Specifically, <span class="math inline">\(gamma_i\)</span> denotes the number of points team <span class="math inline">\(i\)</span> would be expected to win/loss by against an average team on a neutral floor. If you’re interested in the math behind estimating <span class="math inline">\(\gamma_i\)</span>, check out <a href="https://lukebenz.com/post/hoops_methodology/">this post</a>.</p>
+<p>Let <span class="math inline">\(C\)</span> denote the team strength of the conference champion. We see that
+<span class="math display">\[
+E(C) = \sum_{i \in \text{conference}} \gamma_i p_i
+\]</span>
+where <span class="math inline">\(p_i\)</span> denotes the chances that team <span class="math inline">\(i\)</span> wins its conference tournament. Now, we can compare <span class="math inline">\(E(C)\)</span> for each conference under the 3 different types of tournament simulations.</p>
+<p><img src="/post/afl_tournament_sims/index_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>In 8 of the 32 conferences, the AFL style tournament yields the highest expected champion <span class="math inline">\(E(C)\)</span>, while the higher seed HCA format yields the highest expected champion in the remaining 24 conferences.</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">conference</th>
+<th align="right">exp_champ_H</th>
+<th align="right">exp_champ_afl</th>
+<th align="right">exp_champ_N</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">ACC</td>
+<td align="right">17.59</td>
+<td align="right">18.00</td>
+<td align="right">16.83</td>
+</tr>
+<tr class="even">
+<td align="left">Big 10</td>
+<td align="right">17.81</td>
+<td align="right">18.09</td>
+<td align="right">16.91</td>
+</tr>
+<tr class="odd">
+<td align="left">Big Sky</td>
+<td align="right">4.16</td>
+<td align="right">4.71</td>
+<td align="right">3.50</td>
+</tr>
+<tr class="even">
+<td align="left">MEAC</td>
+<td align="right">-6.87</td>
+<td align="right">-6.75</td>
+<td align="right">-7.52</td>
+</tr>
+<tr class="odd">
+<td align="left">NEC</td>
+<td align="right">-2.72</td>
+<td align="right">-2.30</td>
+<td align="right">-3.19</td>
+</tr>
+<tr class="even">
+<td align="left">SEC</td>
+<td align="right">13.04</td>
+<td align="right">13.12</td>
+<td align="right">12.42</td>
+</tr>
+<tr class="odd">
+<td align="left">Summit</td>
+<td align="right">2.45</td>
+<td align="right">2.50</td>
+<td align="right">1.96</td>
+</tr>
+<tr class="even">
+<td align="left">Sunbelt</td>
+<td align="right">3.60</td>
+<td align="right">3.83</td>
+<td align="right">3.19</td>
+</tr>
+</tbody>
+</table>
+<p>What do these 8 conferences all have in common? We can compare standardized team strength (Z-score of <span class="math inline">\(\gamma_i\)</span> across conference) by seed, and see that all of these conferences have weaker top seeds with better spread of talent across the top 3 or 4 seeds.</p>
+<pre><code>## Joining, by = &quot;conference&quot;</code></pre>
+<p><img src="/post/afl_tournament_sims/index_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+</div>
+<div id="summary" class="section level1">
+<h1>Summary</h1>
+<p>The AFL style tournament offers a unique style of top-seed protection from what currently exists. It is clearly superior to the neutral site single elimination format, and even is an improvement on the higher seed HCA format in some cases. Overall, the full extent of the advantages that this format provides is dependent on how talent is distributed across the conference. It probably doesn’t help much for conferences with one team far superior to the rest (New Mexico State in the WAC, Vermont in the America East for example), but it does help in conferences with talent pretty well distributed across the top 4 seeds in the conference (and possibly a weak top seed). I’d imagine that neutral site tournaments are a big source of revenue for these conferences, perhaps enough to offset the potential gains of winning money from NCAA tournament games. Furthermore, there is just something so nice about single elimination tournaments–it’s what makes March Madness crazy. The purpose of March Madness is not to crown the <strong>best</strong> team, so it seems like the adoption of this hybrid AFL format would be far-fetched. One can hope though, and in the mean time, I’d like to see more formats like the <a href="https://en.wikipedia.org/wiki/2020_West_Coast_Conference_Men%27s_Basketball_Tournament">triple-bye to top seeds in the WCC</a>.</p>
+</div>
