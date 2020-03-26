@@ -71,16 +71,16 @@ w_i = \alpha_i \times e^{- \frac{\delta_t - \delta_i}{\delta\star}}
                   weights = match_weight)</code></pre>
 <p>The model gives coefficients for each country both as levels of the <code>team</code> and <code>opponent</code> factors. Since the model output predictions can be taken as the average <code>team_score</code> for a given <code>team</code> against a given <code>opponent</code> at a given <code>location</code>, we can view the country specific coefficients as offense and defensive components of a power rating. The interpretation of such coefficients is less intutive than in the case of linear regression, in which coefficients signfy points better than an average team, but you can think of them as more similar to logistic regression coefficients. Higher offensive coefficients indicate a team is likely to score more goals on average while low (more negative) defensive coefficients indicate a team is likely to conceed fewer goals on average.</p>
 <pre><code>##            team  offense   defense net_rating rank
-## 77      Germany 1.705438 -1.368481   3.073919    1
-## 72       France 1.578566 -1.302835   2.881401    2
-## 29       Brazil 1.729179 -1.112406   2.841585    3
-## 181       Spain 1.643152 -1.122380   2.765532    4
-## 9     Argentina 1.319170 -1.431916   2.751086    5
-## 45     Colombia 1.452334 -1.285112   2.737447    6
-## 20      Belgium 1.567538 -1.133757   2.701296    7
-## 140 Netherlands 1.594901 -1.059574   2.654475    8
-## 158    Portugal 1.442658 -1.206383   2.649040    9
-## 64      England 1.267182 -1.283884   2.551066   10</code></pre>
+## 77      Germany 1.706142 -1.370495   3.076637    1
+## 72       France 1.579568 -1.304446   2.884014    2
+## 29       Brazil 1.728610 -1.106870   2.835479    3
+## 181       Spain 1.641895 -1.120371   2.762266    4
+## 9     Argentina 1.318796 -1.434317   2.753113    5
+## 45     Colombia 1.454008 -1.285233   2.739241    6
+## 20      Belgium 1.566662 -1.136181   2.702843    7
+## 140 Netherlands 1.595909 -1.061737   2.657646    8
+## 158    Portugal 1.442730 -1.204379   2.647109    9
+## 64      England 1.267877 -1.282902   2.550780   10</code></pre>
 <p>Offensively, the top teams by our model, are Brazil, Germany and Spain, while Argentina, Germany, and England posses the best defenses.</p>
 </div>
 <div id="sample-match-prediction" class="section level1">
