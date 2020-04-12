@@ -9,6 +9,6 @@ title: Mid Major Madness
 
 I write for [midmajormadness.com](www.midmajormadness.com) covering NCAA basketball analytics and Ivy League hoops. Below is a complete list of my stories for the website.
 
-[Ivy League Tiebreaking Scenarios 2020]( https://www.midmajormadness.com/2020/3/1/21160138/ivy-league-seeding-scenarios-playoff-odds-yale-harvard-princeton-penn-brown-dartmouth) __(03/01/2020)__
+- [Ivy League Tiebreaking Scenarios 2020]( https://www.midmajormadness.com/2020/3/1/21160138/ivy-league-seeding-scenarios-playoff-odds-yale-harvard-princeton-penn-brown-dartmouth) __(03/01/2020)__
 - [Charts! This Season in Win Probability](https://www.midmajormadness.com/2019/12/30/21041851/win-probability-charts-2019-game-excitement-index-college-basketball) __(12/30/2019)__
 - [ShotTracker and the Mountain West are at the forefront of the next phase in college basketball’s analytics revolution](https://www.midmajormadness.com/2019/6/4/18645647/mountain-west-conference-shottracker-basketball-data-analytics) __(6/4/2019)__
