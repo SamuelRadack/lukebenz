@@ -1,0 +1,238 @@
+---
+title: "Bundesliga Home Field Avantage in the Absence of Fans"
+author:
+  - admin
+date: "2020-05-25"
+output: html_document
+tags: 
+  - Soccer
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = F, warning = F, message = F)
+```
+
+## Introduction
+With the majority of sports on hiatus around the world, I've been eagerly following the German Bundesliga (the top flight of Germany soccer) the past two weeks to get my sports fix. Due to the ongoing COVID-19 outbreak, all games are currently being played without fans. A lot of [prior research](https://pitjournal.unc.edu/article/home-advantage-soccer) has shown the existence of home field advantage in soccer, which is believed to be the product of fans, referees, traveling, field composition, and other perhaps unobservable factors. With no fans in the stands, there is a nice opportunity for a natural experiment: How much home field advantage is there without fans? A nice literature review on the topic of home field advantage (HFA) in soccer and how it might waiver in the absence of fans is available courtsey of [Singleton et. al](https://theconversation.com/as-football-returns-in-empty-stadiums-four-graphs-show-how-home-advantage-disappears-138685).
+
+## Analyzing Expected Outcomes
+One quick and dirty way to analyze the strength of HFA in the absence of fans is to compare the results of the first two weeks (18 games) since the Bundesliga's return to what we'd expect given full HFA. To do this, I'll use [FiveThirtyEight's pubically available SPI model](https://projects.fivethirtyeight.com/soccer-predictions/bundesliga/). FiveThirtyEight predicts the win probability for both the home and away teams as well as the probabiligty of a draw. Using these probabilities, we can simulate the first two weeks of matches 10,000 times, and look at home many points (3 for 3, 1 for draw) we'd expect to get accrued by home teams. This approach allows for the adjustment of team quality, as in a small sample, there could be more/less higher quality home teams. Note that FiveThirtyEight's post-COVID return projections already reduce HFA by 10%.
+
+```{r, fig.width=16/1.5, fig.height=9/1.5}
+library(tidyverse)
+library(glue)
+x <- read_csv("https://projects.fivethirtyeight.com/soccer-api/club/spi_matches.csv")
+
+bund <- filter(x, league == "German Bundesliga") %>%
+  filter(date <= Sys.Date(), date >= "2020-05-16" ) %>%
+  mutate("exp_home_points" = 3 * prob1 + probtie,
+         "home_points" = 3 * (score1 > score2) + 1 * (score1 == score2),
+         "home_wp" =  1 * (score1 > score2) + 0.5 * (score1 == score2),
+         "exp_home_wp" =   1 * prob1 + 0.5 * probtie)
+
+exp_home_pts <- sum(bund$exp_home_points)
+home_pts <- sum(bund$home_points)
+
+exp_home_wp <- mean(bund$exp_home_wp)
+home_wp <- mean(bund$home_wp)
+
+get_exp_home_points <- function(x) {
+  case_when(runif(nrow(bund)) <= bund$prob1 ~ 3,
+            runif(nrow(bund)) <= bund$prob1  + bund$probtie ~ 1,
+            T ~ 0) %>%
+    sum()
+}
+
+set.seed(123)
+nsims <- 10000
+df <- tibble("exp_pts" = map_dbl(1:nsims, get_exp_home_points))
+
+ggplot(df, aes(x = exp_pts)) +
+  geom_density(fill = "red", alpha = 0.2) +
+  geom_vline(xintercept = home_pts, lty = 2, size = 1.2) +
+  annotate(geom = "label", x = home_pts + 5, y = 0.075, label = glue("Home Points: {home_pts}\nExpected Home Points: {round(exp_home_pts, 1)}")) +
+  theme_bw() +
+  theme(axis.title = element_text(size = 16, hjust = 0.5),
+        plot.title = element_text(size = 24, hjust = 0.5),
+        plot.subtitle = element_text(size = 20, hjust = 0.5)) + 
+  labs(x = "# of Points for Home Teams",
+       y = "Density",
+       title = "Distribution of Expected Home Team Points",
+       subtitle = "German Bundesliga: 2020-05-16 to Present",
+       caption = "Based on 10,000 sims using FiveThirtyEight SPI Model\n(10% HFA Reduction Already Factored In)")
+
+
+```
+
+Clearly the results are pretty unexpected even assuming a 10% HFA reduction. This isn't to suggest that HFA is completely gone without fans, but it does suggest that it probably is reduced by more than 10%. I'll note that a March 11 game between behind closed doors between Borussia Monchengladbach and FC Cologne, but I'm not including that here since a) it was before a long lay off and b) it was before FiveThirtyEight reduced it's HFA. 
+
+## How Much is HFA Reduced
+So if 10% isn't enough, how much should HFA be reduced? To answer this question I'll need to recreate a model very similar to FiveThirtyEight's model so that I can manually adjust HFA. More on the methodology between FiveThirtyEight's model can be [found here]("https://fivethirtyeight.com/methodology/how-our-club-soccer-predictions-work/"), but as a simplified summary:
+
+$$
+Y_1 \sim \text{Poisson}(\lambda_1)\\
+Y_2 \sim \text{Poisson}(\lambda_2)
+$$
+where $Y_i$ is the number of goals scored by team $i$. Using [FiveThirtyEight's publically available data]("https://projects.fivethirtyeight.com/soccer-api/club/spi_matches.csv"), I fit a possion regression model using [b-splines](https://en.wikipedia.org/wiki/B-spline) on each of the team's Soccer Power Index (SPI) plus a home team indicator.
+
+```{r, fig.width=16/1.5, fig.height=9/1.5}
+library(tidyverse)
+library(splines)
+library(patchwork)
+library(ggridges)
+x <- read_csv("https://projects.fivethirtyeight.com/soccer-api/club/spi_matches.csv")
+
+pre_covid <- filter(x, date < "2020-05-16", league == "German Bundesliga")
+post_covid <- filter(x, league == "German Bundesliga", date <= Sys.Date(), date >= "2020-05-16")
+
+### Fit Model
+n <- nrow(pre_covid)
+df <- tibble(
+  "goals" = c(pre_covid$score1, pre_covid$score2),
+  "spi" = c(pre_covid$spi1, pre_covid$spi2),
+  "opp_spi" = c(pre_covid$spi2, pre_covid$spi1),
+  "importance" = c(pre_covid$importance1, pre_covid$importance2),
+  "opp_importance" = c(pre_covid$importance2, pre_covid$importance1),
+  "home" = rep(1:0, each = n)
+)
+
+bund_model <- glm(goals ~ ns(spi, 5) + ns(opp_spi, 5) + home, data = df, family = "poisson")
+
+predict_lambda <- function(df_row, model) {
+  df <- tibble(
+    "goals" = c(df_row$score1, df_row$score2),
+    "spi" = c(df_row$spi1, df_row$spi2),
+    "opp_spi" = c(df_row$spi2, df_row$spi1),
+    "importance" = c(df_row$importance1, df_row$importance2),
+    "opp_importance" = c(df_row$importance2, df_row$importance1),
+    "home" = 1:0
+  )
+  lambdas <- predict(model, newdata = df, type = "response")
+  lambdas <- tibble("lambda1" = lambdas[1], "lambda2" = lambdas[2])
+  return(lambdas)
+}
+
+match_probs <- function(lambda_1, lambda_2) {
+  max_goals <- 10
+  score_matrix <- dpois(0:max_goals, lambda_1) %o% dpois(0:max_goals, lambda_2)
+  score_matrix <- score_matrix/sum(score_matrix)
+  tie_prob <- sum(diag(score_matrix))
+  win_prob <- sum(score_matrix[lower.tri(score_matrix)])
+  loss_prob <- sum(score_matrix[upper.tri(score_matrix)])
+  return(tibble("win_prob" = win_prob, "tie_prob" = tie_prob, "loss_prob" = loss_prob))
+}
+
+get_predictions <- function(df, hfa_reduction = 0, model) {
+  model$coefficients['home'] <- (1 - hfa_reduction) * model$coefficients['home']
+  df <- 
+    df %>%
+    bind_cols(map_dfr(1:nrow(df), ~predict_lambda(df[.x,], model))) %>%
+    bind_cols(map2_dfr(.$lambda1, .$lambda2, match_probs))
+  df$hfa_reduction <- hfa_reduction
+  return(df)
+}
+
+pre_covid <- filter(x, date < "2020-05-16", league == "German Bundesliga")
+pre_covid <- get_predictions(pre_covid, 0, bund_model)
+
+p1 <- ggplot(pre_covid, aes(x = prob1, y = win_prob)) +
+  geom_point(alpha = 0.2) +
+  geom_abline(lty = 2, size = 1, color = "red") +
+  theme_bw() +
+  theme(axis.title = element_text(size = 16, hjust = 0.5),
+        plot.title = element_text(size = 24, hjust = 0.5),
+        plot.subtitle = element_text(size = 18, hjust = 0.5),
+        legend.position = "bottom") +
+  labs(x = "FiveThirtyEight Probability",
+       y = "Model Estimated Probability", 
+       subtitle = "P(Home Team Win)") +
+  scale_x_continuous(limits = c(0,1), labels = function(x) paste0(100 * x, "%")) +
+  scale_y_continuous(limits = c(0,1), labels = function(x) paste0(100 * x, "%")) +
+  annotate("label", x = 0.25, y = 0.75, size = 4,
+           label = paste0("Correlation: ", round(cor(pre_covid$prob1, pre_covid$win_prob, use = "pairwise.complete.obs"), 2)))
+
+
+p2 <- ggplot(pre_covid, aes(x = prob2, y = loss_prob)) +
+  geom_point(alpha = 0.2) +
+  geom_abline(lty = 2, size = 1, color = "red") +
+  theme_bw() +
+  theme(axis.title = element_text(size = 16, hjust = 0.5),
+        plot.title = element_text(size = 24, hjust = 0.5),
+        plot.subtitle = element_text(size = 18, hjust = 0.5),
+        legend.position = "bottom") +
+  labs(x = "FiveThirtyEight Probability",
+       y = "Model Estimated Probability", 
+       subtitle = "P(Away Team Win)") +
+  scale_x_continuous(limits = c(0,1), labels = function(x) paste0(100 * x, "%")) +
+  scale_y_continuous(limits = c(0,1), labels = function(x) paste0(100 * x, "%")) +
+  annotate("label", x = 0.25, y = 0.75, size = 4,
+           label = paste0("Correlation: ", round(cor(pre_covid$prob2, pre_covid$loss_prob, use = "pairwise.complete.obs"), 2)))
+
+
+p3 <- ggplot(pre_covid, aes(x = probtie, y = tie_prob)) +
+  geom_point(alpha = 0.2) +
+  geom_abline(lty = 2, size = 1, color = "red") +
+  theme_bw() +
+  theme(axis.title = element_text(size = 16, hjust = 0.5),
+        plot.title = element_text(size = 24, hjust = 0.5),
+        plot.subtitle = element_text(size = 18, hjust = 0.5),
+        legend.position = "bottom") +
+  labs(x = "FiveThirtyEight Probability",
+       y = "Model Estimated Probability", 
+       subtitle = "P(Draw)") +
+  scale_x_continuous(limits = c(0,1), labels = function(x) paste0(100 * x, "%")) +
+  scale_y_continuous(limits = c(0,1), labels = function(x) paste0(100 * x, "%")) +
+  annotate("label", x = 0.25, y = 0.75, size = 4,
+           label = paste0("Correlation: ", round(cor(pre_covid$probtie, pre_covid$tie_prob, use = "pairwise.complete.obs"), 2)))
+
+
+p1 + p2 + p3 +
+  plot_annotation(title = 'Calibration of Model Estimated Probabilities',
+                  theme = theme(plot.title = element_text(size = 24, hjust = 0.5))) 
+```
+We can see that my simplified model is a pretty good approximation of FiveThirtyEight's model. Perhps it slightly underestimates certain draw probabilities, as FiveThirtyEight inflates draw probabilities from their Poisson model, but it's a useful enough approximation for the purposes I'd like to use it for. Now, we can manually control the reduction in HFA and see where our observed results compare to expected results.
+```{r, fig.width=16/1.5, fig.height=9/1.5}
+y <- map_dfr(seq(0, 1, 0.05), ~get_predictions(post_covid, .x, bund_model))
+get_exp_home_points <- function(df) {
+  case_when(runif(nrow(df)) <= df$win_prob ~ 3,
+            runif(nrow(df)) <= df$win_prob  + df$tie_prob ~ 1,
+            T ~ 0) %>%
+    sum()
+}
+
+
+set.seed(123)
+nsims <- 10000
+sim <- function(x) {
+  hfa <- seq(0,1,0.05)
+  exp_pts <- map_dbl(hfa, ~ get_exp_home_points(filter(y, hfa_reduction == .x)))
+  return(tibble("hfa_reduction" = hfa,
+                "exp_pts" = exp_pts))
+}
+
+#df_sims <- map_dfr(1:nsims, sim)
+#write_csv(df_sims, "sims.csv")
+df_sims <- read_csv("sims.csv")
+post_covid <- post_covid %>%
+  mutate("exp_home_points" = 3 * prob1 + probtie,
+         "home_points" = 3 * (score1 > score2) + 1 * (score1 == score2),
+         "home_wp" =  1 * (score1 > score2) + 0.5 * (score1 == score2),
+         "exp_home_wp" =   1 * prob1 + 0.5 * probtie)
+home_pts <- sum(post_covid$home_points)
+ggplot(df_sims, aes(x = exp_pts, y = as.factor(hfa_reduction))) +
+  geom_density_ridges(fill = "red", alpha = 0.5, scale = 1) +
+  geom_vline(xintercept = home_pts, lty = 2, size = 1.2) +
+  theme_bw() +
+  theme(axis.title = element_text(size = 16, hjust = 0.5),
+        plot.title = element_text(size = 24, hjust = 0.5),
+        plot.subtitle = element_text(size = 18, hjust = 0.5),
+        legend.position = "bottom") +
+  labs(x = "Points Accrued by Home Team",
+       y = "Reduction in Home Field Advantage", 
+       title = "Distribution of Expected Home Team Points w/ Varying HFA",
+       subtitle = "German Bundesliga: 2020-05-16 to Present") +
+  scale_y_discrete(labels = function(x) paste0(100 * as.numeric(x), "%"))
+```
+
+## Discussion
+What's really tricky about analyzing the effect of HFA in the absence of fans is that these results seem very unlikely even in the complete removal of home field avantage, so it's hard to say what is a realistic estimate for just how much HFA should be reduced. As more games come in over the coming weeks, we should have a better sense of where HFA stands. A more rigorous analysis of this problem would likely utilize a Bayesian framework and use Pre-COVID results to set priors. As [Laurie Shaw rightly points out](https://twitter.com/EightyFivePoint/status/1264902461359300608?s=20), the layoff between games has likely increased uncertainty in FiveThirtyEight's SPI ratings, which should be accounted for in a more rigorous examination. Stay tuned for more analysis are more games, both in Germany and other countries, are played without fans.
+

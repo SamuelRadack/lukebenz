@@ -1,0 +1,37 @@
+
+
+
+<hr />
+<p>title: “Bundesliga Home Field Avantage in the Absence of Fans”
+author:
+- admin
+date: “2019-03-19”
+output: html_document
+tags:
+- NCAA Basketball</p>
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p>With the majority of sports on hiatus around the world, I’ve been eagerly following the German Bundesliga (the top flight of Germany soccer) the past two weeks to get my sports fix. Due to the ongoing COVID-19 outbreak, all games are currently being played without fans. A lot of <a href="https://pitjournal.unc.edu/article/home-advantage-soccer">prior research</a> has shown the existence of home field advantage in soccer, which is believed to be the product of fans, referees, traveling, field composition, and other perhaps unobservable factors. With no fans in the stands, there is a nice opportunity for a natural experiment: How much home field advantage is there without fans? A nice literature review on the topic of home field advantage (HFA) in soccer and how it might waiver in the absence of fans is available courtsey of <a href="https://theconversation.com/as-football-returns-in-empty-stadiums-four-graphs-show-how-home-advantage-disappears-138685">Singleton et. al</a>.</p>
+</div>
+<div id="analyzing-expected-outcomes" class="section level2">
+<h2>Analyzing Expected Outcomes</h2>
+<p>One quick and dirty way to analyze the strength of HFA in the absence of fans is to compare the results of the first two weeks (18 games) since the Bundesliga’s return to what we’d expect given full HFA. To do this, I’ll use <a href="https://projects.fivethirtyeight.com/soccer-predictions/bundesliga/">FiveThirtyEight’s pubically available SPI model</a>. FiveThirtyEight predicts the win probability for both the home and away teams as well as the probabiligty of a draw. Using these probabilities, we can simulate the first two weeks of matches 10,000 times, and look at home many points (3 for 3, 1 for draw) we’d expect to get accrued by home teams. This approach allows for the adjustment of team quality, as in a small sample, there could be more/less higher quality home teams. Note that FiveThirtyEight’s post-COVID return projections already reduce HFA by 10%.</p>
+<p><img src="/post/bundesliga_hfa/index_files/figure-html/unnamed-chunk-1-1.png" width="1024" /></p>
+<p>Clearly the results are pretty unexpected even assuming a 10% HFA reduction. This isn’t to suggest that HFA is completely gone without fans, but it does suggest that it probably is reduced by more than 10%. I’ll note that a March 11 game between behind closed doors between Borussia Monchengladbach and FC Cologne, but I’m not including that here since a) it was before a long lay off and b) it was before FiveThirtyEight reduced it’s HFA.</p>
+</div>
+<div id="how-much-is-hfa-reduced" class="section level2">
+<h2>How Much is HFA Reduced</h2>
+<p>So if 10% isn’t enough, how much should HFA be reduced? To answer this question I’ll need to recreate a model very similar to FiveThirtyEight’s model so that I can manually adjust HFA. More on the methodology between FiveThirtyEight’s model can be <a href="%22https://fivethirtyeight.com/methodology/how-our-club-soccer-predictions-work/%22">found here</a>, but as a simplified summary:</p>
+<p><span class="math display">\[
+Y_1 \sim \text{Poisson}(\lambda_1)\\
+Y_2 \sim \text{Poisson}(\lambda_2)
+\]</span>
+where <span class="math inline">\(Y_i\)</span> is the number of goals scored by team <span class="math inline">\(i\)</span>. Using <a href="%22https://projects.fivethirtyeight.com/soccer-api/club/spi_matches.csv%22">FiveThirtyEight’s publically available data</a>, I fit a possion regression model using <a href="https://en.wikipedia.org/wiki/B-spline">b-splines</a> on each of the team’s Soccer Power Index (SPI) plus a home team indicator.</p>
+<p><img src="/post/bundesliga_hfa/index_files/figure-html/unnamed-chunk-2-1.png" width="1024" />
+We can see that my simplified model is a pretty good approximation of FiveThirtyEight’s model. Perhps it slightly underestimates certain draw probabilities, as FiveThirtyEight inflates draw probabilities from their Poisson model, but it’s a useful enough approximation for the purposes I’d like to use it for. Now, we can manually control the reduction in HFA and see where our observed results compare to expected results.
+<img src="/post/bundesliga_hfa/index_files/figure-html/unnamed-chunk-3-1.png" width="1024" /></p>
+</div>
+<div id="discussion" class="section level2">
+<h2>Discussion</h2>
+<p>What’s really tricky about analyzing the effect of HFA in the absence of fans is that these results seem very unlikely even in the complete removal of home field avantage, so it’s hard to say what is a realistic estimate for just how much HFA should be reduced. As more games come in over the coming weeks, we should have a better sense of where HFA stands. A more rigorous analysis of this problem would likely utilize a Bayesian framework and use Pre-COVID results to set priors. As <a href="https://twitter.com/EightyFivePoint/status/1264902461359300608?s=20">Laurie Shaw rightly points out</a>, the layoff between games has likely increased uncertainty in FiveThirtyEight’s SPI ratings, which should be accounted for in a more rigorous examination. Stay tuned for more analysis are more games, both in Germany and other countries, are played without fans.</p>
+</div>
