@@ -6,6 +6,7 @@ date: "2020-05-25"
 output: html_document
 tags: 
   - Soccer
+---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = F, warning = F, message = F)
@@ -235,4 +236,6 @@ ggplot(df_sims, aes(x = exp_pts, y = as.factor(hfa_reduction))) +
 
 ## Discussion
 What's really tricky about analyzing the effect of HFA in the absence of fans is that these results seem very unlikely even in the complete removal of home field avantage, so it's hard to say what is a realistic estimate for just how much HFA should be reduced. As more games come in over the coming weeks, we should have a better sense of where HFA stands. A more rigorous analysis of this problem would likely utilize a Bayesian framework and use Pre-COVID results to set priors. As [Laurie Shaw rightly points out](https://twitter.com/EightyFivePoint/status/1264902461359300608?s=20), the layoff between games has likely increased uncertainty in FiveThirtyEight's SPI ratings, which should be accounted for in a more rigorous examination. Stay tuned for more analysis are more games, both in Germany and other countries, are played without fans.
+
+Code for this post can be found [here](https://gist.github.com/lbenz730/53a790d14dd9ae03c5888a6e67e7d120).
 

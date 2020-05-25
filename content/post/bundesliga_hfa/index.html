@@ -1,14 +1,15 @@
-
-
-
-<hr />
-<p>title: “Bundesliga Home Field Avantage in the Absence of Fans”
+---
+title: "Bundesliga Home Field Avantage in the Absence of Fans"
 author:
-- admin
-date: “2020-05-25”
+  - admin
+date: "2020-05-25"
 output: html_document
-tags:
-- Soccer</p>
+tags: 
+  - Soccer
+---
+
+
+
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
 <p>With the majority of sports on hiatus around the world, I’ve been eagerly following the German Bundesliga (the top flight of Germany soccer) the past two weeks to get my sports fix. Due to the ongoing COVID-19 outbreak, all games are currently being played without fans. A lot of <a href="https://pitjournal.unc.edu/article/home-advantage-soccer">prior research</a> has shown the existence of home field advantage in soccer, which is believed to be the product of fans, referees, traveling, field composition, and other perhaps unobservable factors. With no fans in the stands, there is a nice opportunity for a natural experiment: How much home field advantage is there without fans? A nice literature review on the topic of home field advantage (HFA) in soccer and how it might waiver in the absence of fans is available courtsey of <a href="https://theconversation.com/as-football-returns-in-empty-stadiums-four-graphs-show-how-home-advantage-disappears-138685">Singleton et. al</a>.</p>
@@ -34,4 +35,5 @@ We can see that my simplified model is a pretty good approximation of FiveThirty
 <div id="discussion" class="section level2">
 <h2>Discussion</h2>
 <p>What’s really tricky about analyzing the effect of HFA in the absence of fans is that these results seem very unlikely even in the complete removal of home field avantage, so it’s hard to say what is a realistic estimate for just how much HFA should be reduced. As more games come in over the coming weeks, we should have a better sense of where HFA stands. A more rigorous analysis of this problem would likely utilize a Bayesian framework and use Pre-COVID results to set priors. As <a href="https://twitter.com/EightyFivePoint/status/1264902461359300608?s=20">Laurie Shaw rightly points out</a>, the layoff between games has likely increased uncertainty in FiveThirtyEight’s SPI ratings, which should be accounted for in a more rigorous examination. Stay tuned for more analysis are more games, both in Germany and other countries, are played without fans.</p>
+<p>Code for this post can be found <a href="https://gist.github.com/lbenz730/53a790d14dd9ae03c5888a6e67e7d120">here</a>.</p>
 </div>

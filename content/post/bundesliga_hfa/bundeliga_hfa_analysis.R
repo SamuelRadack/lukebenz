@@ -143,7 +143,17 @@ post_covid <- post_covid %>%
 home_pts <- sum(post_covid$home_points)
 ggplot(df_sims, aes(x = exp_pts, y = as.factor(hfa_reduction))) +
   geom_density_ridges(scale = 1) +
-  geom_vline(xintercept = home_pts, lty = 2, size = 1.2) 
+  geom_vline(xintercept = home_pts, lty = 2, size = 1.2) +
+  theme_bw() +
+  theme(axis.title = element_text(size = 16, hjust = 0.5),
+        plot.title = element_text(size = 24, hjust = 0.5),
+        plot.subtitle = element_text(size = 18, hjust = 0.5),
+        legend.position = "bottom") +
+  labs(x = "Points Accrued by Home Team",
+       y = "Reduction in Home Field Advantage", 
+       title = "Distribution of Expected Home Team Points w/ Varying HFA",
+       subtitle = "German Bundesliga: 2020-05-16 to Present") +
+  scale_y_discrete(labels = function(x) paste0(100 * as.numeric(x), "%"))
 
 # tibble("spi" = c(post_covid$spi1, post_covid$spi2),
 #        "team" = rep(c("Home", "Away"), each = 18)) %>%
