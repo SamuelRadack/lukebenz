@@ -37,8 +37,9 @@ exp_home_wp <- mean(bund$exp_home_wp)
 home_wp <- mean(bund$home_wp)
 
 get_exp_home_points <- function(x) {
-  case_when(runif(nrow(bund)) <= bund$prob1 ~ 3,
-            runif(nrow(bund)) <= bund$prob1  + bund$probtie ~ 1,
+  p <- runif(nrow(bund))
+  case_when(p <= bund$prob1 ~ 3,
+            p <= bund$prob1  + bund$probtie ~ 1,
             T ~ 0) %>%
     sum()
 }
@@ -194,8 +195,9 @@ We can see that my simplified model is a pretty good approximation of FiveThirty
 ```{r, fig.width=16/1.5, fig.height=9/1.5}
 y <- map_dfr(seq(0, 1, 0.05), ~get_predictions(post_covid, .x, bund_model))
 get_exp_home_points <- function(df) {
-  case_when(runif(nrow(df)) <= df$win_prob ~ 3,
-            runif(nrow(df)) <= df$win_prob  + df$tie_prob ~ 1,
+  p <- runif(nrow(df))
+  case_when(p <= df$win_prob ~ 3,
+            p <= df$win_prob  + df$tie_prob ~ 1,
             T ~ 0) %>%
     sum()
 }
@@ -237,5 +239,5 @@ ggplot(df_sims, aes(x = exp_pts, y = as.factor(hfa_reduction))) +
 ## Discussion
 What's really tricky about analyzing the effect of HFA in the absence of fans is that these results seem very unlikely even in the complete removal of home field avantage, so it's hard to say what is a realistic estimate for just how much HFA should be reduced. I think one thing to note is that because I am since I am not recreating FiveThirtyEight's draw probability inflation, the medians of these red distribution should probably be slightly left of where they are (if we are to believe their model). As more games come in over the coming weeks, we should have a better sense of where HFA stands. A more rigorous analysis of this problem would likely utilize a Bayesian framework and use Pre-COVID results to set priors. As [Laurie Shaw rightly points out](https://twitter.com/EightyFivePoint/status/1264902461359300608?s=20), the layoff between games has likely increased uncertainty in FiveThirtyEight's SPI ratings, which should be accounted for in a more rigorous examination. Stay tuned for more analysis are more games, both in Germany and other countries, are played without fans.
 
-Code for this post can be found (and will be updated) [here](https://gist.github.com/lbenz730/53a790d14dd9ae03c5888a6e67e7d120).
+Code for this post can be found (and will be updated) [here](https://github.com/lbenz730/soccer_hfa).
 
