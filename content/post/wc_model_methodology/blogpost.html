@@ -71,16 +71,16 @@ w_i = \alpha_i \times e^{- \frac{\delta_t - \delta_i}{\delta\star}}
                   weights = match_weight)</code></pre>
 <p>The model gives coefficients for each country both as levels of the <code>team</code> and <code>opponent</code> factors. Since the model output predictions can be taken as the average <code>team_score</code> for a given <code>team</code> against a given <code>opponent</code> at a given <code>location</code>, we can view the country specific coefficients as offense and defensive components of a power rating. The interpretation of such coefficients is less intutive than in the case of linear regression, in which coefficients signfy points better than an average team, but you can think of them as more similar to logistic regression coefficients. Higher offensive coefficients indicate a team is likely to score more goals on average while low (more negative) defensive coefficients indicate a team is likely to conceed fewer goals on average.</p>
 <pre><code>##            team  offense   defense net_rating rank
-## 77      Germany 1.706142 -1.370495   3.076637    1
-## 72       France 1.579568 -1.304446   2.884014    2
-## 29       Brazil 1.728610 -1.106870   2.835479    3
-## 181       Spain 1.641895 -1.120371   2.762266    4
-## 9     Argentina 1.318796 -1.434317   2.753113    5
-## 45     Colombia 1.454008 -1.285233   2.739241    6
-## 20      Belgium 1.566662 -1.136181   2.702843    7
-## 140 Netherlands 1.595909 -1.061737   2.657646    8
-## 158    Portugal 1.442730 -1.204379   2.647109    9
-## 64      England 1.267877 -1.282902   2.550780   10</code></pre>
+## 77      Germany 1.707366 -1.373929   3.081295    1
+## 72       France 1.581282 -1.307218   2.888500    2
+## 29       Brazil 1.727649 -1.097520   2.825169    3
+## 181       Spain 1.639751 -1.116924   2.756675    4
+## 9     Argentina 1.318170 -1.438423   2.756593    5
+## 45     Colombia 1.456873 -1.285449   2.742322    6
+## 20      Belgium 1.565169 -1.140337   2.705506    7
+## 140 Netherlands 1.597657 -1.065459   2.663115    8
+## 158    Portugal 1.442856 -1.200933   2.643789    9
+## 64      England 1.269063 -1.281223   2.550285   10</code></pre>
 <p>Offensively, the top teams by our model, are Brazil, Germany and Spain, while Argentina, Germany, and England posses the best defenses.</p>
 </div>
 <div id="sample-match-prediction" class="section level1">
@@ -198,14 +198,14 @@ w_i = \alpha_i \times e^{- \frac{\delta_t - \delta_i}{\delta\star}}
 <div class="footnotes">
 <hr />
 <ol>
-<li id="fn1"><p><a href="https://www.jstor.org/stable/4128211?seq=1#page_scan_tab_contents" class="uri">https://www.jstor.org/stable/4128211?seq=1#page_scan_tab_contents</a><a href="#fnref1" class="footnote-back">↩</a></p></li>
-<li id="fn2"><p><a href="https://epub.ub.uni-muenchen.de/29028/1/TR_EM2016.pdf" class="uri">https://epub.ub.uni-muenchen.de/29028/1/TR_EM2016.pdf</a><a href="#fnref2" class="footnote-back">↩</a></p></li>
-<li id="fn3"><p><a href="http://www2.stat-athens.aueb.gr/~jbn/tr/TR60_soccer.ps" class="uri">http://www2.stat-athens.aueb.gr/~jbn/tr/TR60_soccer.ps</a><a href="#fnref3" class="footnote-back">↩</a></p></li>
-<li id="fn4"><p><a href="http://www2.stat-athens.aueb.gr/~karlis/Bivariate%20Poisson%20Regression.pdf" class="uri">http://www2.stat-athens.aueb.gr/~karlis/Bivariate%20Poisson%20Regression.pdf</a><a href="#fnref4" class="footnote-back">↩</a></p></li>
-<li id="fn5"><p><a href="https://fivethirtyeight.com/features/a-chart-for-predicting-penalty-shootout-odds-in-real-time/" class="uri">https://fivethirtyeight.com/features/a-chart-for-predicting-penalty-shootout-odds-in-real-time/</a><a href="#fnref5" class="footnote-back">↩</a></p></li>
-<li id="fn6"><p><a href="https://www.jstor.org/stable/4128211?seq=1#page_scan_tab_contents" class="uri">https://www.jstor.org/stable/4128211?seq=1#page_scan_tab_contents</a><a href="#fnref6" class="footnote-back">↩</a></p></li>
-<li id="fn7"><p><a href="https://epub.ub.uni-muenchen.de/29028/1/TR_EM2016.pdf" class="uri">https://epub.ub.uni-muenchen.de/29028/1/TR_EM2016.pdf</a><a href="#fnref7" class="footnote-back">↩</a></p></li>
-<li id="fn8"><p><a href="http://www2.stat-athens.aueb.gr/~jbn/tr/TR60_soccer.ps" class="uri">http://www2.stat-athens.aueb.gr/~jbn/tr/TR60_soccer.ps</a><a href="#fnref8" class="footnote-back">↩</a></p></li>
-<li id="fn9"><p><a href="http://www2.stat-athens.aueb.gr/~karlis/Bivariate%20Poisson%20Regression.pdf" class="uri">http://www2.stat-athens.aueb.gr/~karlis/Bivariate%20Poisson%20Regression.pdf</a><a href="#fnref9" class="footnote-back">↩</a></p></li>
+<li id="fn1"><p><a href="https://www.jstor.org/stable/4128211?seq=1#page_scan_tab_contents" class="uri">https://www.jstor.org/stable/4128211?seq=1#page_scan_tab_contents</a><a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn2"><p><a href="https://epub.ub.uni-muenchen.de/29028/1/TR_EM2016.pdf" class="uri">https://epub.ub.uni-muenchen.de/29028/1/TR_EM2016.pdf</a><a href="#fnref2" class="footnote-back">↩︎</a></p></li>
+<li id="fn3"><p><a href="http://www2.stat-athens.aueb.gr/~jbn/tr/TR60_soccer.ps" class="uri">http://www2.stat-athens.aueb.gr/~jbn/tr/TR60_soccer.ps</a><a href="#fnref3" class="footnote-back">↩︎</a></p></li>
+<li id="fn4"><p><a href="http://www2.stat-athens.aueb.gr/~karlis/Bivariate%20Poisson%20Regression.pdf" class="uri">http://www2.stat-athens.aueb.gr/~karlis/Bivariate%20Poisson%20Regression.pdf</a><a href="#fnref4" class="footnote-back">↩︎</a></p></li>
+<li id="fn5"><p><a href="https://fivethirtyeight.com/features/a-chart-for-predicting-penalty-shootout-odds-in-real-time/" class="uri">https://fivethirtyeight.com/features/a-chart-for-predicting-penalty-shootout-odds-in-real-time/</a><a href="#fnref5" class="footnote-back">↩︎</a></p></li>
+<li id="fn6"><p><a href="https://www.jstor.org/stable/4128211?seq=1#page_scan_tab_contents" class="uri">https://www.jstor.org/stable/4128211?seq=1#page_scan_tab_contents</a><a href="#fnref6" class="footnote-back">↩︎</a></p></li>
+<li id="fn7"><p><a href="https://epub.ub.uni-muenchen.de/29028/1/TR_EM2016.pdf" class="uri">https://epub.ub.uni-muenchen.de/29028/1/TR_EM2016.pdf</a><a href="#fnref7" class="footnote-back">↩︎</a></p></li>
+<li id="fn8"><p><a href="http://www2.stat-athens.aueb.gr/~jbn/tr/TR60_soccer.ps" class="uri">http://www2.stat-athens.aueb.gr/~jbn/tr/TR60_soccer.ps</a><a href="#fnref8" class="footnote-back">↩︎</a></p></li>
+<li id="fn9"><p><a href="http://www2.stat-athens.aueb.gr/~karlis/Bivariate%20Poisson%20Regression.pdf" class="uri">http://www2.stat-athens.aueb.gr/~karlis/Bivariate%20Poisson%20Regression.pdf</a><a href="#fnref9" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
