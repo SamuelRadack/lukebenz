@@ -7,6 +7,6 @@ tags:
 title: NIST
 ---
 
-
+*  NIST Homegeneity Assessor User's Manual (Summer 2018) [Paper](/nist/NIST_Homegeneity_Assessor_Users_Manual.pdf)
 * _Launch and Demonstration of the NIST Homogeneity Assessor_ (Summer 2018) [Slides](/nist/nist_2018.pdf)
 * _Combining Results in Collaborative Studies when Reported Uncertainties are Unreliable_ (Summer 2017) [Slides](/nist/nist_2017.pdf)
