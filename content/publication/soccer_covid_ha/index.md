@@ -12,6 +12,7 @@ publication_short: ""
 publication_types:
 - "2"
 publishDate: "2020-12-29T00:00:00Z"
+summary: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis posuere tellus ac convallis placerat. Proin tincidunt magna sed ex sollicitudin condimentum.
 title: Quality of life after surgery for intracranial meningioma
 url_pdf: https://arxiv.org/abs/2012.14949
 ---
