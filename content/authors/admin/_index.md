@@ -3,9 +3,12 @@ authors:
 - admin
 education:
   courses:
-  - course: BS in Applied Mathematics
+  - course: PhD Student, Biostatistics
+    institution: Harvard University
+  - course: BS, Applied Mathematics
     institution: Yale University
     year: 2019
+    
 email: "lukesbenz@gmail.com"
 interests:
 - Clinical Trials
