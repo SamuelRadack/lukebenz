@@ -8,17 +8,18 @@ education:
     year: 2019
 email: "lukesbenz@gmail.com"
 interests:
-- Biostatistics
 - Clinical Trials
-- Data Visualization
-- Bayesian Statistics
 - Social Networks
+- EHR Data
+- Cancer
+- Bayesian Statistics
 - Sports Analytics
+- Statistical Software
 name: Luke Benz
 organizations:
-- name: Medidata Solutions, Inc.
+- name: Harvard University
   url: ""
-role: Senior Data Scientist
+role: Biostatistics PhD Student
 social:
 - icon: envelope
   icon_pack: fas
@@ -35,10 +36,8 @@ user_groups:
 - Visitors
 ---
 
-My name is Luke Benz and I am a senior data scientist at [Medidata Solutions, Inc.](https://www.medidata.com/en/). I graduated from Yale University in 2019 with a BS in Applied Mathematics with a concentration in Statistics and Data Science.
+My name is Luke Benz and I am a first year Biostatistics PhD Student at the Harvard T.H. Chan School of Public Health. I graduated from Yale University in 2019 with a BS in Applied Mathematics with a concentration in Statistics and Data Science. While I do not yet know what my research at Harvard will entail, I have several diverse interests, including clinical trials, social networks, electronic health record (EHR) data, and cancer. 
 
-While at Yale, I worked as a biostatistics research assistant for [Dr. Elizabeth Claus](https://publichealth.yale.edu/people/elizabeth_claus.profile) at the Yale School of Public Health, analyzing data on quality of life for patients with various kinds of brain tumors.
+Before coming to Harvard, I was a senior data scientist at [Medidata Solutions, Inc.](https://www.medidata.com/en/), where I most recently worked on models to select sites to use in clinical trials, and to forecast enrollment patterns and key milestones in those trials.
 
-During the summers of 2017 and 2018, I participated in the Summer Undergraduate Research Fellowship (SURF) program at the National Institute of Standards and Technology (NIST), where I worked as a research assistant in the Statistical Engineering Division for [Dr. Antonio Possolo](https://www.nist.gov/people/antonio-possolo) and [Dr. Andrew Rukhin](https://www.nist.gov/people/andrew-l-rukhin).
-
-In my free time, I enjoy working on projects at the intersection of statistics and sports, and was president of the [Yale Undergraduate Sports Analytics Group](https://sports.sites.yale.edu) between 2017-2019. In addition to projects covering a wide range of sports topics, I have assisted the Yale Men's Baskeball team with various statistical tasks and have partnered with the Ivy League to help design the 2019-2027 conference schedules for men's soccer, women's soccer, and field hockey.
+In my free time, I enjoy working on projects at the intersection of statistics and sports, and was president of the [Yale Undergraduate Sports Analytics Group](https://sports.sites.yale.edu) between 2017-2019. Many of my past projects have involved college basketball, and my `R` package [ncaahoopR](https://github.com/lbenz730/ncaahoopR) is designed to facilitate easy access and analysis of college basketball play-by-play data. [My most recent publication](https://arxiv.org/abs/2012.14949) related to sports examines the change in home advantage in European soccer during the COVID-19 pandemic, when games were played without fans.
