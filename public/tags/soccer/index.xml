@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Soccer on Luke Benz</title>
+    <link>/tags/soccer/</link>
+    <description>Recent content in Soccer on Luke Benz</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 25 May 2020 00:00:00 +0000</lastBuildDate>
+    
+	    <atom:link href="/tags/soccer/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Bundesliga Home Field Avantage in the Absence of Fans</title>
+      <link>/post/bundesliga_hfa/</link>
+      <pubDate>Mon, 25 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/bundesliga_hfa/</guid>
+      <description>
+
+
+&lt;div id=&#34;introduction&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;With the majority of sports on hiatus around the world, I’ve been eagerly following the German Bundesliga (the top flight of Germany soccer) the past two weeks to get my sports fix. Due to the ongoing COVID-19 outbreak, all games are currently being played without fans. A lot of &lt;a href=&#34;https://pitjournal.unc.edu/article/home-advantage-soccer&#34;&gt;prior research&lt;/a&gt; has shown the existence of home field advantage in soccer, which is believed to be the product of fans, referees, traveling, field composition, and other perhaps unobservable factors. With no fans in the stands, there is a nice opportunity for a natural experiment: How much home field advantage is there without fans? A nice literature review on the topic of home field advantage (HFA) in soccer and how it might waiver in the absence of fans is available courtsey of &lt;a href=&#34;https://theconversation.com/as-football-returns-in-empty-stadiums-four-graphs-show-how-home-advantage-disappears-138685&#34;&gt;Singleton et. al&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;analyzing-expected-outcomes&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Analyzing Expected Outcomes&lt;/h2&gt;
+&lt;p&gt;One quick and dirty way to analyze the strength of HFA in the absence of fans is to compare the results of the first two weeks (18 games) since the Bundesliga’s return to what we’d expect given full HFA. To do this, I’ll use &lt;a href=&#34;https://projects.fivethirtyeight.com/soccer-predictions/bundesliga/&#34;&gt;FiveThirtyEight’s pubically available SPI model&lt;/a&gt;. FiveThirtyEight predicts the win probability for both the home and away teams as well as the probabiligty of a draw. Using these probabilities, we can simulate the first two weeks of matches 10,000 times, and look at home many points (3 for win, 1 for draw) we’d expect to get accrued by home teams. This approach allows for the adjustment of team quality, as in a small sample, there could be more/less higher quality home teams. Note that FiveThirtyEight’s post-COVID return projections already reduce HFA by 10%.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/bundesliga_hfa/index_files/figure-html/unnamed-chunk-1-1.png&#34; width=&#34;1024&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Clearly the results are pretty unexpected even assuming a 10% HFA reduction. This isn’t to suggest that HFA is completely gone without fans, but it does suggest that it probably is reduced by more than 10%. I’ll note that a March 11 game between behind closed doors between Borussia Monchengladbach and FC Cologne, but I’m not including that here since a) it was before a long lay off and b) it was before FiveThirtyEight reduced it’s HFA.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;how-much-is-hfa-reduced&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;How Much is HFA Reduced&lt;/h2&gt;
+&lt;p&gt;So if 10% isn’t enough, how much should HFA be reduced? To answer this question I’ll need to recreate a model very similar to FiveThirtyEight’s model so that I can manually adjust HFA. More on the methodology between FiveThirtyEight’s model can be &lt;a href=&#34;%22https://fivethirtyeight.com/methodology/how-our-club-soccer-predictions-work/%22&#34;&gt;found here&lt;/a&gt;, but as a simplified summary:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+Y_1 \sim \text{Poisson}(\lambda_1)\\
+Y_2 \sim \text{Poisson}(\lambda_2)
+\]&lt;/span&gt;
+where &lt;span class=&#34;math inline&#34;&gt;\(Y_i\)&lt;/span&gt; is the number of goals scored by team &lt;span class=&#34;math inline&#34;&gt;\(i\)&lt;/span&gt;. Using &lt;a href=&#34;%22https://projects.fivethirtyeight.com/soccer-api/club/spi_matches.csv%22&#34;&gt;FiveThirtyEight’s publically available data&lt;/a&gt;, I fit a possion regression model using &lt;a href=&#34;https://en.wikipedia.org/wiki/B-spline&#34;&gt;b-splines&lt;/a&gt; on each of the team’s Soccer Power Index (SPI) plus a home team indicator.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/bundesliga_hfa/index_files/figure-html/unnamed-chunk-2-1.png&#34; width=&#34;1024&#34; /&gt;
+We can see that my simplified model is a pretty good approximation of FiveThirtyEight’s model. Perhps it slightly underestimates certain draw probabilities, as FiveThirtyEight inflates draw probabilities from their Poisson model, but it’s a useful enough approximation for the purposes I’d like to use it for. Now, we can manually control the reduction in HFA and see where our observed results compare to expected results.
+&lt;img src=&#34;/post/bundesliga_hfa/index_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;1024&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;discussion&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Discussion&lt;/h2&gt;
+&lt;p&gt;What’s really tricky about analyzing the effect of HFA in the absence of fans is that these results seem very unlikely even in the complete removal of home field avantage, so it’s hard to say what is a realistic estimate for just how much HFA should be reduced. I think one thing to note is that because I am since I am not recreating FiveThirtyEight’s draw probability inflation, the medians of these red distribution should probably be slightly left of where they are (if we are to believe their model). As more games come in over the coming weeks, we should have a better sense of where HFA stands. A more rigorous analysis of this problem would likely utilize a Bayesian framework and use Pre-COVID results to set priors. As &lt;a href=&#34;https://twitter.com/EightyFivePoint/status/1264902461359300608?s=20&#34;&gt;Laurie Shaw rightly points out&lt;/a&gt;, the layoff between games has likely increased uncertainty in FiveThirtyEight’s SPI ratings, which should be accounted for in a more rigorous examination. Stay tuned for more analysis are more games, both in Germany and other countries, are played without fans.&lt;/p&gt;
+&lt;p&gt;Code for this post can be found (and will be updated) &lt;a href=&#34;https://github.com/lbenz730/soccer_hfa&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>You Play to…Lose the Game?</title>
+      <link>/post/eng_bel/</link>
+      <pubDate>Wed, 27 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/eng_bel/</guid>
+      <description>
+
+
+&lt;p&gt;Former NFL head coach, and current Arizona State coach, Herm Edwards once famously said, &lt;a href=&#34;https://www.youtube.com/watch?v=b5-iJUuPWis&#34;&gt;“you play to win the game.”&lt;/a&gt;. Every once in a blue mood, Edwards’ logic is actually false, and sometimes teams don’t play to win–because they are incentivized NOT to win. At the 2012 Summer Olypmics, for example, several badmitton teams intentionally lost in hopes of &lt;a href=&#34;https://www.telegraph.co.uk/sport/olympics/badminton/9444025/Badminton-match-fixing-scandal-how-and-why-the-four-pairs-were-disqualified-from-the-London-2012-Olympics.html&#34;&gt;securing a more favorable draw through the knockout phases of the tournament&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;There is speculation that we might see more of this when Belgium and England square off in the final match of Group G at the 2018 FIFA World Cup. Both squads come into the match with 2 wins apiece, having each already secured slots in the knockout round. All that remains to be determined is who will win the group, and who will finish as runner-up. Either squad would win the group if victorious, and since England and Belgium are tied on points, goal differential, and goals forced, meaning a draw would result in the group winner being decided via &lt;a href=&#34;https://www.thesun.co.uk/world-cup-2018/6613106/fair-play-ranking-points-world-cup-group-stages-germany/&#34;&gt;FIFA Fair Play&lt;/a&gt;. This means that England would need to get at least 2 more yellow cards than Belgium to have any chance of advancing via a draw. Prior to Group G and H finishing, here’s how the Knockout Round bracket is looking.
+&lt;img src=&#34;bracket.png&#34; alt=&#34;bracket&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;The top half of the bracket looks absolutely stacked compared to the bottom half of the bracket. &lt;a href=&#34;http://rpubs.com/lbenz730/world_cup_model&#34;&gt;My World Cup model&lt;/a&gt; produces net ratings and world rankings for each country, allowing us to examine the disparity between the two halfs of the bracket&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Top Half Rankings&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Brazil 2.97 (1)&lt;/li&gt;
+&lt;li&gt;France 2.92 (2)&lt;/li&gt;
+&lt;li&gt;Portugal 2.63 (10)&lt;/li&gt;
+&lt;li&gt;Uruguay 2.59 (12)&lt;/li&gt;
+&lt;li&gt;Argentina 2.50 (14)&lt;/li&gt;
+&lt;li&gt;Mexico 2.12 (25)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Bottom Half Rankings&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Spain 2.72 (6)&lt;/li&gt;
+&lt;li&gt;Croatia 2.71 (7)&lt;/li&gt;
+&lt;li&gt;Denmark 2.62 (11)&lt;/li&gt;
+&lt;li&gt;Sweden 2.57 (13)&lt;/li&gt;
+&lt;li&gt;Switzerland 2.33 (19)&lt;/li&gt;
+&lt;li&gt;Russia 1.96 (35)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Are these groups really that different in talent? The average rating in the upper half of the bracket is 2.62, while the average team in the lower half of the bracket is 2.48 . Among teams to qualify for the Knockout Round, we can simulate the average talent disparity between the top half of the bracket, when the Group G winner will go, and the lower half of the bracket, where the Group G runner-up will go.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/eng_bel/index_files/figure-html/unnamed-chunk-1-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;In the histogram displaying talent disparities from 100,000 simulated knockout brackets based on pre-tournament probabilities to advance, we see that the disparity based on current ratings isn’t that big. Perhaps the reason that we think the disparity is larger than it actually is that that big-name teams in the top-half of the bracket, namely Argentina, are worse than expected pre-tournament, while several teams in the bottom half, like Croatia, Sweden, and Switzerland, have all improved in rating since the beginning of the tournament. Irregardless, there is truth in the fact that the top half of the knockout break is stronger on average than the bottom half of the bracket. Let’s see how England and Belgium fair based on which half of the bracket they are in to see if losing in order to finish second in Group G really is better.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;##        finish  Qtrs Semis Final Champ
+## 1   eng_first 0.639 0.294 0.137 0.070
+## 2  eng_second 0.590 0.330 0.173 0.074
+## 3  belg_first 0.660 0.339 0.178 0.089
+## 4 belg_second 0.657 0.375 0.208 0.117&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/eng_bel/index_files/figure-html/unnamed-chunk-2-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Using Monte Carlo, I simulated the knockout round 1000 times with each Belgium winning the group and 1000 times with England winning the group. Not suprisingly, both teams had better round-by-round advancement probabilities across the board, with the exception of the quarterfinals, when finishing as group runner up.&lt;/p&gt;
+&lt;div id=&#34;conditioning-on-colombia&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Conditioning on Colombia&lt;/h3&gt;
+&lt;p&gt;There is however, an additional interesting factor to consider. While “G” comes before “H”, FIFA has decided to schedule the final round of Group H matches on Thursday morning while scheduling the Group G matches on Thursday afternoon. This means that both England and Belgium will know who their opponets in the round of 16 would be based on the early morning results from Group H. More specifically, England and Belgium will know which half of the draw Colombia is on. Colombia is the 5th ranked team in my model, with a rating of 2.73 , and would be a much more difficult matchup than either Japan or Senegal, the other two potential Group H teams Colombia or Belgium would face. The possibility of facing Colombia is exactly why the quarterfinal advantage seems to disappear. Would the possibility of facing Columbia as Group H winners make it worth winning Group G instead? We can simulate the knockout round 1000 times with Colombia winning Group H (sent to bottom-half), finishing runners up (sent to top-half), or missing the knockout round all together.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/eng_bel/index_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;We see based on the chart above that matching Colombia’s result if they progress is favorable in the long run to simply trying to finish group runner’s up. Simply avoiding Colombia in the first round can be worth about 3-5% in Belgium and England’s chances of winning the World Cup, with both countries best odds coming when they land in the lower half of the bracket AND avoid Colombia. So overall, perhaps the biggest advantage for England and Belgium is knowing who their opponents would be with 100% certainty prior to their own game. And do be surprised if things get a little crazy with one team trying to ensure they lose, especially if Colombia fails to win Group H. Sorry, Herm – you don’t always “play to win the game”. And maybe–just maybe–it’ll be a whole lot more fun.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;acknowledgements&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Acknowledgements&lt;/h3&gt;
+&lt;p&gt;I’d like to thank &lt;a href=&#34;https://twitter.com/StatsInTheWild&#34;&gt;Gregory Matthews&lt;/a&gt; for &lt;a href=&#34;https://twitter.com/StatsInTheWild/status/1010943601357086720&#34;&gt;giving me the idea to write this article&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>World Cup Probability Quirks</title>
+      <link>/post/wc_prob_quirks/</link>
+      <pubDate>Sun, 24 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/wc_prob_quirks/</guid>
+      <description>
+
+
+&lt;p&gt;With the second round of group stage matches complete at the 2018 FIFA World Cup, knockout round qualification is becoming clearer. Several teams have already clinched their spots past the group stage, with a few more near locks to do so on the final match day. There are, however, still a few groups with something left to play for, ensuring dramatic matches during this next week. After running the latest batch of &lt;a href=&#34;https://en.wikipedia.org/wiki/Monte_Carlo_method&#34;&gt;Monte Carlo&lt;/a&gt; simulations with &lt;a href=&#34;http://rpubs.com/lbenz730/world_cup_model&#34;&gt;my World Cup model&lt;/a&gt; to estimate each country’s chances of advancing to the knockout round, I noticed a few neat probability quirks that reveal a lot about which groups are sure to provide viewers with the most exciting final match day.&lt;/p&gt;
+&lt;div id=&#34;group-f&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Group F&lt;/h3&gt;
+&lt;p&gt;After &lt;a href=&#34;https://www.foxsports.com/soccer/video/1262522435676&#34;&gt;Toni Kroos’ last gasp winner over Sweden&lt;/a&gt;, it’s not exactly groundbreaking to suggest that Group F, comprised of Mexico, Germany, Sweden, and South Korea, will offer one of most exciting endings of any group. All four teams are still alive heading into the final round of matches, meaning everyone’s best squad will be on display. Yet, that’s not the primary reason this group caught my eye. Rather, Group F really caught my eye when I looked at the group standings after 10,000 simulations.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;##          country group expected_pts first_in_group second_in_group    r16
+## 1        Germany     F         5.48         0.2164          0.6196 0.8360
+## 2         Mexico     F         7.24         0.6055          0.1071 0.7126
+## 3         Sweden     F         4.47         0.1781          0.2541 0.4322
+## 4 Korea Republic     F         0.36         0.0000          0.0192 0.0192&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Interestingly, despite leading the group with 6 points, Mexico does not possess the best chance to advance, and frankly, it’s not really that close. According to my model, Germany is about &lt;strong&gt;13%&lt;/strong&gt; more likely to move on than Mexico. &lt;a href=&#34;http://fivethirtyeight.com&#34;&gt;FiveThirtyEight&lt;/a&gt; founder Nate Silver &lt;a href=&#34;https://twitter.com/NateSilver538/status/1010616709877784576&#34;&gt;noted the same quirk on Twitter&lt;/a&gt;. What makes this really interesting, is that Mexico is nearly 3 times as likely as Germany to win thr group, and get roughly 1.7 more points than Germany on average. How is this possible? It all boils down to &lt;a href=&#34;https://en.wikipedia.org/wiki/Conditional_probability&#34;&gt;conditional probability&lt;/a&gt;. First, recall the &lt;a href=&#34;https://en.wikipedia.org/wiki/Law_of_total_probability&#34;&gt;law of total probability&lt;/a&gt;. If &lt;span class=&#34;math inline&#34;&gt;\(A\)&lt;/span&gt; is an event, and &lt;span class=&#34;math inline&#34;&gt;\(B_1, ..., B_n\)&lt;/span&gt; are a disjoint parition of the of the sample space, then
+&lt;span class=&#34;math display&#34;&gt;\[
+\mathbb{P}(A) = \sum_{i = 1}^n \mathbb{P}(A|B_i) \times \mathbb{P}(B_i)
+\]&lt;/span&gt;
+In the contest of the World Cup, we can think of &lt;span class=&#34;math inline&#34;&gt;\(A\)&lt;/span&gt; as being the event that Mexico advances, and &lt;span class=&#34;math inline&#34;&gt;\(B_1, B_2\)&lt;/span&gt;, and &lt;span class=&#34;math inline&#34;&gt;\(B_3\)&lt;/span&gt; being the events that Mexico wins, ties, or loses its final match against Sweden. Then, we have
+&lt;span class=&#34;math display&#34;&gt;\[
+\mathbb{P}(\text{Mexico Advances}) = \mathbb{P}(\text{Mexico Advances }|\text{ win}) \times \mathbb{P}(\text{win}) + \mathbb{P}(\text{Mexico Advances }|\text{ tie}) \times \mathbb{P}(\text{tie}) + \mathbb{P}(\text{Mexico Advances }|\text{ loss}) \times \mathbb{P}(\text{loss})
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Mexico is guarteed to win the group with a win or a tie against Sweeden, so &lt;span class=&#34;math inline&#34;&gt;\(\mathbb{P}(\text{Mexico Advances }|\text{ win}) = \mathbb{P}(\text{Mexico Advances }|\text{ tie}) = 1\)&lt;/span&gt;. With a loss however, Mexico’s position is much more precarious. Full scernarious are outlined &lt;a href=&#34;https://twitter.com/AmericanNumbers/status/1010939489198510081&#34;&gt;here&lt;/a&gt;, and Mexico can still advance with a loss, but accoring to my simulations, &lt;span class=&#34;math inline&#34;&gt;\(\mathbb{P}(\text{Mexico Advances }|\text{ loss})\)&lt;/span&gt; is only about 25%. Conditional on the fact that Mexico loses, they would lose any head to head tiebreaker Sweden, meaning a Germany win over South Korea would almost certainly eliminate El Tri. As for Germany’s favorable odds, a simple look at the expected goal distirbution for the final two matches expain why my model suggests Mexico isn’t as safe as one might’ve thought.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/img/gerkor.png&#34; alt=&#34;gerkor&#34; /&gt;
+&lt;img src=&#34;/img/mexswe.png&#34; alt=&#34;mexswe&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;group-h&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Group H&lt;/h3&gt;
+&lt;p&gt;The other interesting group from a probability standpoint is Group H, comprised of Senegal, Poland, Japan, and Colombia. While Poland has been elimanted from the World Cup, the other three squads have a good will fight on the final match day for two spots in the knockout round. Here’s how the simulations see the group shaking out.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;##    country group expected_pts first_in_group second_in_group    r16
+## 1  Senegal     H         5.94         0.5168          0.2633 0.7801
+## 2    Japan     H         4.71         0.2340          0.2608 0.4948
+## 3   Poland     H         3.36         0.1338          0.2807 0.4145
+## 4 Colombia     H         2.91         0.1154          0.1952 0.3106&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We see two things about this that are noteworthy.&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Japan, Senegal, and Colombia are all each &lt;strong&gt;&lt;em&gt;more likely&lt;/em&gt;&lt;/strong&gt; to advance than not despite the fact that one of them will not advance.&lt;/li&gt;
+&lt;li&gt;All three of the those countries are essentially a 2/3 chance of advancing.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;At first, 1. might seem somewhat paradoxical, but actually it’s quite reasonable. After all
+&lt;span class=&#34;math display&#34;&gt;\[
+\sum_{teams} \mathbb{P}(\text{team advances}) = 2
+\]&lt;/span&gt;
+as there are 2 spots in the knockout round for each group. Given that Poland has already been eliminated, we must divide that 200% of probability amongst 3 teams somehow, and doing so in a relatively even manner yields this neat result. Micah McCurdy has a &lt;a href=&#34;https://twitter.com/IneffectiveMath/status/1010983059364163586&#34;&gt;good explanation on this phenomon in general&lt;/a&gt;. Perhaps even more interesting is the fact that the three remaining countries’ chances don’t deviate significantly from a true random draw, in which each country’s chances would be exactly 2/3. Any time you have random or near random events in sports, it’s almost always exciting (this is why we find March Madness so appealing, for instance), meaning that Group H’s final matchday will be must-see TV. Here’s how my model sees the final Group H matches.3&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/img/sencol.png&#34; alt=&#34;sencol&#34; /&gt;
+&lt;img src=&#34;/img/poljpn.png&#34; alt=&#34;poljpn&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>World Cup Methodology</title>
+      <link>/post/wc_model_methodology/blogpost/</link>
+      <pubDate>Sun, 10 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/wc_model_methodology/blogpost/</guid>
+      <description>
+
+
+
+&lt;div id=&#34;introduction&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Introduction&lt;/h1&gt;
+&lt;p&gt;With the 2018 FIFA World Cup nearly upon us, we set out to build a model to predict game outcomes and estimate coutries chances of reaching various rounds of the tournament. Ranking systems for various sports, including &lt;a href=&#34;https://sports.sites.yale.edu/ncaa-mens-basketball-power-rankings-0&#34;&gt;NCAA Men’s Basketball&lt;/a&gt;, &lt;a href=&#34;https://github.com/mc-robinson/YUSAG_football_model&#34;&gt;NCAA Football&lt;/a&gt;, and &lt;a href=&#34;https://sports.sites.yale.edu/nba-model-math&#34;&gt;NBA&lt;/a&gt;, have been the basis of several of our projects in the past. With the exception of rankings using ELO, all of our past ranking systems have made use of linear regression in one form or another. Simply, those models took on something similar to the following form
+&lt;span class=&#34;math display&#34;&gt;\[
+Y = \beta_0 + \beta_{team} X_{team} + \beta_{opp} X_{opp} + \beta_{loc} X_{loc} + \epsilon
+\]&lt;/span&gt;
+where &lt;span class=&#34;math inline&#34;&gt;\(X_{team, i}, X_{opp, i}\)&lt;/span&gt;, and &lt;span class=&#34;math inline&#34;&gt;\(X_{loc, i}\)&lt;/span&gt; are indicator vectors for the &lt;span class=&#34;math inline&#34;&gt;\(i^{th}\)&lt;/span&gt; game’s &lt;code&gt;team&lt;/code&gt;, &lt;code&gt;opponent&lt;/code&gt;, and &lt;code&gt;location&lt;/code&gt; (Home, Away, Neutral) from the perspective of &lt;code&gt;team&lt;/code&gt;, and &lt;span class=&#34;math inline&#34;&gt;\(Y_i\)&lt;/span&gt; is game’s the score-differential. The key assumptions for this model are that game outcomes are independent of one another, and that our error &lt;span class=&#34;math inline&#34;&gt;\(\epsilon \sim N(0, \sigma^2)\)&lt;/span&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;first-attempt&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;First Attempt&lt;/h1&gt;
+&lt;p&gt;Before going into detail on the model we ultimated settled on, let’s first examine what didn’t work–and more importantly &lt;strong&gt;why&lt;/strong&gt;. Given our prior experience using linear regression to predict score differential in several different sporting events, it seemed natural to extend the notion to international soccer. In fact, our initial attempt seemed quite reasonable. The basic idea was as follows:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Use linear regression with covariates &lt;code&gt;team&lt;/code&gt;, &lt;code&gt;opponent&lt;/code&gt;, and &lt;code&gt;location&lt;/code&gt; to predict &lt;code&gt;goal_diff&lt;/code&gt; (a game’s goal differential).&lt;/li&gt;
+&lt;li&gt;Use a &lt;a href=&#34;https://en.wikipedia.org/wiki/Multinomial_logistic_regression&#34;&gt;multinomial logistic regression&lt;/a&gt; model with input &lt;code&gt;pred_goal_diff&lt;/code&gt; to estimate probabilities of &lt;code&gt;win&lt;/code&gt;, &lt;code&gt;loss&lt;/code&gt;, and &lt;code&gt;tie&lt;/code&gt;.
+Our rankings indicated that Germany, Brazil, and Spain were the top 3 teams, entirely plausible our eyes (as casual soccer fans).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;In writing &lt;a href=&#34;https://en.wikipedia.org/wiki/Monte_Carlo_method&#34;&gt;Monte Carlo simulations&lt;/a&gt; to estimate round-by-round probabilities of advacing, we began to notice a potential fault in our model. While it was easy enough to simulate game outcomes and award points (3 for win, 1 for tie, 0 for loss) given our estimated &lt;code&gt;win&lt;/code&gt;, &lt;code&gt;loss&lt;/code&gt;, and &lt;code&gt;tie&lt;/code&gt; probabilites for each of the group stage games, breaking ties in the group standings to determine which two teams would advance to the knockout round presented more of a challenge. If two or more teams are tied on points after a round robin within the group, the first tie-breaker is net goal differtial, a country’s goals scored - goals allowed in the 3 group stage games. Our initial thought was to simply flip a coin to break ties, but this underestimates the probabiity that better teams advance past the group stage. Consider the following hypothethical scenario in group B:&lt;/p&gt;
+&lt;table border=2, align = &#34;center&gt;
+&lt;tr&gt; &lt;th&gt;  &lt;/th&gt; &lt;th&gt; country &lt;/th&gt; &lt;th&gt; sim_points &lt;/th&gt;  &lt;/tr&gt;
+&lt;tr&gt; &lt;td align=&#34;right&#34;&gt; 1 &lt;/td&gt; &lt;td&gt; Spain &lt;/td&gt; &lt;td align=&#34;right&#34;&gt; 9 &lt;/td&gt; &lt;/tr&gt;
+&lt;tr&gt; &lt;td align=&#34;right&#34;&gt; 2 &lt;/td&gt; &lt;td&gt; Portugal &lt;/td&gt; &lt;td align=&#34;right&#34;&gt; 4 &lt;/td&gt; &lt;/tr&gt;
+&lt;tr&gt; &lt;td align=&#34;right&#34;&gt; 3 &lt;/td&gt; &lt;td&gt; Morocco &lt;/td&gt; &lt;td align=&#34;right&#34;&gt; 4 &lt;/td&gt; &lt;/tr&gt;
+&lt;tr&gt; &lt;td align=&#34;right&#34;&gt; 4 &lt;/td&gt; &lt;td&gt; Iran &lt;/td&gt; &lt;td align=&#34;right&#34;&gt; 0 &lt;/td&gt; &lt;/tr&gt;
+&lt;/table&gt;
+&lt;p&gt;Simply flipping a coin to determine whether Portugal or Morocco would advance in the above case almost certianly underestimates the chances that Portugal, the superior of the two, would have a larger goal differential than Morocco. So, was there a better way to account for goal differntial? Recall, &lt;code&gt;goal_diff&lt;/code&gt; was the response variable of our linear regression. A nice result of simple linear regression is that for game &lt;span class=&#34;math inline&#34;&gt;\(i\)&lt;/span&gt;, we have &lt;span class=&#34;math inline&#34;&gt;\(\widehat Y_i\)&lt;/span&gt; normally distributed. Since &lt;span class=&#34;math inline&#34;&gt;\(\widehat Y_i = \widehat \beta_0 + \widehat\beta X_i\)&lt;/span&gt; and each &lt;span class=&#34;math inline&#34;&gt;\(\widehat \beta_i \sim N(\beta_i, \sigma_i^2)\)&lt;/span&gt;, &lt;span class=&#34;math display&#34;&gt;\[\widehat Y_j \sim N(\beta_0 + \beta X_j, \sum_i \sigma_i^2)\]&lt;/span&gt;
+Approximating such a distribution using prediction intervals for &lt;code&gt;goal_diff&lt;/code&gt;, perhaps we could form net goal differential distributions for each team in group play and randomly draw from those distrubutions in the case of a tie in the group standings. Things quickly became not well-defined when trying to draw from &lt;span class=&#34;math inline&#34;&gt;\(Y \sim N(\mu, \sigma^2) | Y \geq 1\)&lt;/span&gt; (in case of loss, &lt;span class=&#34;math inline&#34;&gt;\(Y \leq -1\)&lt;/span&gt;). Moreover, in the case of a tie, we’d be setting &lt;span class=&#34;math inline&#34;&gt;\(Y = 0\)&lt;/span&gt; in our simulation, yet under the normal distribution, &lt;span class=&#34;math inline&#34;&gt;\(P(Y = 0) = 0\)&lt;/span&gt; (in fact the probability &lt;span class=&#34;math inline&#34;&gt;\(Y = c\)&lt;/span&gt; exactly is 0 any fixed constant &lt;span class=&#34;math inline&#34;&gt;\(c\)&lt;/span&gt;). By this point, we’d realized we were in trouble, as drawing from this continuous distribution for a discrete random variable didn’t make a lot of sense. Back to the drawing board.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;taking-a-step-back&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Taking a Step Back&lt;/h1&gt;
+&lt;p&gt;At this stage, there are two questions to consider. The first, is why didn’t a linear model, which had worked well for us in the case of basketball and football, work well in the case of soccer? Furthermore, we wondered, if not a linear model, what type of model would work best? The answer to both of these questions is best seen by looking at histograms of points/goals scored in soccer games vs. basketball games.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/wc_model_methodology/blogpost_files/figure-html/unnamed-chunk-1-1.png&#34; width=&#34;672&#34; /&gt;&lt;img src=&#34;/post/wc_model_methodology/blogpost_files/figure-html/unnamed-chunk-1-2.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Based on the plots above, we see that the distribution of basketball scores looks like a bell curve, while the distribution of soccer scores does not. Rather, the distribution of soccer scores looks to be more like a &lt;a href=&#34;https://en.wikipedia.org/wiki/Poisson_distribution&#34;&gt;Poisson distribution&lt;/a&gt;. Recall that the probability mass function (PMF) of the possion distribution with parameter &lt;span class=&#34;math inline&#34;&gt;\(\lambda\)&lt;/span&gt; is by
+&lt;span class=&#34;math display&#34;&gt;\[
+P(X = k) = \frac{e^{-\lambda}\lambda^k}{x!} \textrm{ for } x = 0, 1, 2, ...
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Additionally, if &lt;span class=&#34;math inline&#34;&gt;\(X \sim Pois(\lambda)\)&lt;/span&gt;, &lt;span class=&#34;math inline&#34;&gt;\(\mathbb{E}(X) = \lambda\)&lt;/span&gt;. As &lt;span class=&#34;math inline&#34;&gt;\(\lambda\)&lt;/span&gt; gets large, Poisson distributions become more and more like Guassians, hence the ability for sports with larger average scores (i.e. basketball) to be better modeled with a Normal Model than sports with lower scores (i.e. soccer, hockey). Since the difference of i.i.d. normal random variables is also normal, linear regression is perfectly fine for modeling &lt;code&gt;score_diff&lt;/code&gt; is basketball. However, the difference of two i.i.d. poisson random variables &lt;strong&gt;is not&lt;/strong&gt; normal nor poisson. Rather, the difference of two poisson random variables follows the &lt;a href=&#34;https://en.wikipedia.org/wiki/Skellam_distribution&#34;&gt;skellam distribution&lt;/a&gt;. Thus, it seems like our best bet here is to use &lt;a href=&#34;https://en.wikipedia.org/wiki/Poisson_regression&#34;&gt;poisson regression&lt;/a&gt; for our model. In fact, several studies have shown that poisson regression is good for modeling soccer &lt;a href=&#34;#fn1&#34; class=&#34;footnote-ref&#34; id=&#34;fnref1&#34;&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt; &lt;a href=&#34;#fn2&#34; class=&#34;footnote-ref&#34; id=&#34;fnref2&#34;&gt;&lt;sup&gt;2&lt;/sup&gt;&lt;/a&gt; &lt;a href=&#34;#fn3&#34; class=&#34;footnote-ref&#34; id=&#34;fnref3&#34;&gt;&lt;sup&gt;3&lt;/sup&gt;&lt;/a&gt; &lt;a href=&#34;#fn4&#34; class=&#34;footnote-ref&#34; id=&#34;fnref4&#34;&gt;&lt;sup&gt;4&lt;/sup&gt;&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;building-the-model&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Building the Model&lt;/h1&gt;
+&lt;p&gt;The data, &lt;a href=&#34;https://www.kaggle.com/martj42/international-football-results-from-1872-to-2017&#34;&gt;available on Kaggle&lt;/a&gt;, covers over 39,000 international soccer matches dating back to 1872. For the purpose of this model, we have chosen to use data for games played after &lt;strong&gt;January 1, 2014&lt;/strong&gt;. Many major tournaments in soccer, the World Cup included, occur on a four year cycle, so using the last 4 years worth of data seemed natural.&lt;/p&gt;
+&lt;p&gt;Daniel Sheehan has written a &lt;a href=&#34;https://dashee87.github.io/data%20science/football/r/predicting-football-results-with-statistical-modelling/&#34;&gt;fantastic blog post on using poisson regression to predict the outcomes of soccer games&lt;/a&gt;, and our model is based off of his work (he provides lots of examples in both R and Python, and we’d highly recommend reading it!).&lt;/p&gt;
+&lt;p&gt;We began by duplicating the data set and transforming one copy to be from the perspective of the &lt;code&gt;opponent&lt;/code&gt;. For example, if we had the vector in the &lt;strong&gt;&amp;lt;&lt;/strong&gt; &lt;code&gt;team&lt;/code&gt; = &#34;Germany&#34;, &lt;code&gt;opponent&lt;/code&gt; = &#34;Brazil&#34;, &lt;code&gt;location&lt;/code&gt; = &#34;N&#34;, &lt;code&gt;team_score&lt;/code&gt; = 7, &lt;code&gt;opp_score&lt;/code&gt; = 1 &lt;strong&gt;&amp;gt;&lt;/strong&gt;, we’d also add to our data set the vector &lt;strong&gt;&amp;lt;&lt;/strong&gt;&lt;code&gt;team&lt;/code&gt; = &#34;Brazil&#34;, &lt;code&gt;opponent&lt;/code&gt; = &#34;Germany&#34;, &lt;code&gt;location&lt;/code&gt; = &#34;N&#34;, &lt;code&gt;team_score&lt;/code&gt; = 1, &lt;code&gt;opp_score&lt;/code&gt; = 7 &lt;strong&gt;&amp;gt;&lt;/strong&gt;. What we eventually end up predicting is &lt;code&gt;team_score&lt;/code&gt; as a function of &lt;code&gt;team&lt;/code&gt;, &lt;code&gt;opponent&lt;/code&gt;, and &lt;code&gt;location&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Before actually building the model, there were one more things that we considered, namely &lt;code&gt;match_weight&lt;/code&gt;, how much weight we should give a particular game. There were two factors on which the model weights were set: time since the was played, and the type of match being played. We broke matches in our data set into four types (derived from the &lt;a href=&#34;https://www.fifa.com/fifa-world-ranking/procedure/men.html&#34;&gt;official FIFA rankings formula&lt;/a&gt;):&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Friendlies and other matches (Base Weight &lt;span class=&#34;math inline&#34;&gt;\(\alpha_i = 1\)&lt;/span&gt;)&lt;/li&gt;
+&lt;li&gt;Qualification matches for World Cup and continental championships (Base Weight = &lt;span class=&#34;math inline&#34;&gt;\(\alpha_i = 3\)&lt;/span&gt;)&lt;/li&gt;
+&lt;li&gt;Confederations Cup and continental championships (Base Weight = &lt;span class=&#34;math inline&#34;&gt;\(\alpha_i = 5\)&lt;/span&gt;)&lt;/li&gt;
+&lt;li&gt;World Cup Matches (Base Weight = &lt;span class=&#34;math inline&#34;&gt;\(\alpha_i= 8\)&lt;/span&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Letting &lt;span class=&#34;math inline&#34;&gt;\(\delta_i\)&lt;/span&gt; represent the date on which game &lt;span class=&#34;math inline&#34;&gt;\(i\)&lt;/span&gt; was played and let &lt;span class=&#34;math inline&#34;&gt;\(\delta_t\)&lt;/span&gt; be today’s date (i.e. the date we choose to fit/re-fit the model). Finally, take &lt;span class=&#34;math inline&#34;&gt;\(\delta\star = \max_{i} (\delta_t - \delta_i)\)&lt;/span&gt;. Then, the &lt;code&gt;match_weight&lt;/code&gt;, &lt;span class=&#34;math inline&#34;&gt;\(w_i\)&lt;/span&gt; of match &lt;span class=&#34;math inline&#34;&gt;\(i\)&lt;/span&gt; is given by
+&lt;span class=&#34;math display&#34;&gt;\[
+w_i = \alpha_i \times e^{- \frac{\delta_t - \delta_i}{\delta\star}}
+\]&lt;/span&gt;
+&lt;img src=&#34;/post/wc_model_methodology/blogpost_files/figure-html/unnamed-chunk-2-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;We see above that the 2014 World Cup and the 2016 Euro Cup are among the most heavily weighted games, as we would hope. Now the call to the model is as follows:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;glm.futbol &amp;lt;- glm(goals ~ team + opponent + location, 
+                  family = &amp;quot;poisson&amp;quot;,
+                  data = y, 
+                  weights = match_weight)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The model gives coefficients for each country both as levels of the &lt;code&gt;team&lt;/code&gt; and &lt;code&gt;opponent&lt;/code&gt; factors. Since the model output predictions can be taken as the average &lt;code&gt;team_score&lt;/code&gt; for a given &lt;code&gt;team&lt;/code&gt; against a given &lt;code&gt;opponent&lt;/code&gt; at a given &lt;code&gt;location&lt;/code&gt;, we can view the country specific coefficients as offense and defensive components of a power rating. The interpretation of such coefficients is less intutive than in the case of linear regression, in which coefficients signfy points better than an average team, but you can think of them as more similar to logistic regression coefficients. Higher offensive coefficients indicate a team is likely to score more goals on average while low (more negative) defensive coefficients indicate a team is likely to conceed fewer goals on average.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;##            team  offense   defense net_rating rank
+## 77      Germany 1.707366 -1.373929   3.081295    1
+## 72       France 1.581282 -1.307218   2.888500    2
+## 29       Brazil 1.727649 -1.097520   2.825169    3
+## 181       Spain 1.639751 -1.116924   2.756675    4
+## 9     Argentina 1.318170 -1.438423   2.756593    5
+## 45     Colombia 1.456873 -1.285449   2.742322    6
+## 20      Belgium 1.565169 -1.140337   2.705506    7
+## 140 Netherlands 1.597657 -1.065459   2.663115    8
+## 158    Portugal 1.442856 -1.200933   2.643789    9
+## 64      England 1.269063 -1.281223   2.550285   10&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Offensively, the top teams by our model, are Brazil, Germany and Spain, while Argentina, Germany, and England posses the best defenses.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;sample-match-prediction&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Sample Match Prediction&lt;/h1&gt;
+&lt;p&gt;To see how this model works in more detail, let’s walk through how we predict the outcome of a single match. We’ll use the marquee Spain-Portugal fixture from Group B as our case study. The model output for the vector &lt;strong&gt;&amp;lt;&lt;/strong&gt;&lt;code&gt;team&lt;/code&gt; = &#34;Spain&#34;, &lt;code&gt;opponent&lt;/code&gt; = &#34;Portugal&#34;, &lt;code&gt;location&lt;/code&gt; = &#34;N&#34; &lt;strong&gt;&amp;gt;&lt;/strong&gt; is 1.37, while the model output for the vector &lt;strong&gt;&amp;lt;&lt;/strong&gt;&lt;code&gt;team&lt;/code&gt; = &#34;Portugal&#34;, &lt;code&gt;opponent&lt;/code&gt; = &#34;Spain&#34;, &lt;code&gt;location&lt;/code&gt; = &#34;N&#34; &lt;strong&gt;&amp;gt;&lt;/strong&gt; is 1.21 . This signifies that on average, we expect Spain to score 1.37 goals and expect Portugal to score 1.21 goals. There is much more information encoded in these two numbers however. Let &lt;span class=&#34;math inline&#34;&gt;\(X_s\)&lt;/span&gt; be the random variable denoting the number of goals Spain score and let &lt;span class=&#34;math inline&#34;&gt;\(X_p\)&lt;/span&gt; denote the number of goals that Portugal scores. Then, we have that &lt;span class=&#34;math inline&#34;&gt;\(X_s \sim Pois(\lambda_s = 1.37)\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(X_p \sim Pois(\lambda_p = 1.21)\)&lt;/span&gt;, and from these distributions, we can get a lot of neat stuff. First, we can look at the joint distribution of goals scored. Rows indicate the number of goals Spain scores while columns correspond to the number of goals Portugal scores.&lt;/p&gt;
+&lt;table border=&#34;1&#34;&gt;
+&lt;tr&gt;
+&lt;th&gt;
+&lt;/th&gt;
+&lt;th&gt;
+0
+&lt;/th&gt;
+&lt;th&gt;
+1
+&lt;/th&gt;
+&lt;th&gt;
+2
+&lt;/th&gt;
+&lt;th&gt;
+3
+&lt;/th&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align=&#34;right&#34;&gt;
+&lt;strong&gt;0&lt;/strong&gt;
+&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;
+0.0758
+&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;
+0.0917
+&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;
+0.0555
+&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;
+0.0224
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align=&#34;right&#34;&gt;
+&lt;strong&gt;1&lt;/strong&gt;
+&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;
+0.1038
+&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;
+0.1256
+&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;
+0.0760
+&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;
+0.0307
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align=&#34;right&#34;&gt;
+&lt;strong&gt;2&lt;/strong&gt;
+&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;
+0.0711
+&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;
+0.0860
+&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;
+0.0521
+&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;
+0.0210
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align=&#34;right&#34;&gt;
+&lt;strong&gt;3&lt;/strong&gt;
+&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;
+0.0325
+&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;
+0.0393
+&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;
+0.0238
+&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;
+0.0096
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;p&gt;Perhaps unsuprisingly, the most likely outcome is a 1-1 draw, but there is still about an 87% chance we see a different outcome. Summing the diagonal entries of this matrix (extended out beyond 3 goals–let’s assume it’s neither team will score more than 10 goals) gives the probability that that Iberian neighbors end in a stalemate, while summing the entries above the diagonal or below the diagonal yield Portugal or Spain’s chances of winning, respectively. Overall, we estimate that Spain has about a 41% chance to win, Portugal has about a 33% chance to win, and there is a 26% chance the two teams draw.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/wc_model_methodology/blogpost_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;simulating-the-world-cup&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Simulating the World Cup&lt;/h1&gt;
+&lt;p&gt;Now that we have the ability predict any game, we can run some Monte Carlo simulations to estimate the probability of each time winning the World Cup. We run 10,000 iterations of the following simulation steps:&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Simulate each group game by drawing the number of goals scored by each team from their respective poisson distributions.&lt;/li&gt;
+&lt;li&gt;Advance the top 2 teams in each group by points, and in the case of ties, use goal differential, goals forced, and goals allowed (in that order) as tiebreakers.&lt;/li&gt;
+&lt;li&gt;Simulate knockout round games as in step 1. If there is a tie, flip a coin to determine who wins the simulated penalty shooutout (assuming that teams convert penalties at similar rates, this is not a decent approximation &lt;a href=&#34;#fn5&#34; class=&#34;footnote-ref&#34; id=&#34;fnref5&#34;&gt;&lt;sup&gt;5&lt;/sup&gt;&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;Repeat step 4 until there is a champion&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;img src=&#34;/post/wc_model_methodology/blogpost_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;672&#34; /&gt;&lt;img src=&#34;/post/wc_model_methodology/blogpost_files/figure-html/unnamed-chunk-6-2.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Our simulations indicate that despite being in the so called “group of death”, defending champion Germany is most likely to win the World Cup, with a roughly 16% chance to hoist the crown. Brazil (11%), Frace (9%), Spain (8%), and the trio of Argentina, Belgium and Columbia (6% each) follow closely behind. A full list of World Cup odds, as well as the code used in this project can be found on &lt;a href=&#34;https://github.com/lbenz730/world_cup&#34;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;limitations&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Limitations&lt;/h1&gt;
+&lt;p&gt;A key assumption of the poisson distribution is that the rate parameter &lt;span class=&#34;math inline&#34;&gt;\(\lambda\)&lt;/span&gt; does not depend on time. That is, in using this model, we are assuming that the rate of goals is equal during each minute of the match. However, this is not true in practice, and several sources extend their framework to bivariate poisson regression &lt;a href=&#34;#fn6&#34; class=&#34;footnote-ref&#34; id=&#34;fnref6&#34;&gt;&lt;sup&gt;6&lt;/sup&gt;&lt;/a&gt; &lt;a href=&#34;#fn7&#34; class=&#34;footnote-ref&#34; id=&#34;fnref7&#34;&gt;&lt;sup&gt;7&lt;/sup&gt;&lt;/a&gt; &lt;a href=&#34;#fn8&#34; class=&#34;footnote-ref&#34; id=&#34;fnref8&#34;&gt;&lt;sup&gt;8&lt;/sup&gt;&lt;/a&gt; &lt;a href=&#34;#fn9&#34; class=&#34;footnote-ref&#34; id=&#34;fnref9&#34;&gt;&lt;sup&gt;9&lt;/sup&gt;&lt;/a&gt;. Other limitations include the relatively small number of important matches in international soccer. While we examine on a 4 year basis, there may only be 15-20 matches per team of the highest importance, making prediction dificult even with our best effort to correct for difference between matches on the basis of time and relative importance.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;acknowledgements&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Acknowledgements&lt;/h1&gt;
+&lt;p&gt;We’d like to thank &lt;a href=&#34;https://twitter.com/kpelechrinis&#34;&gt;Kostas Pelechrinis&lt;/a&gt; and &lt;a href=&#34;https://twitter.com/StatsbyLopez&#34;&gt;Michael Lopez&lt;/a&gt; for offering suggestions regarding the switch from linear to poisson regression, as well as providing example papers modeling soccer outcomes using poisson regressions. Additionally, we’d like to thank &lt;a href=&#34;https://twitter.com/EdwardEgrosFox4&#34;&gt;Edward Egros&lt;/a&gt;, who mentioned the data set used in this project during his April visit to Yale University.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;footnotes&#34;&gt;
+&lt;hr /&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn1&#34;&gt;&lt;p&gt;&lt;a href=&#34;https://www.jstor.org/stable/4128211?seq=1#page_scan_tab_contents&#34; class=&#34;uri&#34;&gt;https://www.jstor.org/stable/4128211?seq=1#page_scan_tab_contents&lt;/a&gt;&lt;a href=&#34;#fnref1&#34; class=&#34;footnote-back&#34;&gt;↩︎&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li id=&#34;fn2&#34;&gt;&lt;p&gt;&lt;a href=&#34;https://epub.ub.uni-muenchen.de/29028/1/TR_EM2016.pdf&#34; class=&#34;uri&#34;&gt;https://epub.ub.uni-muenchen.de/29028/1/TR_EM2016.pdf&lt;/a&gt;&lt;a href=&#34;#fnref2&#34; class=&#34;footnote-back&#34;&gt;↩︎&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li id=&#34;fn3&#34;&gt;&lt;p&gt;&lt;a href=&#34;http://www2.stat-athens.aueb.gr/~jbn/tr/TR60_soccer.ps&#34; class=&#34;uri&#34;&gt;http://www2.stat-athens.aueb.gr/~jbn/tr/TR60_soccer.ps&lt;/a&gt;&lt;a href=&#34;#fnref3&#34; class=&#34;footnote-back&#34;&gt;↩︎&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li id=&#34;fn4&#34;&gt;&lt;p&gt;&lt;a href=&#34;http://www2.stat-athens.aueb.gr/~karlis/Bivariate%20Poisson%20Regression.pdf&#34; class=&#34;uri&#34;&gt;http://www2.stat-athens.aueb.gr/~karlis/Bivariate%20Poisson%20Regression.pdf&lt;/a&gt;&lt;a href=&#34;#fnref4&#34; class=&#34;footnote-back&#34;&gt;↩︎&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li id=&#34;fn5&#34;&gt;&lt;p&gt;&lt;a href=&#34;https://fivethirtyeight.com/features/a-chart-for-predicting-penalty-shootout-odds-in-real-time/&#34; class=&#34;uri&#34;&gt;https://fivethirtyeight.com/features/a-chart-for-predicting-penalty-shootout-odds-in-real-time/&lt;/a&gt;&lt;a href=&#34;#fnref5&#34; class=&#34;footnote-back&#34;&gt;↩︎&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li id=&#34;fn6&#34;&gt;&lt;p&gt;&lt;a href=&#34;https://www.jstor.org/stable/4128211?seq=1#page_scan_tab_contents&#34; class=&#34;uri&#34;&gt;https://www.jstor.org/stable/4128211?seq=1#page_scan_tab_contents&lt;/a&gt;&lt;a href=&#34;#fnref6&#34; class=&#34;footnote-back&#34;&gt;↩︎&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li id=&#34;fn7&#34;&gt;&lt;p&gt;&lt;a href=&#34;https://epub.ub.uni-muenchen.de/29028/1/TR_EM2016.pdf&#34; class=&#34;uri&#34;&gt;https://epub.ub.uni-muenchen.de/29028/1/TR_EM2016.pdf&lt;/a&gt;&lt;a href=&#34;#fnref7&#34; class=&#34;footnote-back&#34;&gt;↩︎&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li id=&#34;fn8&#34;&gt;&lt;p&gt;&lt;a href=&#34;http://www2.stat-athens.aueb.gr/~jbn/tr/TR60_soccer.ps&#34; class=&#34;uri&#34;&gt;http://www2.stat-athens.aueb.gr/~jbn/tr/TR60_soccer.ps&lt;/a&gt;&lt;a href=&#34;#fnref8&#34; class=&#34;footnote-back&#34;&gt;↩︎&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li id=&#34;fn9&#34;&gt;&lt;p&gt;&lt;a href=&#34;http://www2.stat-athens.aueb.gr/~karlis/Bivariate%20Poisson%20Regression.pdf&#34; class=&#34;uri&#34;&gt;http://www2.stat-athens.aueb.gr/~karlis/Bivariate%20Poisson%20Regression.pdf&lt;/a&gt;&lt;a href=&#34;#fnref9&#34; class=&#34;footnote-back&#34;&gt;↩︎&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

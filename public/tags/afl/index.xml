@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>AFL on Luke Benz</title>
+    <link>/tags/afl/</link>
+    <description>Recent content in AFL on Luke Benz</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 25 Mar 2020 00:00:00 +0000</lastBuildDate>
+    
+	    <atom:link href="/tags/afl/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Could an AFL Style Tournament Structure be Utilized in College Basketball</title>
+      <link>/post/afl_tournament_sims/</link>
+      <pubDate>Wed, 25 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/afl_tournament_sims/</guid>
+      <description>
+
+
+&lt;div id=&#34;introduction&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Introduction&lt;/h1&gt;
+&lt;p&gt;While Australian Rules Football (AFL) recently suspended its season, it was for a brief moment in time, the most popular sports league in the world (if only due to the fact the every other major sports league had already shut down). AFL is actually really fun to watch, and I’d highly recommend checking it out once its season returns. One of the parts of AFL that has always interested me is its unique playoff structure–an eight team playoff that is a hybrid of single elimination (for seeds 5-8) and “psuedo” double elimination (for seeds 1:4).&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/img/afl_playoff_structure.png&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;This tournament structure is super interesting in the context of college basketball conference tournaments. Every win a team earns in the NCAA tournament nets its conference about &lt;a href=&#34;https://www.washingtonpost.com/graphics/sports/ncaa-money/&#34;&gt;1.7 million dollars&lt;/a&gt; split equally amongst each member school. Hence, conferences (particularly those mid-major conferences which only send one representive to the big dance) have big incentives to send their best team to the NCAA tournament.&lt;/p&gt;
+&lt;p&gt;Does the AFL playoff structure better protect top seeds compared to the two most common tournament formats currently used by conferences (neutral site tournament and higher seed home court advantage). On one hand, the top seed(s) have the advantage of a mulligan in the case of a first round slip up, but simultaneously have a more difficult first round (and possibly semi-final) matchup. The answer to this question is somewhat dependent on the distribution of team stength across the tournament. To examine this question, I ran the following simulation.&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Take the top 8 teams in each of the 32 conferences by record (ties broken using my ranking system found &lt;a href=&#34;https://lbenz730.shinyapps.io/recspecs_basketball_central/&#34;&gt;here&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;Simulate 8 team, single elimination tournament where the home court advantage is given to the higher seed in each matchup. Repeat 1000 times for each conference.&lt;/li&gt;
+&lt;li&gt;Simulate 8 team, single elimination tournament where the the entire tournament is hosted at a neutral site. Repeat 1000 times for each conference.&lt;/li&gt;
+&lt;li&gt;Simulate 8 team, AFL style tournament. Repeat 1000 times for each conference.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Of course, most conference tournaments have more than 8 participants, but those that do usually eventually result in 8 remaining teams (usually at a neutral site), and 8 teams is the easiest way to compare formats with the 8 team AFL style.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;simulation-results&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Simulation Results&lt;/h1&gt;
+&lt;p&gt;First, we must start by comparing the standard single elimination 8 team formats. It’s little suprise to see that giving the better seed in each matchup home court advatage is beneficial to these higher seeds. Every single conference’s top seed is more likely to win the tournament with the option to host as long as they keeping, and similarly for the top 2 seeds chance’s of reaching the finals.
+&lt;img src=&#34;/post/afl_tournament_sims/index_files/figure-html/unnamed-chunk-1-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Given that the majority of conference play neutral site conference tournaments, we are perhaps most interested in comparing that tournament format to the unique AFL tournament style. Clearly, the AFL tournament provides some benefit to the top seeds in the tournament. Some of the may be driven by hosting games, but likely the majority of it is driven by first round mulligan alloted to the top-4 seeds. Compare the differences between the 4- and 5- seed in these 2 tournament formats. The 4- seed does not host its first round game while the 5- seed does, but the 4- seed seems an improvement in its odds of reaching/winning the finals because it survives a first round loss.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/afl_tournament_sims/index_files/figure-html/unnamed-chunk-2-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Finally, we compare the simulated probabilities of winning/reaching a tournament final between the higher seed always getting home court and the AFL style. While there isn’t a huge difference in the chances of the top 2 seeds reaching the finals between the two scenarios, the 3- and 4- seeds are much likelier to reach the finals in the AFL style tournament. Across the board, however, the top seed is less likely to win the AFL style tournament. This is because in the AFL style tournament, the final is played at a neutral site compared to the higher seed getting to host the championship game.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/afl_tournament_sims/index_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;So it seems that the home court advantage format makes it most likely for a conference to send its best team to the NCAA tournament (at least via automatic bid). But maybe this is not what’s best for the conference. Maybe instead, it would rather send the best team in expectation. That is, maybe it would rather maximize the chances that a top-4 team would make the tournament. We can quantify this in terms of the expected value of conference champion team strength.&lt;/p&gt;
+&lt;p&gt;Let &lt;span class=&#34;math inline&#34;&gt;\(\gamma_i\)&lt;/span&gt; denote the team strength of team &lt;span class=&#34;math inline&#34;&gt;\(i\)&lt;/span&gt;. Specifically, &lt;span class=&#34;math inline&#34;&gt;\(gamma_i\)&lt;/span&gt; denotes the number of points team &lt;span class=&#34;math inline&#34;&gt;\(i\)&lt;/span&gt; would be expected to win/loss by against an average team on a neutral floor. If you’re interested in the math behind estimating &lt;span class=&#34;math inline&#34;&gt;\(\gamma_i\)&lt;/span&gt;, check out &lt;a href=&#34;https://lukebenz.com/post/hoops_methodology/&#34;&gt;this post&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Let &lt;span class=&#34;math inline&#34;&gt;\(C\)&lt;/span&gt; denote the team strength of the conference champion. We see that
+&lt;span class=&#34;math display&#34;&gt;\[
+E(C) = \sum_{i \in \text{conference}} \gamma_i p_i
+\]&lt;/span&gt;
+where &lt;span class=&#34;math inline&#34;&gt;\(p_i\)&lt;/span&gt; denotes the chances that team &lt;span class=&#34;math inline&#34;&gt;\(i\)&lt;/span&gt; wins its conference tournament. Now, we can compare &lt;span class=&#34;math inline&#34;&gt;\(E(C)\)&lt;/span&gt; for each conference under the 3 different types of tournament simulations.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/afl_tournament_sims/index_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;In 8 of the 32 conferences, the AFL style tournament yields the highest expected champion &lt;span class=&#34;math inline&#34;&gt;\(E(C)\)&lt;/span&gt;, while the higher seed HCA format yields the highest expected champion in the remaining 24 conferences.&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr class=&#34;header&#34;&gt;
+&lt;th align=&#34;left&#34;&gt;conference&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;exp_champ_H&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;exp_champ_afl&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;exp_champ_N&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;ACC&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;17.59&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;18.00&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;16.83&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;Big 10&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;17.81&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;18.09&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;16.91&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;Big Sky&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;4.16&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;4.71&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;3.50&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;MEAC&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;-6.87&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;-6.75&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;-7.52&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;NEC&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;-2.72&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;-2.30&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;-3.19&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;SEC&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;13.04&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;13.12&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;12.42&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;Summit&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2.45&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2.50&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1.96&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;Sunbelt&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;3.60&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;3.83&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;3.19&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;What do these 8 conferences all have in common? We can compare standardized team strength (Z-score of &lt;span class=&#34;math inline&#34;&gt;\(\gamma_i\)&lt;/span&gt; across conference) by seed, and see that all of these conferences have weaker top seeds with better concentration of talent across the top 3 or 4 seeds.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/afl_tournament_sims/index_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;summary&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Summary&lt;/h1&gt;
+&lt;p&gt;The AFL style tournament offers a unique style of top-seed protection from what currently exists. It is clearly superior to the neutral site single elimination format, and even is an improvement on the higher seed HCA format in some cases. Overall, the full extent of the advantages that this format provides is dependent on how talent is distributed across the conference. It probably doesn’t help much for conferences with one team far superior to the rest (New Mexico State in the WAC, Vermont in the America East for example), but it does help in conferences with talent pretty well distributed across the top 4 seeds in the conference (and possibly a weak top seed). I’d imagine that neutral site tournaments are a big source of revenue for these conferences, perhaps enough to offset the potential gains of winning money from NCAA tournament games. One potential solution is to run a neutral site version of this format.&lt;/p&gt;
+&lt;p&gt;Of course, one difficulty is that you’d have to extend this format to accept more than 8 teams, otherwised you’d be eliminating many of the teams in each conference before postseason play had even begin. Finally, there is just something so nice about single elimination tournaments–it’s what makes March Madness crazy. The purpose of March Madness is not to crown the &lt;strong&gt;best&lt;/strong&gt; team, so it seems like the adoption of this hybrid AFL format would be far-fetched. One can hope though, and in the mean time, I’d like to see more formats like the &lt;a href=&#34;https://en.wikipedia.org/wiki/2020_West_Coast_Conference_Men%27s_Basketball_Tournament&#34;&gt;triple bye to top seeds in the WCC&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Sports Analytics Research</title>
+      <link>/project/sports_research/</link>
+      <pubDate>Wed, 22 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/project/sports_research/</guid>
+      <description>
+
+&lt;h3 id=&#34;an-examination-of-timeout-value-strategy-and-momentum-in-ncaa-division-1-men-s-basketball&#34;&gt;An Examination of Timeout Value, Strategy, and Momentum in NCAA Division 1 Men&amp;rsquo;s Basketball&lt;/h3&gt;
+
+&lt;p&gt;Senior Thesis in Applied Mathematics, Spring 2019&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/lbenz730/Senior-Thesis/blob/master/luke_benz_senior_thesis.pdf&#34; target=&#34;_blank&#34;&gt;Paper&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://lukebenz.com/nessis/timeout_value.pdf&#34; target=&#34;_blank&#34;&gt;Poster&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/lbenz730/Senior-Thesis&#34; target=&#34;_blank&#34;&gt;GitHub Repository&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;This work won first place in the the &lt;a href=&#34;https://www.causeweb.org/usproc/usresp/2019/spring/winners&#34; target=&#34;_blank&#34;&gt;2019 Spring USPROC Reseach Contest&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;a-bayesian-examination-of-win-probability-and-timeout-usage-in-ncaa-men-s-basketball&#34;&gt;A Bayesian Examination of Win Probability and Timeout Usage in NCAA Men&amp;rsquo;s Basketball&lt;/h3&gt;
+
+&lt;p&gt;Final Project for BIS 567, Fall 2018&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/lbenz730/BIS_567_Final_Project/blob/master/Documents/Fall%202018/BIS%20567/Final%20Project/Benz_BIS_567_Final_Poster.pdf&#34; target=&#34;_blank&#34;&gt;Poster&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;weighting-schema-for-regression-based-ratings-and-predictions-in-australian-rules-football&#34;&gt;Weighting Schema for Regression Based Ratings and Predictions in Australian Rules Football&lt;/h3&gt;
+
+&lt;p&gt;Final Project for S&amp;amp;DS 312, Fall 2018&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/lbenz730/Sports_Analytics/blob/master/afl_weighting_schema.pdf&#34; target=&#34;_blank&#34;&gt;Paper&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

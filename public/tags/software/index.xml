@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Software on Luke Benz</title>
+    <link>/tags/software/</link>
+    <description>Recent content in Software on Luke Benz</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 13 Dec 2019 00:00:00 +0000</lastBuildDate>
+    
+	    <atom:link href="/tags/software/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>ncaahoopR</title>
+      <link>/project/ncaahoopr/</link>
+      <pubDate>Fri, 13 Dec 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/project/ncaahoopr/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Basketball Shiny Apps</title>
+      <link>/project/shiny_apps/</link>
+      <pubDate>Sun, 01 Dec 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/project/shiny_apps/</guid>
+      <description>
+
+&lt;p&gt;A collection of links to various basketball related shiny apps&lt;/p&gt;
+
+&lt;h3 id=&#34;recspecs730-basketball-central&#34;&gt;Recspecs730 Basketball Central&lt;/h3&gt;
+
+&lt;p&gt;An R Shiny Application containing NCAA Basketball:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Power Rankings&lt;/li&gt;
+&lt;li&gt;Conference Simulations and Breakdowns&lt;/li&gt;
+&lt;li&gt;Team Breakdowns&lt;/li&gt;
+&lt;li&gt;Game Projections&lt;/li&gt;
+&lt;li&gt;Bracketology&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://lbenz730.shinyapps.io/recspecs_basketball_central/&#34; target=&#34;_blank&#34;&gt;Application&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;ivy-league-tiebreakr&#34;&gt;Ivy League TiebreakR&lt;/h3&gt;
+
+&lt;p&gt;An R Shiny Application for determining playoff seed for Ivy Madness based on user-input game outcomes.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://lbenz730.shinyapps.io/ivy_tiebreaks/&#34; target=&#34;_blank&#34;&gt;Application&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;ncaa-assist-networks&#34;&gt;NCAA Assist Networks&lt;/h3&gt;
+
+&lt;p&gt;An R Shiny Application for NCAA Basketball Assist Networks&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://lbenz730.shinyapps.io/assist_networks/&#34; target=&#34;_blank&#34;&gt;Application&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;new-york-section-2-basketabll-assist-networks&#34;&gt;New York Section 2 Basketabll Assist Networks&lt;/h3&gt;
+
+&lt;p&gt;An R Shiny Application for rending high school basketball assist networks.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://lbenz730.shinyapps.io/section_2_basketball_networks/&#34; target=&#34;_blank&#34;&gt;Application&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://blogs.section2basketball.com/fromthestands/2018/07/31/new-assist-network-feature-to-analyze-section-2-teams-players/&#34; target=&#34;_blank&#34;&gt;Press Release&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

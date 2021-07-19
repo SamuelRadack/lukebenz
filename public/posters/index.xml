@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posters on Luke Benz</title>
+    <link>/posters/</link>
+    <description>Recent content in Posters on Luke Benz</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 28 Sep 2019 00:00:00 +0000</lastBuildDate>
+    
+	    <atom:link href="/posters/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>An Examination of Timeout Value, Strategy, and Momentum in NCAA Division 1 Men&#39;s Basketball</title>
+      <link>/posters/nessis_2019/</link>
+      <pubDate>Sat, 28 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/posters/nessis_2019/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>The International Low Grade Glioma Registry Patient-Reported Quality of Life</title>
+      <link>/posters/qol_lgg/</link>
+      <pubDate>Thu, 15 Nov 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/posters/qol_lgg/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

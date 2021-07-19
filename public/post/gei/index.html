@@ -1,0 +1,1614 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="Source Themes Academic 4.3.1">
+
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Luke Benz">
+
+  
+  
+  
+    
+  
+  <meta name="description" content="Introduction One of the NCAA Men’s Basketball metrics I’ve been fascinated with lately is that of Game Excitement Index. Game Excitement Index (GEI) attempts to quantify how exciting a particular game was after it has been played. Related metrics have been implemented for NFL games by Brian Burke, NBA games by InPredict (Mike Beuoy), and for March Madness by FiveThirtyEight. One can compute GEI for college basketball games using my ncaahoopR package, which I define as follows:">
+
+  
+  <link rel="alternate" hreflang="en-us" href="/post/gei/">
+
+  
+
+
+  
+
+  
+  
+  
+  <meta name="theme-color" content="#2962ff">
+  
+
+  
+  
+  
+  
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.6/css/academicons.min.css" integrity="sha256-uFVgMKfistnJAfoCUQigIl+JfUaP47GrRKjf6CTPVmw=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.0/css/all.css" integrity="sha384-aOkxzJ5uQz7WBObEZcHvV5JvRW3TUc2rNPA7pe3AwnsUohiw1Vj2Rgx2KSOkF5+h" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" integrity="sha256-ygkqlh3CYSUri3LhQxzdcm0n1EQvH2Y+U5S2idbLtxs=" crossorigin="anonymous">
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css" crossorigin="anonymous" title="hl-light">
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/dracula.min.css" crossorigin="anonymous" title="hl-dark" disabled>
+        
+      
+    
+
+    
+
+    
+
+  
+
+  
+  
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Montserrat:400,700|Roboto:400,400italic,700|Roboto+Mono">
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="/css/academic.min.747d92dc45be93ba6055a623fe5bcc0a.css">
+
+  
+
+  
+  
+  
+
+  
+
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="icon" type="image/png" href="/img/icon.png">
+  <link rel="apple-touch-icon" type="image/png" href="/img/icon-192.png">
+
+  <link rel="canonical" href="/post/gei/">
+
+  
+  
+  
+  
+    
+    
+  
+  <meta property="twitter:card" content="summary">
+  
+  <meta property="og:site_name" content="Luke Benz">
+  <meta property="og:url" content="/post/gei/">
+  <meta property="og:title" content="Game Excitement Index: An In-Depth Exploration | Luke Benz">
+  <meta property="og:description" content="Introduction One of the NCAA Men’s Basketball metrics I’ve been fascinated with lately is that of Game Excitement Index. Game Excitement Index (GEI) attempts to quantify how exciting a particular game was after it has been played. Related metrics have been implemented for NFL games by Brian Burke, NBA games by InPredict (Mike Beuoy), and for March Madness by FiveThirtyEight. One can compute GEI for college basketball games using my ncaahoopR package, which I define as follows:"><meta property="og:image" content="/img/icon-192.png">
+  <meta property="og:locale" content="en-us">
+  
+  <meta property="article:published_time" content="2018-12-22T00:00:00&#43;00:00">
+  
+  <meta property="article:modified_time" content="2018-12-22T00:00:00&#43;00:00">
+  
+
+  
+
+
+  
+
+
+
+
+
+  <title>Game Excitement Index: An In-Depth Exploration | Luke Benz</title>
+
+</head>
+
+
+<body id="top" data-spy="scroll" data-target="#TableOfContents" data-offset="71" >
+
+  <aside class="search-results" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" role="textbox" spellcheck="false" type="search">
+        
+      </div>
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+  
+<nav class="navbar navbar-light fixed-top navbar-expand-lg py-0" id="navbar-main">
+  <div class="container">
+
+    
+      <a class="navbar-brand" href="/">Luke Benz</a>
+      
+      <button type="button" class="navbar-toggler" data-toggle="collapse"
+              data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+        <span><i class="fas fa-bars"></i></span>
+      </button>
+      
+
+    
+    <div class="collapse navbar-collapse" id="navbar">
+
+      
+      
+      <ul class="navbar-nav mr-auto">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#about"><span>Home</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#projects"><span>Projects</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#posts"><span>Posts</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#publications"><span>Publications</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#contact"><span>Contact</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/cv.pdf"><span>CV</span></a>
+        </li>
+
+        
+        
+
+      
+      </ul>
+      <ul class="navbar-nav ml-auto">
+      
+
+        
+
+        
+        <li class="nav-item">
+          <a class="nav-link js-search" href="#"><i class="fas fa-search" aria-hidden="true"></i></a>
+        </li>
+        
+
+        
+
+        
+
+      </ul>
+
+    </div>
+  </div>
+</nav>
+
+
+  <article class="article" itemscope itemtype="http://schema.org/Article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1 itemprop="name">Game Excitement Index: An In-Depth Exploration</h1>
+
+  
+
+  
+    
+
+
+
+<meta content="2018-12-22 00:00:00 &#43;0000 UTC" itemprop="datePublished">
+<meta content="2018-12-22 00:00:00 &#43;0000 UTC" itemprop="dateModified">
+
+<div class="article-metadata">
+
+  
+  
+  
+  
+  <div>
+    
+
+
+
+  <span itemprop="author name" itemtype="http://schema.org/Person"><a href="/authors/admin/">Luke Benz</a></span>
+
+  </div>
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+    
+    <time>Dec 22, 2018</time>
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    8 min read
+  </span>
+  
+
+  
+  
+
+  
+  
+
+  
+    
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    <li>
+      <a class="twitter"
+         href="https://twitter.com/intent/tweet?text=Game%20Excitement%20Index%3a%20An%20In-Depth%20Exploration&amp;url=%2fpost%2fgei%2f"
+         target="_blank" rel="noopener">
+        <i class="fab fa-twitter"></i>
+      </a>
+    </li>
+    <li>
+      <a class="facebook"
+         href="https://www.facebook.com/sharer.php?u=%2fpost%2fgei%2f"
+         target="_blank" rel="noopener">
+        <i class="fab fa-facebook-f"></i>
+      </a>
+    </li>
+    <li>
+      <a class="linkedin"
+         href="https://www.linkedin.com/shareArticle?mini=true&amp;url=%2fpost%2fgei%2f&amp;title=Game%20Excitement%20Index%3a%20An%20In-Depth%20Exploration"
+         target="_blank" rel="noopener">
+        <i class="fab fa-linkedin-in"></i>
+      </a>
+    </li>
+    <li>
+      <a class="weibo"
+         href="http://service.weibo.com/share/share.php?url=%2fpost%2fgei%2f&amp;title=Game%20Excitement%20Index%3a%20An%20In-Depth%20Exploration"
+         target="_blank" rel="noopener">
+        <i class="fab fa-weibo"></i>
+      </a>
+    </li>
+    <li>
+      <a class="email"
+         href="mailto:?subject=Game%20Excitement%20Index%3a%20An%20In-Depth%20Exploration&amp;body=%2fpost%2fgei%2f">
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  </ul>
+</div>
+
+
+  
+
+</div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style" itemprop="articleBody">
+      
+
+
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p>One of the NCAA Men’s Basketball metrics I’ve been fascinated with lately is that of <a href="https://sports.sites.yale.edu/game-excitement-index-part-ii">Game Excitement Index</a>. Game Excitement Index (GEI) attempts to quantify how exciting a particular game was after it has been played. Related metrics have been implemented for <a href="http://archive.advancedfootballanalytics.com/2009/06/best-games-of-decade.html">NFL games</a> by Brian Burke, <a href="http://www.inpredictable.com/2014/04/an-exciting-first-round-so-far.html">NBA games</a> by InPredict (Mike Beuoy), and for <a href="https://fivethirtyeight.com/features/how-our-march-madness-predictions-work/">March Madness</a> by FiveThirtyEight. One can compute GEI for college basketball games using my <a href="https://github.com/lbenz730/ncaahoopR"><code>ncaahoopR</code></a> package, which I define as follows:</p>
+<p><span class="math display">\[
+\text{GEI} = \frac{2400}{t}\sum_{i = 2}^n |p_i - p_{i-1}|
+\]</span>
+where <span class="math inline">\(t\)</span> is the length of the game (in seconds), <span class="math inline">\(n\)</span> is the number of plays in the game, and <span class="math inline">\(p_i\)</span> is the home team’s win probability on play <span class="math inline">\(i\)</span> of the game. One can think of GEI as a measure of the length of the win probability curve if it were to be unwound, normalized to the length of a standard regulation game. The reason I choose to normalize the length of games is that I don’t want sloppy “boring” games which simply happen to go to 2 or 3 overtimes to be pegged as more exciting. In general, this small normalization has little effect, as games that go deep into overtime are generally pretty exciting to begin with. Through this article, I hope to explore which games, teams, and conferences have produced the most exciting basketball this season, while showing off how one can use <code>ncaahoopR</code> to answer interesting college basketball questions.</p>
+</div>
+<div id="obtaining-the-data" class="section level2">
+<h2>Obtaining the Data</h2>
+<p>The below code uses <code>ncaahoopR</code> to</p>
+<ul>
+<li>Get each team’s schedule</li>
+<li>Compute GEI for each game this season</li>
+</ul>
+<p>Note that a complete list of team’s can be found in the <code>ids</code> data frame built into the package.</p>
+<pre class="r"><code>library(ncaahoopR)
+### Scrape All Schedules
+i &lt;- 1
+for(team in ids$team) {
+  print(paste(&quot;Getting Team:&quot;, i, &quot; of &quot;, 353))
+  schedule &lt;- get_schedule(team) %&gt;%
+    filter(date &lt; Sys.Date()) %&gt;%
+    mutate(&quot;team&quot; = team) 
+  if(i == 1) {
+    master &lt;- schedule
+  }else{
+    master &lt;- rbind(master, schedule)
+  }
+  i &lt;- i + 1
+}
+
+### Get Unique Game IDs
+game_ids &lt;- 
+  filter(master, !duplicated(game_id)) %&gt;% 
+  pull(game_id) %&gt;% 
+  unique()
+
+### Compute GEI for Each Game
+n &lt;- length(game_ids)
+df &lt;- data.frame(&quot;game_id&quot; = game_ids,
+                 &quot;gei&quot; = NA)
+for(i in 1:nrow(df)) {
+  print(paste(&quot;GEI:&quot;, i, &quot;of&quot;, n))
+  df$gei[i] &lt;- game_excitement_index(game_ids[i])
+}
+master &lt;- left_join(master, df, by = &quot;game_id&quot;)</code></pre>
+</div>
+<div id="analysis" class="section level2">
+<h2>Analysis</h2>
+<p>Below is a histogram of the Game Excitement Index for the 2018-19 season (for all games play-by-play data is avaiable). Through the first 6 weeks of the season, GEI has a mean of roughly 3.6 and standard deviation of about 2.6. GEI appears to follow some sort of Gamma distribution. The distribution is skewed right, with over 62 percent of games registing GEI less than 4.
+<img src="/post/gei/index_files/figure-html/fig1-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>We can see looking by the plot above that very few games have GEI greater than 10. In fact, 10 is the 99th percentile for GEI, and through 12/21/2018, only 23 games have achieved such a mark. Below are the most exciting games of the season.</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">team</th>
+<th align="left">opponent</th>
+<th align="left">date</th>
+<th align="left">location</th>
+<th align="right">team_score</th>
+<th align="right">opp_score</th>
+<th align="right">gei</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">St John’s</td>
+<td align="left">VCU</td>
+<td align="left">2018-11-20</td>
+<td align="left">N</td>
+<td align="right">87</td>
+<td align="right">86</td>
+<td align="right">14.34</td>
+</tr>
+<tr class="even">
+<td align="left">Kentucky</td>
+<td align="left">Seton Hall</td>
+<td align="left">2018-12-08</td>
+<td align="left">N</td>
+<td align="right">83</td>
+<td align="right">84</td>
+<td align="right">12.49</td>
+</tr>
+<tr class="odd">
+<td align="left">Louisville</td>
+<td align="left">Michigan State</td>
+<td align="left">2018-11-27</td>
+<td align="left">H</td>
+<td align="right">82</td>
+<td align="right">78</td>
+<td align="right">11.27</td>
+</tr>
+<tr class="even">
+<td align="left">Campbell</td>
+<td align="left">UNC Wilmington</td>
+<td align="left">2018-11-06</td>
+<td align="left">H</td>
+<td align="right">97</td>
+<td align="right">93</td>
+<td align="right">11.14</td>
+</tr>
+<tr class="odd">
+<td align="left">Hampton</td>
+<td align="left">Norfolk State</td>
+<td align="left">2018-11-29</td>
+<td align="left">A</td>
+<td align="right">89</td>
+<td align="right">94</td>
+<td align="right">11.10</td>
+</tr>
+<tr class="even">
+<td align="left">UMass Lowell</td>
+<td align="left">Wagner</td>
+<td align="left">2018-11-10</td>
+<td align="left">H</td>
+<td align="right">88</td>
+<td align="right">84</td>
+<td align="right">10.86</td>
+</tr>
+<tr class="odd">
+<td align="left">Columbia</td>
+<td align="left">Fordham</td>
+<td align="left">2018-11-18</td>
+<td align="left">A</td>
+<td align="right">69</td>
+<td align="right">70</td>
+<td align="right">10.79</td>
+</tr>
+<tr class="even">
+<td align="left">BYU</td>
+<td align="left">Illinois State</td>
+<td align="left">2018-11-28</td>
+<td align="left">A</td>
+<td align="right">89</td>
+<td align="right">92</td>
+<td align="right">10.75</td>
+</tr>
+<tr class="odd">
+<td align="left">SMU</td>
+<td align="left">Wright State</td>
+<td align="left">2018-11-21</td>
+<td align="left">N</td>
+<td align="right">77</td>
+<td align="right">76</td>
+<td align="right">10.72</td>
+</tr>
+<tr class="even">
+<td align="left">Columbia</td>
+<td align="left">Delaware</td>
+<td align="left">2018-12-02</td>
+<td align="left">H</td>
+<td align="right">86</td>
+<td align="right">87</td>
+<td align="right">10.59</td>
+</tr>
+<tr class="odd">
+<td align="left">Texas State</td>
+<td align="left">UTSA</td>
+<td align="left">2018-12-01</td>
+<td align="left">A</td>
+<td align="right">69</td>
+<td align="right">68</td>
+<td align="right">10.52</td>
+</tr>
+<tr class="even">
+<td align="left">Santa Clara</td>
+<td align="left">USC</td>
+<td align="left">2018-12-18</td>
+<td align="left">H</td>
+<td align="right">102</td>
+<td align="right">92</td>
+<td align="right">10.48</td>
+</tr>
+<tr class="odd">
+<td align="left">Boston College</td>
+<td align="left">Providence</td>
+<td align="left">2018-12-04</td>
+<td align="left">H</td>
+<td align="right">95</td>
+<td align="right">100</td>
+<td align="right">10.47</td>
+</tr>
+<tr class="even">
+<td align="left">E Kentucky</td>
+<td align="left">Northern Kentucky</td>
+<td align="left">2018-12-08</td>
+<td align="left">H</td>
+<td align="right">76</td>
+<td align="right">74</td>
+<td align="right">10.46</td>
+</tr>
+<tr class="odd">
+<td align="left">LIU Brooklyn</td>
+<td align="left">Milwaukee</td>
+<td align="left">2018-11-20</td>
+<td align="left">A</td>
+<td align="right">87</td>
+<td align="right">92</td>
+<td align="right">10.44</td>
+</tr>
+<tr class="even">
+<td align="left">Iona</td>
+<td align="left">Long Beach State</td>
+<td align="left">2018-11-19</td>
+<td align="left">N</td>
+<td align="right">85</td>
+<td align="right">86</td>
+<td align="right">10.32</td>
+</tr>
+<tr class="odd">
+<td align="left">Towson</td>
+<td align="left">UMBC</td>
+<td align="left">2018-12-11</td>
+<td align="left">A</td>
+<td align="right">80</td>
+<td align="right">76</td>
+<td align="right">10.25</td>
+</tr>
+<tr class="even">
+<td align="left">BYU</td>
+<td align="left">UNLV</td>
+<td align="left">2018-12-15</td>
+<td align="left">N</td>
+<td align="right">90</td>
+<td align="right">92</td>
+<td align="right">10.24</td>
+</tr>
+<tr class="odd">
+<td align="left">Fairfield</td>
+<td align="left">LIU Brooklyn</td>
+<td align="left">2018-11-13</td>
+<td align="left">H</td>
+<td align="right">87</td>
+<td align="right">89</td>
+<td align="right">10.22</td>
+</tr>
+<tr class="even">
+<td align="left">American</td>
+<td align="left">UMBC</td>
+<td align="left">2018-11-24</td>
+<td align="left">A</td>
+<td align="right">73</td>
+<td align="right">69</td>
+<td align="right">10.18</td>
+</tr>
+<tr class="odd">
+<td align="left">Abil Christian</td>
+<td align="left">Pacific</td>
+<td align="left">2018-11-23</td>
+<td align="left">A</td>
+<td align="right">73</td>
+<td align="right">71</td>
+<td align="right">10.04</td>
+</tr>
+<tr class="even">
+<td align="left">Denver</td>
+<td align="left">Wyoming</td>
+<td align="left">2018-12-11</td>
+<td align="left">A</td>
+<td align="right">90</td>
+<td align="right">87</td>
+<td align="right">10.02</td>
+</tr>
+<tr class="odd">
+<td align="left">N Illinois</td>
+<td align="left">Northern Kentucky</td>
+<td align="left">2018-11-09</td>
+<td align="left">H</td>
+<td align="right">85</td>
+<td align="right">88</td>
+<td align="right">10.01</td>
+</tr>
+</tbody>
+</table>
+<p>Let’s take a closer look at the most exciting game of the season, <a href="https://www.rumbleinthegarden.com/2018/11/20/18105658/st-johns-vcu-final-legends-classic-champions-87-86-ot">VCU vs. St. John’s, an OT thriller in the Legend’s Classic championship game</a>, during Thanksgiving “Feast Week”. We can make the win probability chart for the game using the function <code>gg_wp_chart()</code>, as follows.</p>
+<pre class="r"><code>gg_wp_chart(game_id = 401096927, home_col = &quot;black&quot;, away_col = &quot;red&quot;)</code></pre>
+<p><img src="ggwpchart.png" /></p>
+<p>Next, we can look at which teams have the highest and lowest average GEI. Due to the skewed nature of the GEI distribution, it probably makes most sense to rank teams by median GEI. We can also classify games into a few different categories based on their GEI:</p>
+<ul>
+<li><strong>Heart Pounders</strong>: GEI &gt; 8</li>
+<li><strong>Thrillers</strong>: 4 &lt; GEI <span class="math inline">\(\leq\)</span> 8</li>
+<li><strong>Average Games</strong>: 1 &lt; GEI <span class="math inline">\(\leq\)</span> 4</li>
+<li><strong>Duds</strong>: GEI &lt; 1</li>
+</ul>
+<div id="most-exciting-teams" class="section level4">
+<h4>Most Exciting Teams</h4>
+<pre><code>## `summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<table>
+<colgroup>
+<col width="16%" />
+<col width="11%" />
+<col width="9%" />
+<col width="8%" />
+<col width="8%" />
+<col width="15%" />
+<col width="10%" />
+<col width="14%" />
+<col width="5%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">team</th>
+<th align="right">median_gei</th>
+<th align="right">mean_gei</th>
+<th align="right">max_gei</th>
+<th align="right">min_gei</th>
+<th align="right">heart_pounders</th>
+<th align="right">thrillers</th>
+<th align="right">average_games</th>
+<th align="right">duds</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">American</td>
+<td align="right">7.43</td>
+<td align="right">6.26</td>
+<td align="right">10.18</td>
+<td align="right">0.98</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">San Jose State</td>
+<td align="right">7.15</td>
+<td align="right">6.27</td>
+<td align="right">9.85</td>
+<td align="right">1.05</td>
+<td align="right">4</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Delaware</td>
+<td align="right">7.05</td>
+<td align="right">6.17</td>
+<td align="right">10.59</td>
+<td align="right">2.43</td>
+<td align="right">3</td>
+<td align="right">4</td>
+<td align="right">3</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">UMKC</td>
+<td align="right">6.97</td>
+<td align="right">6.93</td>
+<td align="right">9.42</td>
+<td align="right">4.38</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Harvard</td>
+<td align="right">6.87</td>
+<td align="right">6.43</td>
+<td align="right">9.26</td>
+<td align="right">2.03</td>
+<td align="right">2</td>
+<td align="right">4</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Iona</td>
+<td align="right">6.85</td>
+<td align="right">6.58</td>
+<td align="right">10.32</td>
+<td align="right">1.14</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Fordham</td>
+<td align="right">6.66</td>
+<td align="right">5.62</td>
+<td align="right">10.79</td>
+<td align="right">0.48</td>
+<td align="right">2</td>
+<td align="right">4</td>
+<td align="right">2</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Seton Hall</td>
+<td align="right">6.46</td>
+<td align="right">5.79</td>
+<td align="right">12.49</td>
+<td align="right">0.74</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Wyoming</td>
+<td align="right">6.39</td>
+<td align="right">5.36</td>
+<td align="right">10.02</td>
+<td align="right">1.05</td>
+<td align="right">2</td>
+<td align="right">5</td>
+<td align="right">4</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">VCU</td>
+<td align="right">6.11</td>
+<td align="right">7.38</td>
+<td align="right">14.34</td>
+<td align="right">3.66</td>
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">CSU Bakersfield</td>
+<td align="right">6.07</td>
+<td align="right">5.52</td>
+<td align="right">9.14</td>
+<td align="right">1.77</td>
+<td align="right">1</td>
+<td align="right">5</td>
+<td align="right">2</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Niagara</td>
+<td align="right">5.97</td>
+<td align="right">6.18</td>
+<td align="right">9.92</td>
+<td align="right">1.50</td>
+<td align="right">2</td>
+<td align="right">7</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Ga Southern</td>
+<td align="right">5.91</td>
+<td align="right">5.10</td>
+<td align="right">7.96</td>
+<td align="right">1.61</td>
+<td align="right">0</td>
+<td align="right">8</td>
+<td align="right">3</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Arizona State</td>
+<td align="right">5.89</td>
+<td align="right">4.87</td>
+<td align="right">9.55</td>
+<td align="right">0.56</td>
+<td align="right">2</td>
+<td align="right">4</td>
+<td align="right">2</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">Saint Joe’s</td>
+<td align="right">5.82</td>
+<td align="right">5.31</td>
+<td align="right">8.42</td>
+<td align="right">1.46</td>
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Belmont</td>
+<td align="right">5.78</td>
+<td align="right">5.30</td>
+<td align="right">8.13</td>
+<td align="right">1.88</td>
+<td align="right">1</td>
+<td align="right">5</td>
+<td align="right">2</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">High Point</td>
+<td align="right">5.74</td>
+<td align="right">5.03</td>
+<td align="right">9.25</td>
+<td align="right">1.15</td>
+<td align="right">2</td>
+<td align="right">4</td>
+<td align="right">5</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Lafayette</td>
+<td align="right">5.74</td>
+<td align="right">5.27</td>
+<td align="right">8.75</td>
+<td align="right">0.59</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Indiana</td>
+<td align="right">5.62</td>
+<td align="right">4.39</td>
+<td align="right">9.41</td>
+<td align="right">0.34</td>
+<td align="right">2</td>
+<td align="right">4</td>
+<td align="right">2</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">Pacific</td>
+<td align="right">5.60</td>
+<td align="right">5.46</td>
+<td align="right">10.04</td>
+<td align="right">1.06</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">4</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="least-exciting-teams" class="section level4">
+<h4>Least Exciting Teams</h4>
+<table>
+<colgroup>
+<col width="15%" />
+<col width="11%" />
+<col width="9%" />
+<col width="8%" />
+<col width="8%" />
+<col width="15%" />
+<col width="10%" />
+<col width="14%" />
+<col width="5%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">team</th>
+<th align="right">median_gei</th>
+<th align="right">mean_gei</th>
+<th align="right">max_gei</th>
+<th align="right">min_gei</th>
+<th align="right">heart_pounders</th>
+<th align="right">thrillers</th>
+<th align="right">average_games</th>
+<th align="right">duds</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">MD-E Shore</td>
+<td align="right">0.53</td>
+<td align="right">1.31</td>
+<td align="right">5.35</td>
+<td align="right">0.23</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">8</td>
+</tr>
+<tr class="even">
+<td align="left">AR-Pine Bluff</td>
+<td align="right">0.61</td>
+<td align="right">1.21</td>
+<td align="right">5.14</td>
+<td align="right">0.30</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">6</td>
+</tr>
+<tr class="odd">
+<td align="left">Miss Valley St</td>
+<td align="right">0.67</td>
+<td align="right">0.83</td>
+<td align="right">1.72</td>
+<td align="right">0.32</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">2</td>
+<td align="right">7</td>
+</tr>
+<tr class="even">
+<td align="left">Texas Tech</td>
+<td align="right">0.68</td>
+<td align="right">2.63</td>
+<td align="right">7.68</td>
+<td align="right">0.26</td>
+<td align="right">0</td>
+<td align="right">4</td>
+<td align="right">0</td>
+<td align="right">6</td>
+</tr>
+<tr class="odd">
+<td align="left">Coppin State</td>
+<td align="right">0.73</td>
+<td align="right">1.45</td>
+<td align="right">8.29</td>
+<td align="right">0.30</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">2</td>
+<td align="right">7</td>
+</tr>
+<tr class="even">
+<td align="left">Illinois</td>
+<td align="right">0.77</td>
+<td align="right">1.14</td>
+<td align="right">2.16</td>
+<td align="right">0.48</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">Chicago State</td>
+<td align="right">0.80</td>
+<td align="right">2.46</td>
+<td align="right">8.19</td>
+<td align="right">0.38</td>
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">1</td>
+<td align="right">7</td>
+</tr>
+<tr class="even">
+<td align="left">Alabama State</td>
+<td align="right">0.84</td>
+<td align="right">1.23</td>
+<td align="right">2.84</td>
+<td align="right">0.31</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">3</td>
+<td align="right">6</td>
+</tr>
+<tr class="odd">
+<td align="left">Auburn</td>
+<td align="right">0.94</td>
+<td align="right">2.18</td>
+<td align="right">7.80</td>
+<td align="right">0.24</td>
+<td align="right">0</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">5</td>
+</tr>
+<tr class="even">
+<td align="left">Alcorn State</td>
+<td align="right">0.95</td>
+<td align="right">1.30</td>
+<td align="right">3.07</td>
+<td align="right">0.44</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">5</td>
+<td align="right">5</td>
+</tr>
+<tr class="odd">
+<td align="left">Virginia Tech</td>
+<td align="right">0.95</td>
+<td align="right">2.48</td>
+<td align="right">8.45</td>
+<td align="right">0.39</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">5</td>
+</tr>
+<tr class="even">
+<td align="left">Georgia Tech</td>
+<td align="right">0.99</td>
+<td align="right">2.60</td>
+<td align="right">7.25</td>
+<td align="right">0.39</td>
+<td align="right">0</td>
+<td align="right">3</td>
+<td align="right">1</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="left">NC State</td>
+<td align="right">1.00</td>
+<td align="right">2.52</td>
+<td align="right">8.50</td>
+<td align="right">0.23</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">5</td>
+</tr>
+<tr class="even">
+<td align="left">S Carolina St</td>
+<td align="right">1.00</td>
+<td align="right">1.87</td>
+<td align="right">5.92</td>
+<td align="right">0.39</td>
+<td align="right">0</td>
+<td align="right">2</td>
+<td align="right">4</td>
+<td align="right">6</td>
+</tr>
+<tr class="odd">
+<td align="left">UNC Asheville</td>
+<td align="right">1.01</td>
+<td align="right">2.47</td>
+<td align="right">7.52</td>
+<td align="right">0.34</td>
+<td align="right">0</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="left">Saint Mary’s</td>
+<td align="right">1.03</td>
+<td align="right">0.98</td>
+<td align="right">1.35</td>
+<td align="right">0.69</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">3</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">UNC</td>
+<td align="right">1.03</td>
+<td align="right">2.16</td>
+<td align="right">6.38</td>
+<td align="right">0.46</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="left">TCU</td>
+<td align="right">1.13</td>
+<td align="right">2.51</td>
+<td align="right">7.13</td>
+<td align="right">0.64</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">Duke</td>
+<td align="right">1.16</td>
+<td align="right">2.23</td>
+<td align="right">9.80</td>
+<td align="right">0.25</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">5</td>
+<td align="right">5</td>
+</tr>
+<tr class="even">
+<td align="left">Maine</td>
+<td align="right">1.23</td>
+<td align="right">2.07</td>
+<td align="right">5.27</td>
+<td align="right">0.30</td>
+<td align="right">0</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">3</td>
+</tr>
+</tbody>
+</table>
+<p>Perhaps not suprisingly, many of the least exciting teams so far are MEAC and SWAC teams, often scheduling buy-games (and getting blown-out) against high-major opponents. Teams like Duke, UVA, and Texas Tech are likely on the list for the same reason–scheduling and destroying many weaker opponents. Duke’s appearance on this list is actually a testament to it’s domiance this season. Even having Kentucky, Texas Tech, Auburn, Indiana, and Gonzaga on it’s non-conference schedule, it’s level of dominance means Duke’s win probability charts flatline early and are marked by low GEI scores. This also shows a limitation of GEI to show what is exciting. Against most opponents, a team like Duke will still be fairly heavily favored when the score is close and as such, won’t be able to wrack up as high of a Game Excitement Index. Perhaps at this stage of the season, GEI is best used to rank mid-major teams, and it would be wise to wait until conference play begins to evalaute high-major teams on this metric.</p>
+</div>
+<div id="gei-game-types-by-conference" class="section level4">
+<h4>GEI Game Types by Conference</h4>
+<p><img src="/post/gei/index_files/figure-html/fig2-1.png" width="1440" style="display: block; margin: auto;" /></p>
+</div>
+<div id="most-exciting-game-by-date" class="section level4">
+<h4>Most Exciting Game by Date</h4>
+<p>Finally, one can look at the most exciting game on each day of the season. I got the idea for the below chart from Jordan Sperber’s <a href="https://twitter.com/hoopvision68/status/1054509454064926720">look at the best ranked games each day per KenPom FanMatch</a>, which seeks to quantify the quality of a game <em>before</em> it is played.</p>
+<p><img src="/post/gei/index_files/figure-html/fig3-1.png" width="1920" style="display: block; margin: auto;" /></p>
+<p>By no means is GEI meant to be a perfect metric, and it might fail to capture important aspects of the game that a given individual might find to be exciting. That being said, I think it does a pretty good job of capturing a lot of what makes games fun to watch, and helps raise awareness of a lot of good mid-major basketball that often flies under the radar. I’ll keep updating these materials as conference play kicks off in the coming weeks to see if/how the metric changes, but for now, we can sit back, relax, and appreciate some good college hoops.</p>
+</div>
+</div>
+
+    </div>
+
+    
+
+<div class="article-tags">
+  
+  <a class="badge badge-light" href="/tags/ncaa-basketball/">NCAA Basketball</a>
+  
+  <a class="badge badge-light" href="/tags/ncaahoopr/">ncaahoopR</a>
+  
+</div>
+
+
+
+    
+      
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  
+
+
+
+
+
+  
+  
+  
+    
+  
+  
+  <div class="media author-card" itemscope itemtype="http://schema.org/Person">
+    
+      
+      <img class="portrait mr-3" src="/authors/admin/avatar_hua0f031d98b16b52fc803715182f4f648_1955786_250x250_fill_lanczos_center_2.png" itemprop="image" alt="Avatar">
+    
+
+    <div class="media-body">
+      <h5 class="card-title" itemprop="name"><a href="/">Luke Benz</a></h5>
+      <h6 class="card-subtitle">Biostatistics PhD Student</h6>
+      
+      <ul class="network-icon" aria-hidden="true">
+        
+          
+          
+          
+            
+          
+          
+          
+          
+          
+            
+          
+          <li>
+            <a itemprop="sameAs" href="/#contact" >
+              <i class="fas fa-envelope"></i>
+            </a>
+          </li>
+        
+          
+          
+          
+            
+          
+          
+          
+          
+          
+            
+          
+          <li>
+            <a itemprop="sameAs" href="https://twitter.com/recspecs730" target="_blank" rel="noopener">
+              <i class="fab fa-twitter"></i>
+            </a>
+          </li>
+        
+          
+          
+          
+            
+          
+          
+          
+          
+          
+            
+          
+          <li>
+            <a itemprop="sameAs" href="https://github.com/lbenz730" target="_blank" rel="noopener">
+              <i class="fab fa-github"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+
+      
+      
+    
+
+    
+
+    
+
+
+  </div>
+</article>
+
+      
+
+    
+    
+    
+    <script src="/js/mathjax-config.js"></script>
+    
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" integrity="sha256-X5PoE3KU5l+JcX+w09p/wHl9AzK333C4hJ2I9S5mD4M=" crossorigin="anonymous"></script>
+
+      
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js" integrity="sha256-aYTdUrn6Ow1DDgh5JTc3aDGnnju48y/1c8s1dgkYPQ8=" crossorigin="anonymous"></script>
+        
+      
+
+      
+      
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS_CHTML-full" integrity="sha256-GhM+5JHb6QUzOQPXSJLEWP7R73CbkisjzK5Eyij4U9w=" crossorigin="anonymous" async></script>
+      
+    
+
+    
+    
+
+    
+    
+    
+
+    
+    
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+
+    
+    
+    <script>
+      const search_index_filename = "/index.json";
+      const i18n = {
+        'placeholder': "Search...",
+        'results': "results found",
+        'no_results': "No results found"
+      };
+      const content_type = {
+        'post': "Posts",
+        'project': "Projects",
+        'publication' : "Publications",
+        'talk' : "Talks"
+        };
+    </script>
+    
+
+    
+    
+
+    
+    
+    <script id="search-hit-fuse-template" type="text/x-template">
+      <div class="search-hit" id="summary-{{key}}">
+      <div class="search-hit-content">
+        <div class="search-hit-name">
+          <a href="{{relpermalink}}">{{title}}</a>
+          <div class="article-metadata search-hit-type">{{type}}</div>
+          <p class="search-hit-description">{{snippet}}</p>
+        </div>
+      </div>
+      </div>
+    </script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.2.1/fuse.min.js" integrity="sha256-VzgmKYmhsGNNN4Ph1kMW+BjoYJM2jV5i4IlFoeZA9XI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    
+    
+    
+    <script src="/js/academic.min.9ef1b53ee2bde6c7f33b150c6ba4d452.js"></script>
+
+    
+
+
+
+
+
+
+  
+  <div class="container">
+    <footer class="site-footer">
+  
+
+  <p class="powered-by">
+    
+
+    Powered by the
+    <a href="https://sourcethemes.com/academic/" target="_blank" rel="noopener">Academic theme</a> for
+    <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a>.
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" id="back_to_top">
+        <span class="button_icon">
+          <i class="fas fa-chevron-up fa-2x"></i>
+        </span>
+      </a>
+    </span>
+    
+  </p>
+</footer>
+
+  </div>
+  
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

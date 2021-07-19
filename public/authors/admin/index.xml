@@ -1,0 +1,886 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Luke Benz</title>
+    <link>/authors/admin/</link>
+    <description>Recent content on Luke Benz</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 29 Dec 2020 00:00:00 +0000</lastBuildDate>
+    
+	    <atom:link href="/authors/admin/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Estimating the change in soccer&#39;s home advantage during the Covid-19 pandemic using bivariate Poisson regression</title>
+      <link>/publication/soccer_covid_ha/</link>
+      <pubDate>Tue, 29 Dec 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/publication/soccer_covid_ha/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Social media partnerships with patient organizations for neuro-oncology patient recruitment</title>
+      <link>/publication/social_media_recruitment/</link>
+      <pubDate>Tue, 01 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/publication/social_media_recruitment/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>An Examination of Timeout Value, Strategy, and Momentum in NCAA Division 1 Men&#39;s Basketball</title>
+      <link>/posters/nessis_2019/</link>
+      <pubDate>Sat, 28 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/posters/nessis_2019/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Game Excitement Index: An In-Depth Exploration</title>
+      <link>/post/gei/</link>
+      <pubDate>Sat, 22 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/gei/</guid>
+      <description>
+
+
+&lt;div id=&#34;introduction&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;One of the NCAA Men’s Basketball metrics I’ve been fascinated with lately is that of &lt;a href=&#34;https://sports.sites.yale.edu/game-excitement-index-part-ii&#34;&gt;Game Excitement Index&lt;/a&gt;. Game Excitement Index (GEI) attempts to quantify how exciting a particular game was after it has been played. Related metrics have been implemented for &lt;a href=&#34;http://archive.advancedfootballanalytics.com/2009/06/best-games-of-decade.html&#34;&gt;NFL games&lt;/a&gt; by Brian Burke, &lt;a href=&#34;http://www.inpredictable.com/2014/04/an-exciting-first-round-so-far.html&#34;&gt;NBA games&lt;/a&gt; by InPredict (Mike Beuoy), and for &lt;a href=&#34;https://fivethirtyeight.com/features/how-our-march-madness-predictions-work/&#34;&gt;March Madness&lt;/a&gt; by FiveThirtyEight. One can compute GEI for college basketball games using my &lt;a href=&#34;https://github.com/lbenz730/ncaahoopR&#34;&gt;&lt;code&gt;ncaahoopR&lt;/code&gt;&lt;/a&gt; package, which I define as follows:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\text{GEI} = \frac{2400}{t}\sum_{i = 2}^n |p_i - p_{i-1}|
+\]&lt;/span&gt;
+where &lt;span class=&#34;math inline&#34;&gt;\(t\)&lt;/span&gt; is the length of the game (in seconds), &lt;span class=&#34;math inline&#34;&gt;\(n\)&lt;/span&gt; is the number of plays in the game, and &lt;span class=&#34;math inline&#34;&gt;\(p_i\)&lt;/span&gt; is the home team’s win probability on play &lt;span class=&#34;math inline&#34;&gt;\(i\)&lt;/span&gt; of the game. One can think of GEI as a measure of the length of the win probability curve if it were to be unwound, normalized to the length of a standard regulation game. The reason I choose to normalize the length of games is that I don’t want sloppy “boring” games which simply happen to go to 2 or 3 overtimes to be pegged as more exciting. In general, this small normalization has little effect, as games that go deep into overtime are generally pretty exciting to begin with. Through this article, I hope to explore which games, teams, and conferences have produced the most exciting basketball this season, while showing off how one can use &lt;code&gt;ncaahoopR&lt;/code&gt; to answer interesting college basketball questions.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;obtaining-the-data&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Obtaining the Data&lt;/h2&gt;
+&lt;p&gt;The below code uses &lt;code&gt;ncaahoopR&lt;/code&gt; to&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Get each team’s schedule&lt;/li&gt;
+&lt;li&gt;Compute GEI for each game this season&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Note that a complete list of team’s can be found in the &lt;code&gt;ids&lt;/code&gt; data frame built into the package.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(ncaahoopR)
+### Scrape All Schedules
+i &amp;lt;- 1
+for(team in ids$team) {
+  print(paste(&amp;quot;Getting Team:&amp;quot;, i, &amp;quot; of &amp;quot;, 353))
+  schedule &amp;lt;- get_schedule(team) %&amp;gt;%
+    filter(date &amp;lt; Sys.Date()) %&amp;gt;%
+    mutate(&amp;quot;team&amp;quot; = team) 
+  if(i == 1) {
+    master &amp;lt;- schedule
+  }else{
+    master &amp;lt;- rbind(master, schedule)
+  }
+  i &amp;lt;- i + 1
+}
+
+### Get Unique Game IDs
+game_ids &amp;lt;- 
+  filter(master, !duplicated(game_id)) %&amp;gt;% 
+  pull(game_id) %&amp;gt;% 
+  unique()
+
+### Compute GEI for Each Game
+n &amp;lt;- length(game_ids)
+df &amp;lt;- data.frame(&amp;quot;game_id&amp;quot; = game_ids,
+                 &amp;quot;gei&amp;quot; = NA)
+for(i in 1:nrow(df)) {
+  print(paste(&amp;quot;GEI:&amp;quot;, i, &amp;quot;of&amp;quot;, n))
+  df$gei[i] &amp;lt;- game_excitement_index(game_ids[i])
+}
+master &amp;lt;- left_join(master, df, by = &amp;quot;game_id&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;analysis&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Analysis&lt;/h2&gt;
+&lt;p&gt;Below is a histogram of the Game Excitement Index for the 2018-19 season (for all games play-by-play data is avaiable). Through the first 6 weeks of the season, GEI has a mean of roughly 3.6 and standard deviation of about 2.6. GEI appears to follow some sort of Gamma distribution. The distribution is skewed right, with over 62 percent of games registing GEI less than 4.
+&lt;img src=&#34;/post/gei/index_files/figure-html/fig1-1.png&#34; width=&#34;672&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;We can see looking by the plot above that very few games have GEI greater than 10. In fact, 10 is the 99th percentile for GEI, and through 12/21/2018, only 23 games have achieved such a mark. Below are the most exciting games of the season.&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr class=&#34;header&#34;&gt;
+&lt;th align=&#34;left&#34;&gt;team&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;opponent&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;date&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;location&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;team_score&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;opp_score&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;gei&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;St John’s&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;VCU&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;2018-11-20&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;N&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;87&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;86&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;14.34&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;Kentucky&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Seton Hall&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;2018-12-08&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;N&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;83&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;84&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;12.49&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;Louisville&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Michigan State&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;2018-11-27&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;H&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;82&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;78&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;11.27&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;Campbell&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;UNC Wilmington&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;2018-11-06&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;H&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;97&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;93&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;11.14&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;Hampton&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Norfolk State&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;2018-11-29&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;A&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;89&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;94&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;11.10&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;UMass Lowell&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Wagner&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;2018-11-10&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;H&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;88&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;84&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;10.86&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;Columbia&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Fordham&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;2018-11-18&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;A&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;69&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;70&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;10.79&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;BYU&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Illinois State&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;2018-11-28&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;A&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;89&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;92&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;10.75&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;SMU&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Wright State&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;2018-11-21&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;N&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;77&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;76&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;10.72&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;Columbia&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Delaware&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;2018-12-02&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;H&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;86&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;87&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;10.59&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;Texas State&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;UTSA&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;2018-12-01&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;A&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;69&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;68&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;10.52&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;Santa Clara&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;USC&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;2018-12-18&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;H&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;102&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;92&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;10.48&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;Boston College&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Providence&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;2018-12-04&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;H&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;95&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;100&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;10.47&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;E Kentucky&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Northern Kentucky&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;2018-12-08&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;H&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;76&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;74&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;10.46&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;LIU Brooklyn&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Milwaukee&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;2018-11-20&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;A&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;87&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;92&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;10.44&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;Iona&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Long Beach State&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;2018-11-19&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;N&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;85&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;86&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;10.32&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;Towson&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;UMBC&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;2018-12-11&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;A&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;80&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;76&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;10.25&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;BYU&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;UNLV&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;2018-12-15&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;N&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;90&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;92&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;10.24&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;Fairfield&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;LIU Brooklyn&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;2018-11-13&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;H&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;87&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;89&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;10.22&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;American&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;UMBC&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;2018-11-24&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;A&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;73&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;69&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;10.18&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;Abil Christian&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Pacific&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;2018-11-23&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;A&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;73&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;71&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;10.04&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;Denver&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Wyoming&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;2018-12-11&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;A&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;90&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;87&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;10.02&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;N Illinois&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Northern Kentucky&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;2018-11-09&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;H&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;85&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;88&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;10.01&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;Let’s take a closer look at the most exciting game of the season, &lt;a href=&#34;https://www.rumbleinthegarden.com/2018/11/20/18105658/st-johns-vcu-final-legends-classic-champions-87-86-ot&#34;&gt;VCU vs. St. John’s, an OT thriller in the Legend’s Classic championship game&lt;/a&gt;, during Thanksgiving “Feast Week”. We can make the win probability chart for the game using the function &lt;code&gt;gg_wp_chart()&lt;/code&gt;, as follows.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;gg_wp_chart(game_id = 401096927, home_col = &amp;quot;black&amp;quot;, away_col = &amp;quot;red&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;ggwpchart.png&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Next, we can look at which teams have the highest and lowest average GEI. Due to the skewed nature of the GEI distribution, it probably makes most sense to rank teams by median GEI. We can also classify games into a few different categories based on their GEI:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Heart Pounders&lt;/strong&gt;: GEI &amp;gt; 8&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Thrillers&lt;/strong&gt;: 4 &amp;lt; GEI &lt;span class=&#34;math inline&#34;&gt;\(\leq\)&lt;/span&gt; 8&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Average Games&lt;/strong&gt;: 1 &amp;lt; GEI &lt;span class=&#34;math inline&#34;&gt;\(\leq\)&lt;/span&gt; 4&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Duds&lt;/strong&gt;: GEI &amp;lt; 1&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div id=&#34;most-exciting-teams&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;Most Exciting Teams&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;## `summarise()` ungrouping output (override with `.groups` argument)&lt;/code&gt;&lt;/pre&gt;
+&lt;table&gt;
+&lt;colgroup&gt;
+&lt;col width=&#34;16%&#34; /&gt;
+&lt;col width=&#34;11%&#34; /&gt;
+&lt;col width=&#34;9%&#34; /&gt;
+&lt;col width=&#34;8%&#34; /&gt;
+&lt;col width=&#34;8%&#34; /&gt;
+&lt;col width=&#34;15%&#34; /&gt;
+&lt;col width=&#34;10%&#34; /&gt;
+&lt;col width=&#34;14%&#34; /&gt;
+&lt;col width=&#34;5%&#34; /&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr class=&#34;header&#34;&gt;
+&lt;th align=&#34;left&#34;&gt;team&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;median_gei&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;mean_gei&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;max_gei&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;min_gei&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;heart_pounders&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;thrillers&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;average_games&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;duds&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;American&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;7.43&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;6.26&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;10.18&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.98&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;3&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;San Jose State&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;7.15&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;6.27&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;9.85&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1.05&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;4&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;Delaware&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;7.05&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;6.17&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;10.59&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2.43&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;3&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;4&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;3&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;UMKC&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;6.97&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;6.93&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;9.42&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;4.38&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;Harvard&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;6.87&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;6.43&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;9.26&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2.03&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;4&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;Iona&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;6.85&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;6.58&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;10.32&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1.14&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;3&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;3&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;Fordham&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;6.66&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5.62&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;10.79&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.48&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;4&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;Seton Hall&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;6.46&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5.79&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;12.49&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.74&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;3&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;3&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;Wyoming&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;6.39&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5.36&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;10.02&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1.05&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;4&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;VCU&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;6.11&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;7.38&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;14.34&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;3.66&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;3&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;CSU Bakersfield&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;6.07&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5.52&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;9.14&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1.77&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;Niagara&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5.97&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;6.18&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;9.92&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1.50&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;7&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;Ga Southern&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5.91&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5.10&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;7.96&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1.61&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;8&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;3&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;Arizona State&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5.89&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;4.87&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;9.55&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.56&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;4&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;Saint Joe’s&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5.82&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5.31&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;8.42&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1.46&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;3&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;Belmont&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5.78&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5.30&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;8.13&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1.88&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;High Point&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5.74&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5.03&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;9.25&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1.15&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;4&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;Lafayette&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5.74&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5.27&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;8.75&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.59&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;3&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;3&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;3&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;Indiana&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5.62&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;4.39&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;9.41&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.34&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;4&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;3&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;Pacific&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5.60&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5.46&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;10.04&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1.06&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;3&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;3&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;4&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;div id=&#34;least-exciting-teams&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;Least Exciting Teams&lt;/h4&gt;
+&lt;table&gt;
+&lt;colgroup&gt;
+&lt;col width=&#34;15%&#34; /&gt;
+&lt;col width=&#34;11%&#34; /&gt;
+&lt;col width=&#34;9%&#34; /&gt;
+&lt;col width=&#34;8%&#34; /&gt;
+&lt;col width=&#34;8%&#34; /&gt;
+&lt;col width=&#34;15%&#34; /&gt;
+&lt;col width=&#34;10%&#34; /&gt;
+&lt;col width=&#34;14%&#34; /&gt;
+&lt;col width=&#34;5%&#34; /&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr class=&#34;header&#34;&gt;
+&lt;th align=&#34;left&#34;&gt;team&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;median_gei&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;mean_gei&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;max_gei&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;min_gei&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;heart_pounders&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;thrillers&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;average_games&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;duds&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;MD-E Shore&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.53&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1.31&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5.35&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.23&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;8&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;AR-Pine Bluff&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.61&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1.21&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5.14&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.30&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;6&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;Miss Valley St&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.67&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.83&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1.72&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.32&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;7&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;Texas Tech&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.68&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2.63&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;7.68&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.26&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;4&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;6&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;Coppin State&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.73&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1.45&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;8.29&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.30&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;7&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;Illinois&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.77&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1.14&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2.16&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.48&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;Chicago State&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.80&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2.46&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;8.19&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.38&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;3&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;7&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;Alabama State&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.84&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1.23&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2.84&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.31&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;3&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;6&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;Auburn&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.94&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2.18&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;7.80&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.24&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;Alcorn State&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.95&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1.30&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;3.07&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.44&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;Virginia Tech&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.95&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2.48&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;8.45&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.39&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;Georgia Tech&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.99&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2.60&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;7.25&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.39&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;3&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;4&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;NC State&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1.00&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2.52&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;8.50&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.23&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;3&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;S Carolina St&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1.00&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1.87&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5.92&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.39&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;4&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;6&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;UNC Asheville&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1.01&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2.47&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;7.52&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.34&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;3&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;4&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;Saint Mary’s&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1.03&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.98&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1.35&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.69&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;3&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;UNC&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1.03&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2.16&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;6.38&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.46&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;4&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;4&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;TCU&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1.13&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2.51&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;7.13&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.64&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;Duke&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1.16&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2.23&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;9.80&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.25&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;Maine&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1.23&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2.07&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;5.27&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.30&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;3&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;Perhaps not suprisingly, many of the least exciting teams so far are MEAC and SWAC teams, often scheduling buy-games (and getting blown-out) against high-major opponents. Teams like Duke, UVA, and Texas Tech are likely on the list for the same reason–scheduling and destroying many weaker opponents. Duke’s appearance on this list is actually a testament to it’s domiance this season. Even having Kentucky, Texas Tech, Auburn, Indiana, and Gonzaga on it’s non-conference schedule, it’s level of dominance means Duke’s win probability charts flatline early and are marked by low GEI scores. This also shows a limitation of GEI to show what is exciting. Against most opponents, a team like Duke will still be fairly heavily favored when the score is close and as such, won’t be able to wrack up as high of a Game Excitement Index. Perhaps at this stage of the season, GEI is best used to rank mid-major teams, and it would be wise to wait until conference play begins to evalaute high-major teams on this metric.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;gei-game-types-by-conference&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;GEI Game Types by Conference&lt;/h4&gt;
+&lt;p&gt;&lt;img src=&#34;/post/gei/index_files/figure-html/fig2-1.png&#34; width=&#34;1440&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;most-exciting-game-by-date&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;Most Exciting Game by Date&lt;/h4&gt;
+&lt;p&gt;Finally, one can look at the most exciting game on each day of the season. I got the idea for the below chart from Jordan Sperber’s &lt;a href=&#34;https://twitter.com/hoopvision68/status/1054509454064926720&#34;&gt;look at the best ranked games each day per KenPom FanMatch&lt;/a&gt;, which seeks to quantify the quality of a game &lt;em&gt;before&lt;/em&gt; it is played.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/gei/index_files/figure-html/fig3-1.png&#34; width=&#34;1920&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;By no means is GEI meant to be a perfect metric, and it might fail to capture important aspects of the game that a given individual might find to be exciting. That being said, I think it does a pretty good job of capturing a lot of what makes games fun to watch, and helps raise awareness of a lot of good mid-major basketball that often flies under the radar. I’ll keep updating these materials as conference play kicks off in the coming weeks to see if/how the metric changes, but for now, we can sit back, relax, and appreciate some good college hoops.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>The International Low Grade Glioma Registry Patient-Reported Quality of Life</title>
+      <link>/posters/qol_lgg/</link>
+      <pubDate>Thu, 15 Nov 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/posters/qol_lgg/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Quality of life after surgery for intracranial meningioma</title>
+      <link>/publication/qol_meningioma/</link>
+      <pubDate>Wed, 13 Sep 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/publication/qol_meningioma/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>/authors/admin/</link>
+      <pubDate>Tue, 29 Dec 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/authors/admin/</guid>
+      <description>&lt;p&gt;My name is Luke Benz and I am a first year Biostatistics PhD Student at the Harvard T.H. Chan School of Public Health. I graduated from Yale University in 2019 with a BS in Applied Mathematics with a concentration in Statistics and Data Science. While I do not yet know what my research at Harvard will entail, I have several diverse interests, including clinical trials, social networks, electronic health record (EHR) data, and cancer.&lt;/p&gt;
+
+&lt;p&gt;Before coming to Harvard, I was a senior data scientist at &lt;a href=&#34;https://www.medidata.com/en/&#34; target=&#34;_blank&#34;&gt;Medidata Solutions, Inc.&lt;/a&gt;, where I most recently worked on models to select sites to use in clinical trials, and to forecast enrollment patterns and key milestones in those trials.&lt;/p&gt;
+
+&lt;p&gt;In my free time, I enjoy working on projects at the intersection of statistics and sports, and was president of the &lt;a href=&#34;https://sports.sites.yale.edu&#34; target=&#34;_blank&#34;&gt;Yale Undergraduate Sports Analytics Group&lt;/a&gt; between 2017-2019. Many of my past projects have involved college basketball, and my &lt;code&gt;R&lt;/code&gt; package &lt;a href=&#34;https://github.com/lbenz730/ncaahoopR&#34; target=&#34;_blank&#34;&gt;ncaahoopR&lt;/a&gt; is designed to facilitate easy access and analysis of college basketball play-by-play data. &lt;a href=&#34;https://arxiv.org/abs/2012.14949&#34; target=&#34;_blank&#34;&gt;My most recent publication&lt;/a&gt; related to sports examines the change in home advantage in European soccer during the COVID-19 pandemic, when games were played without fans.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

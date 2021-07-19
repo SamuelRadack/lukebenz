@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="Source Themes Academic 4.3.1">
+
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Luke Benz">
+
+  
+  
+  
+    
+  
+  <meta name="description" content="I’m excited to release ncaahoopR version 1.5 today. ncaahoopR started off as me putting together a few of my side projects into a single place. It was convenient for my work flow, and I wasn’t too sure other people would even use it. Fast forward a year and half, and the current number of people using the package far exceeds what I ever could have imagined. The uptick in users, particuarly during this current season, has made me really excited about the possibilities that lie ahead.">
+
+  
+  <link rel="alternate" hreflang="en-us" href="/post/ncaahoopr_v1.5/">
+
+  
+
+
+  
+
+  
+  
+  
+  <meta name="theme-color" content="#2962ff">
+  
+
+  
+  
+  
+  
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.6/css/academicons.min.css" integrity="sha256-uFVgMKfistnJAfoCUQigIl+JfUaP47GrRKjf6CTPVmw=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.0/css/all.css" integrity="sha384-aOkxzJ5uQz7WBObEZcHvV5JvRW3TUc2rNPA7pe3AwnsUohiw1Vj2Rgx2KSOkF5+h" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" integrity="sha256-ygkqlh3CYSUri3LhQxzdcm0n1EQvH2Y+U5S2idbLtxs=" crossorigin="anonymous">
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css" crossorigin="anonymous" title="hl-light">
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/dracula.min.css" crossorigin="anonymous" title="hl-dark" disabled>
+        
+      
+    
+
+    
+
+    
+
+  
+
+  
+  
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Montserrat:400,700|Roboto:400,400italic,700|Roboto+Mono">
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="/css/academic.min.747d92dc45be93ba6055a623fe5bcc0a.css">
+
+  
+
+  
+  
+  
+
+  
+
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="icon" type="image/png" href="/img/icon.png">
+  <link rel="apple-touch-icon" type="image/png" href="/img/icon-192.png">
+
+  <link rel="canonical" href="/post/ncaahoopr_v1.5/">
+
+  
+  
+  
+  
+    
+    
+  
+  <meta property="twitter:card" content="summary">
+  
+  <meta property="og:site_name" content="Luke Benz">
+  <meta property="og:url" content="/post/ncaahoopr_v1.5/">
+  <meta property="og:title" content="What&#39;s New in ncaahoopR Version 1.5 | Luke Benz">
+  <meta property="og:description" content="I’m excited to release ncaahoopR version 1.5 today. ncaahoopR started off as me putting together a few of my side projects into a single place. It was convenient for my work flow, and I wasn’t too sure other people would even use it. Fast forward a year and half, and the current number of people using the package far exceeds what I ever could have imagined. The uptick in users, particuarly during this current season, has made me really excited about the possibilities that lie ahead."><meta property="og:image" content="/img/icon-192.png">
+  <meta property="og:locale" content="en-us">
+  
+  <meta property="article:published_time" content="2020-01-01T00:00:00&#43;00:00">
+  
+  <meta property="article:modified_time" content="2020-01-01T00:00:00&#43;00:00">
+  
+
+  
+
+
+  
+
+
+
+
+
+  <title>What&#39;s New in ncaahoopR Version 1.5 | Luke Benz</title>
+
+</head>
+
+
+<body id="top" data-spy="scroll" data-target="#TableOfContents" data-offset="71" >
+
+  <aside class="search-results" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" role="textbox" spellcheck="false" type="search">
+        
+      </div>
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+  
+<nav class="navbar navbar-light fixed-top navbar-expand-lg py-0" id="navbar-main">
+  <div class="container">
+
+    
+      <a class="navbar-brand" href="/">Luke Benz</a>
+      
+      <button type="button" class="navbar-toggler" data-toggle="collapse"
+              data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+        <span><i class="fas fa-bars"></i></span>
+      </button>
+      
+
+    
+    <div class="collapse navbar-collapse" id="navbar">
+
+      
+      
+      <ul class="navbar-nav mr-auto">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#about"><span>Home</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#projects"><span>Projects</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#posts"><span>Posts</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#publications"><span>Publications</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#contact"><span>Contact</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/cv.pdf"><span>CV</span></a>
+        </li>
+
+        
+        
+
+      
+      </ul>
+      <ul class="navbar-nav ml-auto">
+      
+
+        
+
+        
+        <li class="nav-item">
+          <a class="nav-link js-search" href="#"><i class="fas fa-search" aria-hidden="true"></i></a>
+        </li>
+        
+
+        
+
+        
+
+      </ul>
+
+    </div>
+  </div>
+</nav>
+
+
+  <article class="article" itemscope itemtype="http://schema.org/Article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1 itemprop="name">What&#39;s New in ncaahoopR Version 1.5</h1>
+
+  
+
+  
+    
+
+
+
+<meta content="2020-01-01 00:00:00 &#43;0000 UTC" itemprop="datePublished">
+<meta content="2020-01-01 00:00:00 &#43;0000 UTC" itemprop="dateModified">
+
+<div class="article-metadata">
+
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+    
+    <time>Jan 1, 2020</time>
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    6 min read
+  </span>
+  
+
+  
+  
+
+  
+  
+
+  
+    
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    <li>
+      <a class="twitter"
+         href="https://twitter.com/intent/tweet?text=What%27s%20New%20in%20ncaahoopR%20Version%201.5&amp;url=%2fpost%2fncaahoopr_v1.5%2f"
+         target="_blank" rel="noopener">
+        <i class="fab fa-twitter"></i>
+      </a>
+    </li>
+    <li>
+      <a class="facebook"
+         href="https://www.facebook.com/sharer.php?u=%2fpost%2fncaahoopr_v1.5%2f"
+         target="_blank" rel="noopener">
+        <i class="fab fa-facebook-f"></i>
+      </a>
+    </li>
+    <li>
+      <a class="linkedin"
+         href="https://www.linkedin.com/shareArticle?mini=true&amp;url=%2fpost%2fncaahoopr_v1.5%2f&amp;title=What%27s%20New%20in%20ncaahoopR%20Version%201.5"
+         target="_blank" rel="noopener">
+        <i class="fab fa-linkedin-in"></i>
+      </a>
+    </li>
+    <li>
+      <a class="weibo"
+         href="http://service.weibo.com/share/share.php?url=%2fpost%2fncaahoopr_v1.5%2f&amp;title=What%27s%20New%20in%20ncaahoopR%20Version%201.5"
+         target="_blank" rel="noopener">
+        <i class="fab fa-weibo"></i>
+      </a>
+    </li>
+    <li>
+      <a class="email"
+         href="mailto:?subject=What%27s%20New%20in%20ncaahoopR%20Version%201.5&amp;body=%2fpost%2fncaahoopr_v1.5%2f">
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  </ul>
+</div>
+
+
+  
+
+</div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style" itemprop="articleBody">
+      
+
+
+<p>I’m excited to release <a href="https://github.com/lbenz730/ncaahoopR">ncaahoopR</a> version 1.5 today. ncaahoopR started off as me putting together a few of my side projects into a single place. It was convenient for my work flow, and I wasn’t too sure other people would even use it. Fast forward a year and half, and the current number of people using the package far exceeds what I ever could have imagined. The uptick in users, particuarly during this current season, has made me really excited about the possibilities that lie ahead.</p>
+<p>ncaahoopR is being used by managers and assistant coaches at Division 1 schools, by journalists, and by casual fans like myself. Version 1.5 of the package brings the biggest changes to the package since Verion 1.0 was released. The package has enough users around the web that beginning with this version, I will be doing better version control by keeping a developmental branch and releasing changelogs for big updates. So, let’s take a tour of what’s new in ncaahoopR version 1.5.</p>
+<hr />
+<div id="possession-parsing" class="section level1">
+<h1>Possession Parsing</h1>
+<p>The biggest update to the package is that two new columns (<code>possession_before</code> and <code>possession_after</code>) demarcate which team has possession before and after each play. ESPN play-by-plays logs don’t automatically tag pre- and post-play possession, so using team rosters, I parse possessions applying the following set of assumptions:</p>
+<ol style="list-style-type: decimal">
+<li>Shooting teams have possesion on the play before they shoot.</li>
+<li>On made shots (non-free throws), the possession after the play switches to the other team.</li>
+<li>For missed shots, the correct rebound is the first possible rebound that is:</li>
+</ol>
+<ul>
+<li>In the same half</li>
+<li>Before any future shot</li>
+</ul>
+<ol start="4" style="list-style-type: decimal">
+<li>All actions between a missed shot and rebound maintain the same before/after possession team</li>
+<li>Turnovers/Steals:</li>
+</ol>
+<ul>
+<li>If steal, possesion go to stealing team from other team</li>
+<li>If turnover, possesion goes from turnover team to other team</li>
+</ul>
+<ol start="6" style="list-style-type: decimal">
+<li>Fouls: Foul gives possession to non-foul committing team</li>
+<li>Missed Free Throws are rebounded by the next unmapped rebound before next shot. Then proceed as assumption 4.</li>
+<li>Deadball Team Rebounds implies possesion after for the deadball rebounding team.</li>
+<li>All non-Free Throw sequences occuring at the same time not yet tagged get the same before possesion mapping as the first event at that time period and the same after possesion mapping as the last event at that time period.</li>
+<li>All Remaining sequences don’t involve change of possession.</li>
+</ol>
+<p>While these assumptions have been carefully considered, they probably miss some corner cases. If you encounter any play-by-play logs where you think possession has been incorrectly parsed, please let me know by opening an issue on GitHub or commenting on Twitter.</p>
+</div>
+<div id="shot-data" class="section level1">
+<h1>Shot Data</h1>
+<p>ncaahoopR has always had shot data courtesy of <a href="https://github.com/meysubb">Meyappan Subbaiah</a>, but it has always been seperate from play-by-plays logs…until now! Now, the default behavior for the <code>get_pbp_game()</code> function is to include the following columns of shot-related data.</p>
+<ul>
+<li><code>shot_x</code>: The half-court x coordinate of shot.</li>
+<li><code>shot_y</code>: The half-court y coordinate of shot.</li>
+<li><code>shot_team</code>: Name of team taking shot.</li>
+<li><code>shot_outcome</code>: Whether the shot was <code>made</code> or <code>missed</code>.</li>
+<li><code>shooter</code>: Name of player taking shot.</li>
+<li><code>assist</code>: Name of player asssisting shot (assisted shots only)</li>
+<li><code>three_pt</code>: Logical, if shot is 3-point field goal attempt.</li>
+<li><code>three_pt</code>: Logical, if shot is free throw attempt.</li>
+</ul>
+<p>For (<code>shot_x</code>, <code>shot_y</code>) pairs, (0,0) represents the bottom left corner and (50, 47) represents the top right corner (from persepective of standing under hoop). Note that shot locations are usually only avaialble for high-major teams, and are left as <code>NA</code> if not available.</p>
+<p>Both the possession parsing and shot location linkage cause <code>get_pbp_game()</code> to take a few additional seconds per game. If you don’t need these variables and want to speed up the scraping, simply pass in <code>extra_parse = FALSE</code> to the function.</p>
+</div>
+<div id="historical-coverage" class="section level1">
+<h1>Historical Coverage</h1>
+<p>While ncaahoopR has always been able to scrape play-by-play data for any valid <code>game_id</code> a user provided, finding historical <code>game_id</code> values further back than the current season wasn’t possible in previous verions of the package. Now, all of the following functions accept an optional <code>season</code> argument to overide the default current season (in the form “YYYY-YY”).</p>
+<ul>
+<li><code>get_roster(team, season = current_season)</code>: Available through 2007-08</li>
+<li><code>get_schedule(team, season = current_season)</code>: Available through 2002-03</li>
+<li><code>get_game_ids(team, season = current_season)</code>: Available through 2002-03</li>
+<li><code>get_pbp(team, season = current_season)</code>: Available through 2002-03</li>
+</ul>
+<p>Additionally, the <code>assist_net</code> and <code>circle_assist_net</code> now go back through the 2007-08 season given the historical roster coverage. Unlike schedules, rosters from past seasons are not archived on ESPN. Historical coverage of rosters comes from <a href="http://www.barttorvik.com/%22">Bart Torvik’s site</a>.</p>
+</div>
+<div id="naive-win-probability" class="section level1">
+<h1>Naive Win Probability</h1>
+<p>Right before version 1.5, I added the <code>naive_win_prob</code>, a version of win probability starting at 50-50 and not using any information about pre-game spread, to the play-by-play logs. Now users, have the option to select whether to use <code>naive_win_prob</code> instead of the default <code>win_prob</code> by setting <code>include_spread = FALSE</code> in the following functions:</p>
+<ul>
+<li><code>wp_chart</code></li>
+<li><code>gg_wp_chart</code></li>
+<li><code>game_excitement_index</code></li>
+<li><code>average_win_prob</code></li>
+</ul>
+<pre class="r"><code>library(ncaahoopR)
+library(patchwork)
+osu_color &lt;- ncaa_colors$primary_color[ncaa_colors$ncaa_name == &quot;Ohio St.&quot;]
+uk_color &lt;- ncaa_colors$primary_color[ncaa_colors$ncaa_name == &quot;Kentucky&quot;]
+
+### Classic 
+gg_wp_chart(401166125, home_col = uk_color, away_col = osu_color, 
+            include_spread = T, show_labels = F)</code></pre>
+<p><img src="/post/ncaahoopR_v1.5/index_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<pre class="r"><code>### Naive
+gg_wp_chart(401166125, home_col = uk_color, away_col = osu_color, 
+            include_spread = F, show_labels = F)</code></pre>
+<p><img src="/post/ncaahoopR_v1.5/index_files/figure-html/unnamed-chunk-1-2.png" width="672" /></p>
+</div>
+<div id="smaller-changes" class="section level1">
+<h1>Smaller Changes</h1>
+<p>There are several other small improvements to the package.</p>
+<ul>
+<li><code>get_master_schedule(date)</code> now takes a single date argument, and is robust to future dates.</li>
+<li><code>play_length</code> variable was fixed so it relfects the time (in seconds) from the previous play to the current play, rather than the current play to the next play (as the description usually represents the end of a play and not the beginning).</li>
+<li>Rows where the score differential changes w/out any shot being made are now removed. This fixes <a href="https://github.com/lbenz730/ncaahoopR/issues/21">a bug</a> in ESPN data from the current season where certain events are given incorrect times.</li>
+<li>Colors for remaining 105 schools and logos for all 353 schools added to <code>ncaa_colors</code> data frame courtsey of <a href="https://github.com/morrisLuke">Luke Morris</a>.</li>
+</ul>
+<p><img src="/img/ncaa_colors.png" /></p>
+</div>
+<div id="data-repository" class="section level1">
+<h1>Data Repository</h1>
+<p>In case you don’t like R or don’t know R, or don’t want to have to scrape thounsands of games worth of data, I’ve uploaded lots of historical data to the following <a href="https://github.com/lbenz730/ncaahoopR_data">GitHub repository</a>.</p>
+<ul>
+<li>Over 50,000 Play-by-play logs dating back to 2002-03</li>
+<li>Schedules back to 2002-03</li>
+<li>Rosters back to 2007-08</li>
+</ul>
+<p>Data includes possession and shot variables only as far back as 2017-18 due to increased scraping time.</p>
+</div>
+<div id="so-whats-coming-in-v1.6" class="section level1">
+<h1>So What’s Coming in v1.6</h1>
+<p>While a lot as been added in the lastest version of the package, I think it is just the beginning of what is still to come. Here are some things I’d like to add to the package in 1.6, but I’d love to hear what features ncaahoopR users would like to see as well.</p>
+<ul>
+<li>Box Scores</li>
+<li>Once possesion parsing has undergone greater quality control checks, I hope to :
+<ul>
+<li>Re-train win probability models to include possesion (which is huge factor in end of game scenarios)</li>
+<li>Add win probability added (WPA) framework, stats, and graphics</li>
+</ul></li>
+<li>Best guess at “time on shot clock”</li>
+</ul>
+<p>Thanks for using ncaahoopR. Be sure to use #ncaahoopR if you share your work on Twitter so I can keep tabs on the package in the wild and promote your work within the community.</p>
+</div>
+
+    </div>
+
+    
+
+<div class="article-tags">
+  
+  <a class="badge badge-light" href="/tags/ncaahoopr/">ncaahoopR</a>
+  
+</div>
+
+
+
+    
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+  
+  
+    
+  
+  
+  <div class="media author-card" itemscope itemtype="http://schema.org/Person">
+    
+      
+      <img class="portrait mr-3" src="/authors/admin/avatar_hua0f031d98b16b52fc803715182f4f648_1955786_250x250_fill_lanczos_center_2.png" itemprop="image" alt="Avatar">
+    
+
+    <div class="media-body">
+      <h5 class="card-title" itemprop="name"><a href="/">Luke Benz</a></h5>
+      <h6 class="card-subtitle">Biostatistics PhD Student</h6>
+      
+      <ul class="network-icon" aria-hidden="true">
+        
+          
+          
+          
+            
+          
+          
+          
+          
+          
+            
+          
+          <li>
+            <a itemprop="sameAs" href="/#contact" >
+              <i class="fas fa-envelope"></i>
+            </a>
+          </li>
+        
+          
+          
+          
+            
+          
+          
+          
+          
+          
+            
+          
+          <li>
+            <a itemprop="sameAs" href="https://twitter.com/recspecs730" target="_blank" rel="noopener">
+              <i class="fab fa-twitter"></i>
+            </a>
+          </li>
+        
+          
+          
+          
+            
+          
+          
+          
+          
+          
+            
+          
+          <li>
+            <a itemprop="sameAs" href="https://github.com/lbenz730" target="_blank" rel="noopener">
+              <i class="fab fa-github"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+
+      
+      
+      <div class="article-widget">
+        <div class="hr-light"></div>
+        <h3>Related</h3>
+        <ul>
+          
+          <li><a href="/post/ncaahoopr_win_prob/">A New ncaahoopR Win Probability Model</a></li>
+          
+          <li><a href="/post/asu_curtain/">Does Arizona State&#39;s Curtain of Distraction Work?</a></li>
+          
+          <li><a href="/post/gei/">Game Excitement Index: An In-Depth Exploration</a></li>
+          
+        </ul>
+      </div>
+      
+    
+
+    
+
+    
+
+
+  </div>
+</article>
+
+      
+
+    
+    
+    
+    <script src="/js/mathjax-config.js"></script>
+    
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" integrity="sha256-X5PoE3KU5l+JcX+w09p/wHl9AzK333C4hJ2I9S5mD4M=" crossorigin="anonymous"></script>
+
+      
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js" integrity="sha256-aYTdUrn6Ow1DDgh5JTc3aDGnnju48y/1c8s1dgkYPQ8=" crossorigin="anonymous"></script>
+        
+      
+
+      
+      
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS_CHTML-full" integrity="sha256-GhM+5JHb6QUzOQPXSJLEWP7R73CbkisjzK5Eyij4U9w=" crossorigin="anonymous" async></script>
+      
+    
+
+    
+    
+
+    
+    
+    
+
+    
+    
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+
+    
+    
+    <script>
+      const search_index_filename = "/index.json";
+      const i18n = {
+        'placeholder': "Search...",
+        'results': "results found",
+        'no_results': "No results found"
+      };
+      const content_type = {
+        'post': "Posts",
+        'project': "Projects",
+        'publication' : "Publications",
+        'talk' : "Talks"
+        };
+    </script>
+    
+
+    
+    
+
+    
+    
+    <script id="search-hit-fuse-template" type="text/x-template">
+      <div class="search-hit" id="summary-{{key}}">
+      <div class="search-hit-content">
+        <div class="search-hit-name">
+          <a href="{{relpermalink}}">{{title}}</a>
+          <div class="article-metadata search-hit-type">{{type}}</div>
+          <p class="search-hit-description">{{snippet}}</p>
+        </div>
+      </div>
+      </div>
+    </script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.2.1/fuse.min.js" integrity="sha256-VzgmKYmhsGNNN4Ph1kMW+BjoYJM2jV5i4IlFoeZA9XI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    
+    
+    
+    <script src="/js/academic.min.9ef1b53ee2bde6c7f33b150c6ba4d452.js"></script>
+
+    
+
+
+
+
+
+
+  
+  <div class="container">
+    <footer class="site-footer">
+  
+
+  <p class="powered-by">
+    
+
+    Powered by the
+    <a href="https://sourcethemes.com/academic/" target="_blank" rel="noopener">Academic theme</a> for
+    <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a>.
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" id="back_to_top">
+        <span class="button_icon">
+          <i class="fas fa-chevron-up fa-2x"></i>
+        </span>
+      </a>
+    </span>
+    
+  </p>
+</footer>
+
+  </div>
+  
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

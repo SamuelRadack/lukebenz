@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>/courses/example/example1/</loc>
+    <lastmod>2019-05-05T00:00:00+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/courses/example/</loc>
+    <lastmod>2018-09-09T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/courses/example/example2/</loc>
+    <lastmod>2019-05-05T00:00:00+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/talk/example/</loc>
+    <lastmod>2030-06-01T13:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/</loc>
+    <lastmod>2030-06-01T13:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/talk/</loc>
+    <lastmod>2030-06-01T13:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/authors/admin/</loc>
+    <lastmod>2020-12-29T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/publication_types/2/</loc>
+    <lastmod>2020-12-29T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/authors/</loc>
+    <lastmod>2020-12-29T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/publication/soccer_covid_ha/</loc>
+    <lastmod>2020-12-29T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/authors/michael-lopez/</loc>
+    <lastmod>2020-12-29T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/publication_types/</loc>
+    <lastmod>2020-12-29T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/publication/</loc>
+    <lastmod>2020-12-29T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/bundesliga_hfa/</loc>
+    <lastmod>2020-05-25T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/</loc>
+    <lastmod>2020-05-25T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/soccer/</loc>
+    <lastmod>2020-05-25T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/</loc>
+    <lastmod>2020-05-25T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/afl/</loc>
+    <lastmod>2020-03-25T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/post/afl_tournament_sims/</loc>
+    <lastmod>2020-03-25T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/ncaa-basketball/</loc>
+    <lastmod>2020-03-25T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/post/ncaahoopr_v1.5/</loc>
+    <lastmod>2020-01-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/ncaahoopr/</loc>
+    <lastmod>2020-01-01T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/project/</loc>
+    <lastmod>2019-12-13T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/software/</loc>
+    <lastmod>2019-12-13T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/project/ncaahoopr/</loc>
+    <lastmod>2019-12-13T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/project/shiny_apps/</loc>
+    <lastmod>2019-12-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/ncaahoopr_win_prob/</loc>
+    <lastmod>2019-10-16T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/authors/elizabeth-claus/</loc>
+    <lastmod>2019-10-01T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/authors/josemari-feliciano/</loc>
+    <lastmod>2019-10-01T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/authors/lisa-calvocoressi/</loc>
+    <lastmod>2019-10-01T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/publication/social_media_recruitment/</loc>
+    <lastmod>2019-10-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posters/nessis_2019/</loc>
+    <lastmod>2019-09-28T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posters/</loc>
+    <lastmod>2019-09-28T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/research/</loc>
+    <lastmod>2019-05-22T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/project/sports_research/</loc>
+    <lastmod>2019-05-22T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/project/yusag/</loc>
+    <lastmod>2019-05-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/data-journalism/</loc>
+    <lastmod>2019-05-20T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/project/ydn_articles/</loc>
+    <lastmod>2019-05-20T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/statsketball/</loc>
+    <lastmod>2019-03-19T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/slides/</loc>
+    <lastmod>2019-02-05T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/slides/example/</loc>
+    <lastmod>2019-02-05T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/asu_curtain/</loc>
+    <lastmod>2019-02-04T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/project/mid_madness/</loc>
+    <lastmod>2019-01-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/gei/</loc>
+    <lastmod>2018-12-22T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/authors/jeffry-wefel/</loc>
+    <lastmod>2018-11-15T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/authors/joeky-senders/</loc>
+    <lastmod>2018-11-15T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/posters/qol_lgg/</loc>
+    <lastmod>2018-11-15T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/hoops_methodology/</loc>
+    <lastmod>2018-10-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/nist/</loc>
+    <lastmod>2018-07-01T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/project/nist/</loc>
+    <lastmod>2018-07-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/world-cup/</loc>
+    <lastmod>2018-06-27T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/post/eng_bel/</loc>
+    <lastmod>2018-06-27T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/wc_prob_quirks/</loc>
+    <lastmod>2018-06-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/wc_model_methodology/blogpost/</loc>
+    <lastmod>2018-06-10T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/project/fivethirtyeight_riddlers/</loc>
+    <lastmod>2018-05-20T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/authors/joellen-schildkraut/</loc>
+    <lastmod>2017-09-13T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/authors/joseph-wiemels/</loc>
+    <lastmod>2017-09-13T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/authors/joshua-warren/</loc>
+    <lastmod>2017-09-13T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/authors/margret-wrensch/</loc>
+    <lastmod>2017-09-13T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/authors/melissa-bondy/</loc>
+    <lastmod>2017-09-13T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/publication/qol_meningioma/</loc>
+    <lastmod>2017-09-13T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/categories/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/courses/</loc>
+  </url>
+  
+</urlset>

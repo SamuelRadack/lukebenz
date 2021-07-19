@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Authors on Luke Benz</title>
+    <link>/authors/</link>
+    <description>Recent content in Authors on Luke Benz</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 29 Dec 2020 00:00:00 +0000</lastBuildDate>
+    
+	    <atom:link href="/authors/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title></title>
+      <link>/authors/admin/</link>
+      <pubDate>Tue, 29 Dec 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/authors/admin/</guid>
+      <description>&lt;p&gt;My name is Luke Benz and I am a first year Biostatistics PhD Student at the Harvard T.H. Chan School of Public Health. I graduated from Yale University in 2019 with a BS in Applied Mathematics with a concentration in Statistics and Data Science. While I do not yet know what my research at Harvard will entail, I have several diverse interests, including clinical trials, social networks, electronic health record (EHR) data, and cancer.&lt;/p&gt;
+
+&lt;p&gt;Before coming to Harvard, I was a senior data scientist at &lt;a href=&#34;https://www.medidata.com/en/&#34; target=&#34;_blank&#34;&gt;Medidata Solutions, Inc.&lt;/a&gt;, where I most recently worked on models to select sites to use in clinical trials, and to forecast enrollment patterns and key milestones in those trials.&lt;/p&gt;
+
+&lt;p&gt;In my free time, I enjoy working on projects at the intersection of statistics and sports, and was president of the &lt;a href=&#34;https://sports.sites.yale.edu&#34; target=&#34;_blank&#34;&gt;Yale Undergraduate Sports Analytics Group&lt;/a&gt; between 2017-2019. Many of my past projects have involved college basketball, and my &lt;code&gt;R&lt;/code&gt; package &lt;a href=&#34;https://github.com/lbenz730/ncaahoopR&#34; target=&#34;_blank&#34;&gt;ncaahoopR&lt;/a&gt; is designed to facilitate easy access and analysis of college basketball play-by-play data. &lt;a href=&#34;https://arxiv.org/abs/2012.14949&#34; target=&#34;_blank&#34;&gt;My most recent publication&lt;/a&gt; related to sports examines the change in home advantage in European soccer during the COVID-19 pandemic, when games were played without fans.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Michael Lopez</title>
+      <link>/authors/michael-lopez/</link>
+      <pubDate>Tue, 29 Dec 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/authors/michael-lopez/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Elizabeth Claus</title>
+      <link>/authors/elizabeth-claus/</link>
+      <pubDate>Tue, 01 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/authors/elizabeth-claus/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Josemari Feliciano</title>
+      <link>/authors/josemari-feliciano/</link>
+      <pubDate>Tue, 01 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/authors/josemari-feliciano/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Lisa Calvocoressi</title>
+      <link>/authors/lisa-calvocoressi/</link>
+      <pubDate>Tue, 01 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/authors/lisa-calvocoressi/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Jeffry Wefel</title>
+      <link>/authors/jeffry-wefel/</link>
+      <pubDate>Thu, 15 Nov 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/authors/jeffry-wefel/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Joeky Senders</title>
+      <link>/authors/joeky-senders/</link>
+      <pubDate>Thu, 15 Nov 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/authors/joeky-senders/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Joellen Schildkraut</title>
+      <link>/authors/joellen-schildkraut/</link>
+      <pubDate>Wed, 13 Sep 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/authors/joellen-schildkraut/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Joseph Wiemels</title>
+      <link>/authors/joseph-wiemels/</link>
+      <pubDate>Wed, 13 Sep 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/authors/joseph-wiemels/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Joshua Warren</title>
+      <link>/authors/joshua-warren/</link>
+      <pubDate>Wed, 13 Sep 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/authors/joshua-warren/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Margret Wrensch</title>
+      <link>/authors/margret-wrensch/</link>
+      <pubDate>Wed, 13 Sep 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/authors/margret-wrensch/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Melissa Bondy</title>
+      <link>/authors/melissa-bondy/</link>
+      <pubDate>Wed, 13 Sep 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/authors/melissa-bondy/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

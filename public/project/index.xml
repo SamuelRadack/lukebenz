@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Projects on Luke Benz</title>
+    <link>/project/</link>
+    <description>Recent content in Projects on Luke Benz</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 13 Dec 2019 00:00:00 +0000</lastBuildDate>
+    
+	    <atom:link href="/project/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>ncaahoopR</title>
+      <link>/project/ncaahoopr/</link>
+      <pubDate>Fri, 13 Dec 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/project/ncaahoopr/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Basketball Shiny Apps</title>
+      <link>/project/shiny_apps/</link>
+      <pubDate>Sun, 01 Dec 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/project/shiny_apps/</guid>
+      <description>
+
+&lt;p&gt;A collection of links to various basketball related shiny apps&lt;/p&gt;
+
+&lt;h3 id=&#34;recspecs730-basketball-central&#34;&gt;Recspecs730 Basketball Central&lt;/h3&gt;
+
+&lt;p&gt;An R Shiny Application containing NCAA Basketball:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Power Rankings&lt;/li&gt;
+&lt;li&gt;Conference Simulations and Breakdowns&lt;/li&gt;
+&lt;li&gt;Team Breakdowns&lt;/li&gt;
+&lt;li&gt;Game Projections&lt;/li&gt;
+&lt;li&gt;Bracketology&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://lbenz730.shinyapps.io/recspecs_basketball_central/&#34; target=&#34;_blank&#34;&gt;Application&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;ivy-league-tiebreakr&#34;&gt;Ivy League TiebreakR&lt;/h3&gt;
+
+&lt;p&gt;An R Shiny Application for determining playoff seed for Ivy Madness based on user-input game outcomes.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://lbenz730.shinyapps.io/ivy_tiebreaks/&#34; target=&#34;_blank&#34;&gt;Application&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;ncaa-assist-networks&#34;&gt;NCAA Assist Networks&lt;/h3&gt;
+
+&lt;p&gt;An R Shiny Application for NCAA Basketball Assist Networks&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://lbenz730.shinyapps.io/assist_networks/&#34; target=&#34;_blank&#34;&gt;Application&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;new-york-section-2-basketabll-assist-networks&#34;&gt;New York Section 2 Basketabll Assist Networks&lt;/h3&gt;
+
+&lt;p&gt;An R Shiny Application for rending high school basketball assist networks.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://lbenz730.shinyapps.io/section_2_basketball_networks/&#34; target=&#34;_blank&#34;&gt;Application&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://blogs.section2basketball.com/fromthestands/2018/07/31/new-assist-network-feature-to-analyze-section-2-teams-players/&#34; target=&#34;_blank&#34;&gt;Press Release&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Sports Analytics Research</title>
+      <link>/project/sports_research/</link>
+      <pubDate>Wed, 22 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/project/sports_research/</guid>
+      <description>
+
+&lt;h3 id=&#34;an-examination-of-timeout-value-strategy-and-momentum-in-ncaa-division-1-men-s-basketball&#34;&gt;An Examination of Timeout Value, Strategy, and Momentum in NCAA Division 1 Men&amp;rsquo;s Basketball&lt;/h3&gt;
+
+&lt;p&gt;Senior Thesis in Applied Mathematics, Spring 2019&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/lbenz730/Senior-Thesis/blob/master/luke_benz_senior_thesis.pdf&#34; target=&#34;_blank&#34;&gt;Paper&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://lukebenz.com/nessis/timeout_value.pdf&#34; target=&#34;_blank&#34;&gt;Poster&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/lbenz730/Senior-Thesis&#34; target=&#34;_blank&#34;&gt;GitHub Repository&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;This work won first place in the the &lt;a href=&#34;https://www.causeweb.org/usproc/usresp/2019/spring/winners&#34; target=&#34;_blank&#34;&gt;2019 Spring USPROC Reseach Contest&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;a-bayesian-examination-of-win-probability-and-timeout-usage-in-ncaa-men-s-basketball&#34;&gt;A Bayesian Examination of Win Probability and Timeout Usage in NCAA Men&amp;rsquo;s Basketball&lt;/h3&gt;
+
+&lt;p&gt;Final Project for BIS 567, Fall 2018&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/lbenz730/BIS_567_Final_Project/blob/master/Documents/Fall%202018/BIS%20567/Final%20Project/Benz_BIS_567_Final_Poster.pdf&#34; target=&#34;_blank&#34;&gt;Poster&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;weighting-schema-for-regression-based-ratings-and-predictions-in-australian-rules-football&#34;&gt;Weighting Schema for Regression Based Ratings and Predictions in Australian Rules Football&lt;/h3&gt;
+
+&lt;p&gt;Final Project for S&amp;amp;DS 312, Fall 2018&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/lbenz730/Sports_Analytics/blob/master/afl_weighting_schema.pdf&#34; target=&#34;_blank&#34;&gt;Paper&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Yale Sports Analytics</title>
+      <link>/project/yusag/</link>
+      <pubDate>Tue, 21 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/project/yusag/</guid>
+      <description>
+
+&lt;p&gt;A collection of links to various sports analytics projects not already linked in projects/posts.&lt;/p&gt;
+
+&lt;h2 id=&#34;ncaa-basketball&#34;&gt;NCAA Basketball&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://sports.sites.yale.edu/do-deep-nit-runs-predict-future-ncaa-success&#34; target=&#34;_blank&#34;&gt;Do Deep NIT Runs Predict Future NCAA Success?&lt;/a&gt; &lt;strong&gt;(3/22/2018)&lt;/strong&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://sports.sites.yale.edu/value-switching-conferences&#34; target=&#34;_blank&#34;&gt;The Value of Switching Conferences&lt;/a&gt; &lt;strong&gt;(12/20/2017)&lt;/strong&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;mlb&#34;&gt;MLB&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://sports.sites.yale.edu/effect-baserunners-mlb-pitch-selection&#34; target=&#34;_blank&#34;&gt;Effect of Baserunners on MLB Pitch Selection&lt;/a&gt; &lt;strong&gt;(6/30/2017)&lt;/strong&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://sports.sites.yale.edu/what-makes-cy-young&#34; target=&#34;_blank&#34;&gt;What Makes a Cy Young?&lt;/a&gt; &lt;strong&gt;(5/19/2017)&lt;/strong&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;nba&#34;&gt;NBA&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://sports.sites.yale.edu/cs50-what-i-learned-0&#34; target=&#34;_blank&#34;&gt;CS50: What I Learned&lt;/a&gt; &lt;strong&gt;(1/19/2017)&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;podcasts&#34;&gt;Podcasts&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://podcasts.apple.com/us/podcast/the-wharton-moneyball-post-game-podcast/id1159695411?mt=2&#34; target=&#34;_blank&#34;&gt;Wharton Moneyball on my Hotdog Analytics&lt;/a&gt; &lt;strong&gt;(7/11/18)&lt;/strong&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://www.nwitimes.com/digital/audio/union-street-hoops/podcast-union-street-hoops-missouri-valley-conference-preview/audio_5f0b1e84-ebeb-11e7-b5c1-337d489fa490.html&#34; target=&#34;_blank&#34;&gt;Union Street Hoops Podcast&lt;/a&gt; &lt;strong&gt;(12/28/17)&lt;/strong&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;http://ivyhoopsonline.com/2017/02/16/on-the-vine-feb-16-2017/&#34; target=&#34;_blank&#34;&gt;On the Vine Ivy Hoops Podcast&lt;/a&gt; &lt;strong&gt;(2/16/17)&lt;/strong&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Yale Daily News</title>
+      <link>/project/ydn_articles/</link>
+      <pubDate>Mon, 20 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/project/ydn_articles/</guid>
+      <description>
+
+&lt;h2 id=&#34;ncaa-basketball&#34;&gt;NCAA Basketball&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://yaledailynews.com/blog/2019/03/27/by-the-numbers-yale-just-falls-to-lsu/&#34; target=&#34;_blank&#34;&gt;BY THE NUMBERS: Yale Just Falls to LSU&lt;/a&gt; &lt;strong&gt;(3/27/2019)&lt;/strong&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://yaledailynews.com/blog/2019/02/27/by-the-numbers-most-exciting-ivy-games/&#34; target=&#34;_blank&#34;&gt;BY THE NUMBERS: Most Exciting Ivy Games&lt;/a&gt; &lt;strong&gt;(2/27/2019)&lt;/strong&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://yaledailynews.com/blog/2019/02/13/by-the-numbers-midseason-rankings/&#34; target=&#34;_blank&#34;&gt;BY THE NUMBERS: Ivy Hoops Midseason Rankings&lt;/a&gt; &lt;strong&gt;(2/13/2019)&lt;/strong&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://yaledailynews.com/blog/2019/01/30/by-the-numbers-ivy-hoops-power-rankings/&#34; target=&#34;_blank&#34;&gt;BY THE NUMBERS: Ivy Hoops Power Rankings&lt;/a&gt; &lt;strong&gt;(1/30/2019)&lt;/strong&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://yaledailynews.com/blog/2018/12/05/by-the-numbers-underdog-yale-ready-to-challenge-no-3-duke/&#34; target=&#34;_blank&#34;&gt;BY THE NUMBERS: Yale vs. Duke Preview&lt;/a&gt; &lt;strong&gt;(12/5/2018)&lt;/strong&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://sports.sites.yale.edu/how-mad-was-march&#34; target=&#34;_blank&#34;&gt;BY THE NUMBERS: How Mad was March?&lt;/a&gt; &lt;strong&gt;(4/4/2018)&lt;/strong&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://yaledailynews.com/blog/2018/03/07/by-the-numbers-yale-heads-to-ivy-madness/&#34; target=&#34;_blank&#34;&gt;BY THE NUMBERS: Yale Heads to Ivy Madness&lt;/a&gt; &lt;strong&gt;(3/7/2018)&lt;/strong&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://yaledailynews.com/blog/2018/02/20/ivy-hoops-enters-home-stretch/&#34; target=&#34;_blank&#34;&gt;BY THE NUMBERS: Ivy Hoops Enters Home Stretch&lt;/a&gt; &lt;strong&gt;(2/20/2018)&lt;/strong&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://yaledailynews.com/blog/2018/02/08/by-the-numbers-math-to-ivy-madness/&#34; target=&#34;_blank&#34;&gt;BY THE NUMBERS: Math to Ivy Madness&lt;/a&gt; &lt;strong&gt;(2/8/2018)&lt;/strong&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://yaledailynews.com/blog/2018/01/23/by-the-numbers-ivy-basketball-analytics/&#34; target=&#34;_blank&#34;&gt;BY THE NUMBERS: Ivy Basketball Analytics&lt;/a&gt; &lt;strong&gt;(1/23/2018)&lt;/strong&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://yaledailynews.com/blog/2017/12/05/by-the-numbers-replacing-makai-mason/&#34; target=&#34;_blank&#34;&gt;BY THE NUMBERS: Replacing Makai Mason&lt;/a&gt; &lt;strong&gt;(12/5/2017)&lt;/strong&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://yaledailynews.com/blog/2017/03/11/by-the-numbers-ivy-math-ness/&#34; target=&#34;_blank&#34;&gt;BY THE NUMBERS: Ivy Math-ness&lt;/a&gt; &lt;strong&gt;(3/11/2017)&lt;/strong&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://yaledailynews.com/blog/2017/03/01/by-the-numbers-yales-chances-of-making-the-ivy-tournament/&#34; target=&#34;_blank&#34;&gt;BY THE NUMBERS: Yale&amp;rsquo;s Chances of Making the Ivy League Tournament&lt;/a&gt; &lt;strong&gt;(3/1/2017)&lt;/strong&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://yaledailynews.com/blog/2017/01/18/by-the-numbers-basketball-begins/&#34; target=&#34;_blank&#34;&gt;BY THE NUMBERS: Basketball Begins&lt;/a&gt; &lt;strong&gt;(1/18/2017)&lt;/strong&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;ncaa-baseball-and-softball&#34;&gt;NCAA Baseball and Softball&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://yaledailynews.com/blog/2018/04/17/by-the-numbers-baseball-mvps/&#34; target=&#34;_blank&#34;&gt;BY THE NUMBERS: Baseball MVPs&lt;/a&gt; &lt;strong&gt;(4/17/2018)&lt;/strong&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://yaledailynews.com/blog/2018/04/10/by-the-numbers-softball-mvps/&#34; target=&#34;_blank&#34;&gt;BY THE NUMBERS: Softball MVPs&lt;/a&gt; &lt;strong&gt;(4/10/2018)&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.google.com/spreadsheets/u/1/d/1oY7HrJ8Vr48Gu3_1faSMIobkUlPLI93gOd8zvLRetRs/edit?usp=sharing&#34; target=&#34;_blank&#34;&gt;(2018 Ivy Baseball/Softball WAR Leaderboard)&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://yaledailynews.com/blog/2017/04/26/by-the-numbers-mvps/&#34; target=&#34;_blank&#34;&gt;BY THE NUMBERS: MVPs&lt;/a&gt; &lt;strong&gt;(4/26/2017)&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.google.com/spreadsheets/d/1qaG3wn409CV1xS8zuaWmYKHcfBgsJHViAMK-d0OIsfM/edit#gid=0&#34; target=&#34;_blank&#34;&gt;(2017 Ivy Baseball/Softball WAR Leaderboard)&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;ncaa-football&#34;&gt;NCAA Football&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://yaledailynews.com/blog/2018/11/16/by-the-numbers-a-statistical-history-of-the-game-since-1875/&#34; target=&#34;_blank&#34;&gt;BY THE NUMBERS: A Statistical History of &amp;lsquo;The Game&amp;rsquo;&lt;/a&gt; &lt;strong&gt;(11/16/2018)&lt;/strong&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://yaledailynews.com/blog/2018/11/07/150974/&#34; target=&#34;_blank&#34;&gt;BY THE NUMBERS: Princeton&amp;rsquo;s Success&lt;/a&gt; &lt;strong&gt;(11/7/2018)&lt;/strong&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://yaledailynews.com/blog/2018/10/10/by-the-numbers-rise-of-ivy-league-football-recruiting/&#34; target=&#34;_blank&#34;&gt;BY THE NUMBERS: Rise of Ivy League Football Recruiting&lt;/a&gt; &lt;strong&gt;(10/10/2018)&lt;/strong&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://yaledailynews.com/blog/2018/09/11/by-the-numbers-ivy-league-football-preview/&#34; target=&#34;_blank&#34;&gt;BY THE NUMBERS: Ivy League Football Preview&lt;/a&gt; &lt;strong&gt;(9/11/2018)&lt;/strong&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://yaledailynews.com/blog/2017/11/01/by-the-numbers-ivy-title-race-heats-up/&#34; target=&#34;_blank&#34;&gt;BY THE NUMBERS: Ivy Title Race Heats Up&lt;/a&gt; &lt;strong&gt;(11/1/2017)&lt;/strong&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://yaledailynews.com/blog/2017/10/11/ivy-football-quick-hits/&#34; target=&#34;_blank&#34;&gt;BY THE NUMBERS: Ivy Football Quick Hits&lt;/a&gt; &lt;strong&gt;(10/11/2017)&lt;/strong&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://yaledailynews.com/blog/2017/09/06/how-to-win-an-ivy-league-football-championship/&#34; target=&#34;_blank&#34;&gt;BY THE NUMBERS: How to Win an Ivy League Football Championship&lt;/a&gt; &lt;strong&gt;(9/6/2017)&lt;/strong&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;other&#34;&gt;Other&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://yaledailynews.com/blog/2017/04/04/by-the-numbers-ivy-league-lacrosse/&#34; target=&#34;_blank&#34;&gt;BY THE NUMBERS: Ivy League Lacrosse&lt;/a&gt; &lt;strong&gt;(4/4/2017)&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Mid Major Madness</title>
+      <link>/project/mid_madness/</link>
+      <pubDate>Tue, 01 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/project/mid_madness/</guid>
+      <description>&lt;p&gt;I write for &lt;a href=&#34;www.midmajormadness.com&#34; target=&#34;_blank&#34;&gt;midmajormadness.com&lt;/a&gt; covering NCAA basketball analytics and Ivy League hoops. Below is a complete list of my stories for the website.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.midmajormadness.com/2020/3/1/21160138/ivy-league-seeding-scenarios-playoff-odds-yale-harvard-princeton-penn-brown-dartmouth&#34; target=&#34;_blank&#34;&gt;Ivy League Tiebreaking Scenarios 2020&lt;/a&gt; &lt;strong&gt;(03/01/2020)&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.midmajormadness.com/2019/12/30/21041851/win-probability-charts-2019-game-excitement-index-college-basketball&#34; target=&#34;_blank&#34;&gt;Charts! This Season in Win Probability&lt;/a&gt; &lt;strong&gt;(12/30/2019)&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.midmajormadness.com/2019/6/4/18645647/mountain-west-conference-shottracker-basketball-data-analytics&#34; target=&#34;_blank&#34;&gt;ShotTracker and the Mountain West are at the forefront of the next phase in college basketball’s analytics revolution&lt;/a&gt; &lt;strong&gt;(6/4/2019)&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>NIST</title>
+      <link>/project/nist/</link>
+      <pubDate>Sun, 01 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/project/nist/</guid>
+      <description>&lt;ul&gt;
+&lt;li&gt;&lt;em&gt;NIST Homegeneity Assessor User&amp;rsquo;s Manual&lt;/em&gt; (Summer 2018) &lt;a href=&#34;/nist/NIST_Homegeneity_Assessor_Users_Manual.pdf&#34;&gt;Paper&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Launch and Demonstration of the NIST Homogeneity Assessor&lt;/em&gt; (Summer 2018) &lt;a href=&#34;/nist/nist_2018.pdf&#34;&gt;Slides&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Combining Results in Collaborative Studies when Reported Uncertainties are Unreliable&lt;/em&gt; (Summer 2017) &lt;a href=&#34;/nist/nist_2017.pdf&#34;&gt;Slides&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>FiveThirtyEight Riddlers</title>
+      <link>/project/fivethirtyeight_riddlers/</link>
+      <pubDate>Sun, 20 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/project/fivethirtyeight_riddlers/</guid>
+      <description>
+
+&lt;h2 id=&#34;featured-solutions&#34;&gt;Featured Solutions&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://fivethirtyeight.com/features/the-eternal-question-how-much-do-these-apricots-weigh/&#34; target=&#34;_blank&#34;&gt;7/27/18 Riddler Classic&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://fivethirtyeight.com/features/work-a-shift-in-the-riddler-gift-shop/&#34; target=&#34;_blank&#34;&gt;8/18/17 Riddler Classic&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;blog-posts&#34;&gt;Blog Posts&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://sports.sites.yale.edu/transitive-national-champions&#34; target=&#34;_blank&#34;&gt;Transitive National Champions&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Code solutions to several riddlers can be found &lt;a href=&#34;https://github.com/lbenz730/Riddlers&#34; target=&#34;_blank&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

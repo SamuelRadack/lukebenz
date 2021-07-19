@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="Source Themes Academic 4.3.1">
+
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Luke Benz">
+
+  
+  
+  
+    
+  
+  <meta name="description" content="As part of my thesis this past spring, I improved on the win probability built into my ncaahoopR package. The new win probability model has now been integrated into the package for the upcoming 2019-20 college basketball season. In this post, I provide some background on the statistical details of the model.
+Win Probability Model Framework Let \(p_{ikt}\) denote the probability that team \(i\) wins game \(k\) with time \(t\) remaining in the game.">
+
+  
+  <link rel="alternate" hreflang="en-us" href="/post/ncaahoopr_win_prob/">
+
+  
+
+
+  
+
+  
+  
+  
+  <meta name="theme-color" content="#2962ff">
+  
+
+  
+  
+  
+  
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.6/css/academicons.min.css" integrity="sha256-uFVgMKfistnJAfoCUQigIl+JfUaP47GrRKjf6CTPVmw=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.0/css/all.css" integrity="sha384-aOkxzJ5uQz7WBObEZcHvV5JvRW3TUc2rNPA7pe3AwnsUohiw1Vj2Rgx2KSOkF5+h" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" integrity="sha256-ygkqlh3CYSUri3LhQxzdcm0n1EQvH2Y+U5S2idbLtxs=" crossorigin="anonymous">
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css" crossorigin="anonymous" title="hl-light">
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/dracula.min.css" crossorigin="anonymous" title="hl-dark" disabled>
+        
+      
+    
+
+    
+
+    
+
+  
+
+  
+  
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Montserrat:400,700|Roboto:400,400italic,700|Roboto+Mono">
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="/css/academic.min.747d92dc45be93ba6055a623fe5bcc0a.css">
+
+  
+
+  
+  
+  
+
+  
+
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="icon" type="image/png" href="/img/icon.png">
+  <link rel="apple-touch-icon" type="image/png" href="/img/icon-192.png">
+
+  <link rel="canonical" href="/post/ncaahoopr_win_prob/">
+
+  
+  
+  
+  
+    
+    
+  
+  <meta property="twitter:card" content="summary">
+  
+  <meta property="og:site_name" content="Luke Benz">
+  <meta property="og:url" content="/post/ncaahoopr_win_prob/">
+  <meta property="og:title" content="A New ncaahoopR Win Probability Model | Luke Benz">
+  <meta property="og:description" content="As part of my thesis this past spring, I improved on the win probability built into my ncaahoopR package. The new win probability model has now been integrated into the package for the upcoming 2019-20 college basketball season. In this post, I provide some background on the statistical details of the model.
+Win Probability Model Framework Let \(p_{ikt}\) denote the probability that team \(i\) wins game \(k\) with time \(t\) remaining in the game."><meta property="og:image" content="/img/icon-192.png">
+  <meta property="og:locale" content="en-us">
+  
+  <meta property="article:published_time" content="2019-10-16T00:00:00&#43;00:00">
+  
+  <meta property="article:modified_time" content="2019-10-16T00:00:00&#43;00:00">
+  
+
+  
+
+
+  
+
+
+
+
+
+  <title>A New ncaahoopR Win Probability Model | Luke Benz</title>
+
+</head>
+
+
+<body id="top" data-spy="scroll" data-target="#TableOfContents" data-offset="71" >
+
+  <aside class="search-results" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" role="textbox" spellcheck="false" type="search">
+        
+      </div>
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+  
+<nav class="navbar navbar-light fixed-top navbar-expand-lg py-0" id="navbar-main">
+  <div class="container">
+
+    
+      <a class="navbar-brand" href="/">Luke Benz</a>
+      
+      <button type="button" class="navbar-toggler" data-toggle="collapse"
+              data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+        <span><i class="fas fa-bars"></i></span>
+      </button>
+      
+
+    
+    <div class="collapse navbar-collapse" id="navbar">
+
+      
+      
+      <ul class="navbar-nav mr-auto">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#about"><span>Home</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#projects"><span>Projects</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#posts"><span>Posts</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#publications"><span>Publications</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#contact"><span>Contact</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/cv.pdf"><span>CV</span></a>
+        </li>
+
+        
+        
+
+      
+      </ul>
+      <ul class="navbar-nav ml-auto">
+      
+
+        
+
+        
+        <li class="nav-item">
+          <a class="nav-link js-search" href="#"><i class="fas fa-search" aria-hidden="true"></i></a>
+        </li>
+        
+
+        
+
+        
+
+      </ul>
+
+    </div>
+  </div>
+</nav>
+
+
+  <article class="article" itemscope itemtype="http://schema.org/Article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1 itemprop="name">A New ncaahoopR Win Probability Model</h1>
+
+  
+
+  
+    
+
+
+
+<meta content="2019-10-16 00:00:00 &#43;0000 UTC" itemprop="datePublished">
+<meta content="2019-10-16 00:00:00 &#43;0000 UTC" itemprop="dateModified">
+
+<div class="article-metadata">
+
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+    
+    <time>Oct 16, 2019</time>
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    4 min read
+  </span>
+  
+
+  
+  
+
+  
+  
+
+  
+    
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    <li>
+      <a class="twitter"
+         href="https://twitter.com/intent/tweet?text=A%20New%20ncaahoopR%20Win%20Probability%20Model&amp;url=%2fpost%2fncaahoopr_win_prob%2f"
+         target="_blank" rel="noopener">
+        <i class="fab fa-twitter"></i>
+      </a>
+    </li>
+    <li>
+      <a class="facebook"
+         href="https://www.facebook.com/sharer.php?u=%2fpost%2fncaahoopr_win_prob%2f"
+         target="_blank" rel="noopener">
+        <i class="fab fa-facebook-f"></i>
+      </a>
+    </li>
+    <li>
+      <a class="linkedin"
+         href="https://www.linkedin.com/shareArticle?mini=true&amp;url=%2fpost%2fncaahoopr_win_prob%2f&amp;title=A%20New%20ncaahoopR%20Win%20Probability%20Model"
+         target="_blank" rel="noopener">
+        <i class="fab fa-linkedin-in"></i>
+      </a>
+    </li>
+    <li>
+      <a class="weibo"
+         href="http://service.weibo.com/share/share.php?url=%2fpost%2fncaahoopr_win_prob%2f&amp;title=A%20New%20ncaahoopR%20Win%20Probability%20Model"
+         target="_blank" rel="noopener">
+        <i class="fab fa-weibo"></i>
+      </a>
+    </li>
+    <li>
+      <a class="email"
+         href="mailto:?subject=A%20New%20ncaahoopR%20Win%20Probability%20Model&amp;body=%2fpost%2fncaahoopr_win_prob%2f">
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  </ul>
+</div>
+
+
+  
+
+</div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style" itemprop="articleBody">
+      
+
+
+
+<p>As part of my <a href="https://github.com/lbenz730/Senior-Thesis">thesis</a> this past spring, I improved on the win probability built into my <a href="https://github.com/lbenz730/ncaahoopR"><code>ncaahoopR</code> package</a>. The new win probability model has now been integrated into the package for the upcoming 2019-20 college basketball season. In this post, I provide some background on the statistical details of the model.</p>
+<div id="win-probability-model-framework" class="section level2">
+<h2>Win Probability Model Framework</h2>
+<p>Let <span class="math inline">\(p_{ikt}\)</span> denote the probability that team <span class="math inline">\(i\)</span> wins game <span class="math inline">\(k\)</span> with time <span class="math inline">\(t\)</span> remaining in the game. Let <span class="math inline">\(Y_{ik}\)</span> be an indicator whether team <span class="math inline">\(i\)</span> won the game <span class="math inline">\(k\)</span>. The following model is assumed:
+<span class="math display">\[
+\begin{aligned}
+Y_{ik} | p_{ikt} &amp;\sim \text{Bernoulli}(p_{ikt}) \\
+\text{logit}(p_{ikt}) &amp;= X_{ikt}^{\scriptstyle T}\beta_t + \epsilon_{ikt} \\
+\epsilon_{ikt} &amp;\sim N(0, \sigma^2)
+\end{aligned}
+\]</span>
+In the above model, observations are of the form $ X_{ikt}, Y_{ik})$, where $ X_{ikt}$ denotes a vector of covariates of interest with time <span class="math inline">\(t\)</span> remaining in game <span class="math inline">\(k\)</span> and, <span class="math inline">\(Y_{ik}\)</span> is an indicator whether team <span class="math inline">\(i\)</span> won <span class="math inline">\((Y_{ik} = 1)\)</span> or lost <span class="math inline">\((Y_{ik} = 0)\)</span> the game in question. <span class="math inline">\(X_{ikt}\)</span> occur at discrete, non-regular time points <span class="math inline">\(t\)</span>, as observations are only available after the occurrence of certain game events (such as a made basket, foul, turnover, or timeout) which don’t adhere to a regular time schedule.</p>
+<p><span class="math inline">\(\beta_t\)</span> represents the vector of coefficients for the covariates of interest with time <span class="math inline">\(t\)</span> remaining. One challenge in fitting the above model is that the covariates of interest, such as score differential and pre-game point spread, have non-linear dependencies on the amount of time remaining in the game. While time remaining is not explicitly a covariate in any version of this model, coefficient estimates for covariates of interest are obtained at various values of time remaining <span class="math inline">\(t\)</span>.
+To combat covariates’ non-linear dependence on time, various versions of this type of college basketball win probability model, including work by <a href="https://bit.ly/1FJIjd4">Brian Burke</a> and <a href="http://adamcwisports.blogspot.com/2017/07/how-i-built-crappy-basketball-win.html">Bart Torvik</a> have broken the game into discrete time chunks, over which the coefficients are assumed to be constant.</p>
+<p>However, numerous problems can arise when one categorizes or makes discrete a continuous variable. To get around this problem, I fit several versions of this model were over discrete time intervals which overlapped by 90%. LOESS smoothing was then applied to the resulting coefficient estimates to obtain smooth coefficient functions over time. Coefficient estimates represent the increase in the log odds of winning a game while holding all of the other covariates in the model constant.</p>
+<p>I trained and tested several variations of this kind of model, which you can read about <a href="https://github.com/lbenz730/Senior-Thesis/blob/master/luke_benz_senior_thesis.pdf">here</a>. The model ultimately settled on is as follows:</p>
+<p>For each interval of the form <span class="math inline">\((t - \Delta, t]\)</span>, a logistic regression fit with covariates Pre Game Point Spread (<code>favored_by</code>) and Score Differential (<code>score_diff</code>) such that <span class="math inline">\(t - \Delta \leq\)</span> <code>time_remaining</code> <span class="math inline">\(\leq t\)</span>. Consecutive intervals overlap one another by 90%. As the time remaining, <span class="math inline">\(t\)</span> approaches <span class="math inline">\(0\)</span>, the rate at which model coefficients change with time increases. As such, <span class="math inline">\(\Delta\)</span> is decreased in order to properly capture the manner in which these coefficients vary as a function of time.</p>
+<table>
+<colgroup>
+<col width="35%" />
+<col width="64%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Variables Included</th>
+<th align="center">Time Interval Structure <span class="math inline">\((t - \Delta, t]\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><ul>
+<li>Score Differential</li>
+<li>Pre Game Point Spread</li>
+</ul></td>
+<td align="center"><ul>
+<li><span class="math inline">\(\Delta =\)</span> 100, <span class="math inline">\(600 \leq t \leq 2400\)</span></li>
+<li><span class="math inline">\(\Delta =\)</span> 50, <span class="math inline">\(100 \leq t \leq 600\)</span></li>
+<li><span class="math inline">\(\Delta =\)</span> 10, <span class="math inline">\(10 \leq t \leq 100\)</span></li>
+<li><span class="math inline">\(\Delta =\)</span> 2, <span class="math inline">\(1 \leq t \leq 10\)</span></li>
+<li><span class="math inline">\(\Delta =\)</span> 1, <span class="math inline">\(0 \leq t \leq 1\)</span></li>
+</ul></td>
+</tr>
+</tbody>
+</table>
+<p>Essentially, this method is related to a Generalized Additive Model (GAM). In simple terms a GAM is a linear combination of some unknown smoothed functions over the covariates. What I have done is essentially reverse the steps–I fit linear combinations of predictors (with logit link function) and then smooth over the time dependent results. This was done to gain a little bit more interpretability of the coefficient values, although I think a GAM could be fit and obtain vary similar results.</p>
+<p>We see in the coefficient trace plot below the obvious result that as the game progresses, the pregame line becomes less important in predicting win probability and the current score differential becomes increasingly more important
+<img src="/img/wp_coeffs.png" /></p>
+</div>
+<div id="model-calibration" class="section level2">
+<h2>Model Calibration</h2>
+<p>The model above was trained on <a href="https://github.com/lbenz730/Senior-Thesis/tree/master/pbp_data">10,949 games from the 2016-17 and 2017-18 seasons</a> and tested on <a href="https://github.com/lbenz730/Senior-Thesis/tree/master/test_pbp_data">3,625 games from the first part of the 2018-19 season</a>. Using the idea of calibration plots from Michael Lopez’s <a href="https://statsbylopez.com/2017/03/08/all-win-probability-models-are-wrong-some-are-useful/">win probability post after the 2017 Super Bowl</a>, I compare bins of predicted and observed probability over the course of the game. We see that the model is well calibrated for all situations.</p>
+<p><img src="/img/calibration_plot.png" /></p>
+</div>
+<div id="summary" class="section level2">
+<h2>Summary</h2>
+<p>Compared to the <a href="https://sports.sites.yale.edu/ncaa-basketball-win-probability-model">older win probability model</a>, the new win probability model is smoother and a little bit more interpretable. It is trained on a larger sample of data and is better calibrated, especially in late game situations. I still think there are some improvements that can be made in the future, especially accounting for possession in the final few minutes of the game. Nevertheless, it’s nice to see something fairly simple performing so well, and to integrate something I worked on for my thesis into the package. Be on the lookout for new win probability charts dropping at the beginning of this season!</p>
+</div>
+
+    </div>
+
+    
+
+<div class="article-tags">
+  
+  <a class="badge badge-light" href="/tags/ncaahoopr/">ncaahoopR</a>
+  
+</div>
+
+
+
+    
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+  
+  
+    
+  
+  
+  <div class="media author-card" itemscope itemtype="http://schema.org/Person">
+    
+      
+      <img class="portrait mr-3" src="/authors/admin/avatar_hua0f031d98b16b52fc803715182f4f648_1955786_250x250_fill_lanczos_center_2.png" itemprop="image" alt="Avatar">
+    
+
+    <div class="media-body">
+      <h5 class="card-title" itemprop="name"><a href="/">Luke Benz</a></h5>
+      <h6 class="card-subtitle">Biostatistics PhD Student</h6>
+      
+      <ul class="network-icon" aria-hidden="true">
+        
+          
+          
+          
+            
+          
+          
+          
+          
+          
+            
+          
+          <li>
+            <a itemprop="sameAs" href="/#contact" >
+              <i class="fas fa-envelope"></i>
+            </a>
+          </li>
+        
+          
+          
+          
+            
+          
+          
+          
+          
+          
+            
+          
+          <li>
+            <a itemprop="sameAs" href="https://twitter.com/recspecs730" target="_blank" rel="noopener">
+              <i class="fab fa-twitter"></i>
+            </a>
+          </li>
+        
+          
+          
+          
+            
+          
+          
+          
+          
+          
+            
+          
+          <li>
+            <a itemprop="sameAs" href="https://github.com/lbenz730" target="_blank" rel="noopener">
+              <i class="fab fa-github"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+
+      
+      
+      <div class="article-widget">
+        <div class="hr-light"></div>
+        <h3>Related</h3>
+        <ul>
+          
+          <li><a href="/post/asu_curtain/">Does Arizona State&#39;s Curtain of Distraction Work?</a></li>
+          
+          <li><a href="/post/gei/">Game Excitement Index: An In-Depth Exploration</a></li>
+          
+        </ul>
+      </div>
+      
+    
+
+    
+
+    
+
+
+  </div>
+</article>
+
+      
+
+    
+    
+    
+    <script src="/js/mathjax-config.js"></script>
+    
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" integrity="sha256-X5PoE3KU5l+JcX+w09p/wHl9AzK333C4hJ2I9S5mD4M=" crossorigin="anonymous"></script>
+
+      
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js" integrity="sha256-aYTdUrn6Ow1DDgh5JTc3aDGnnju48y/1c8s1dgkYPQ8=" crossorigin="anonymous"></script>
+        
+      
+
+      
+      
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS_CHTML-full" integrity="sha256-GhM+5JHb6QUzOQPXSJLEWP7R73CbkisjzK5Eyij4U9w=" crossorigin="anonymous" async></script>
+      
+    
+
+    
+    
+
+    
+    
+    
+
+    
+    
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+
+    
+    
+    <script>
+      const search_index_filename = "/index.json";
+      const i18n = {
+        'placeholder': "Search...",
+        'results': "results found",
+        'no_results': "No results found"
+      };
+      const content_type = {
+        'post': "Posts",
+        'project': "Projects",
+        'publication' : "Publications",
+        'talk' : "Talks"
+        };
+    </script>
+    
+
+    
+    
+
+    
+    
+    <script id="search-hit-fuse-template" type="text/x-template">
+      <div class="search-hit" id="summary-{{key}}">
+      <div class="search-hit-content">
+        <div class="search-hit-name">
+          <a href="{{relpermalink}}">{{title}}</a>
+          <div class="article-metadata search-hit-type">{{type}}</div>
+          <p class="search-hit-description">{{snippet}}</p>
+        </div>
+      </div>
+      </div>
+    </script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.2.1/fuse.min.js" integrity="sha256-VzgmKYmhsGNNN4Ph1kMW+BjoYJM2jV5i4IlFoeZA9XI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    
+    
+    
+    <script src="/js/academic.min.9ef1b53ee2bde6c7f33b150c6ba4d452.js"></script>
+
+    
+
+
+
+
+
+
+  
+  <div class="container">
+    <footer class="site-footer">
+  
+
+  <p class="powered-by">
+    
+
+    Powered by the
+    <a href="https://sourcethemes.com/academic/" target="_blank" rel="noopener">Academic theme</a> for
+    <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a>.
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" id="back_to_top">
+        <span class="button_icon">
+          <i class="fas fa-chevron-up fa-2x"></i>
+        </span>
+      </a>
+    </span>
+    
+  </p>
+</footer>
+
+  </div>
+  
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

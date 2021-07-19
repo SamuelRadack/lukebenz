@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Research on Luke Benz</title>
+    <link>/tags/research/</link>
+    <description>Recent content in Research on Luke Benz</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 22 May 2019 00:00:00 +0000</lastBuildDate>
+    
+	    <atom:link href="/tags/research/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Sports Analytics Research</title>
+      <link>/project/sports_research/</link>
+      <pubDate>Wed, 22 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/project/sports_research/</guid>
+      <description>
+
+&lt;h3 id=&#34;an-examination-of-timeout-value-strategy-and-momentum-in-ncaa-division-1-men-s-basketball&#34;&gt;An Examination of Timeout Value, Strategy, and Momentum in NCAA Division 1 Men&amp;rsquo;s Basketball&lt;/h3&gt;
+
+&lt;p&gt;Senior Thesis in Applied Mathematics, Spring 2019&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/lbenz730/Senior-Thesis/blob/master/luke_benz_senior_thesis.pdf&#34; target=&#34;_blank&#34;&gt;Paper&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://lukebenz.com/nessis/timeout_value.pdf&#34; target=&#34;_blank&#34;&gt;Poster&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/lbenz730/Senior-Thesis&#34; target=&#34;_blank&#34;&gt;GitHub Repository&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;This work won first place in the the &lt;a href=&#34;https://www.causeweb.org/usproc/usresp/2019/spring/winners&#34; target=&#34;_blank&#34;&gt;2019 Spring USPROC Reseach Contest&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;a-bayesian-examination-of-win-probability-and-timeout-usage-in-ncaa-men-s-basketball&#34;&gt;A Bayesian Examination of Win Probability and Timeout Usage in NCAA Men&amp;rsquo;s Basketball&lt;/h3&gt;
+
+&lt;p&gt;Final Project for BIS 567, Fall 2018&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/lbenz730/BIS_567_Final_Project/blob/master/Documents/Fall%202018/BIS%20567/Final%20Project/Benz_BIS_567_Final_Poster.pdf&#34; target=&#34;_blank&#34;&gt;Poster&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;weighting-schema-for-regression-based-ratings-and-predictions-in-australian-rules-football&#34;&gt;Weighting Schema for Regression Based Ratings and Predictions in Australian Rules Football&lt;/h3&gt;
+
+&lt;p&gt;Final Project for S&amp;amp;DS 312, Fall 2018&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/lbenz730/Sports_Analytics/blob/master/afl_weighting_schema.pdf&#34; target=&#34;_blank&#34;&gt;Paper&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

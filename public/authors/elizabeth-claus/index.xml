@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Elizabeth Claus on Luke Benz</title>
+    <link>/authors/elizabeth-claus/</link>
+    <description>Recent content in Elizabeth Claus on Luke Benz</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 01 Oct 2019 00:00:00 +0000</lastBuildDate>
+    
+	    <atom:link href="/authors/elizabeth-claus/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Social media partnerships with patient organizations for neuro-oncology patient recruitment</title>
+      <link>/publication/social_media_recruitment/</link>
+      <pubDate>Tue, 01 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/publication/social_media_recruitment/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>The International Low Grade Glioma Registry Patient-Reported Quality of Life</title>
+      <link>/posters/qol_lgg/</link>
+      <pubDate>Thu, 15 Nov 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/posters/qol_lgg/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Quality of life after surgery for intracranial meningioma</title>
+      <link>/publication/qol_meningioma/</link>
+      <pubDate>Wed, 13 Sep 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/publication/qol_meningioma/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

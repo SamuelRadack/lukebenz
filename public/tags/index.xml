@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on Luke Benz</title>
+    <link>/tags/</link>
+    <description>Recent content in Tags on Luke Benz</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 25 May 2020 00:00:00 +0000</lastBuildDate>
+    
+	    <atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Soccer</title>
+      <link>/tags/soccer/</link>
+      <pubDate>Mon, 25 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/soccer/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>AFL</title>
+      <link>/tags/afl/</link>
+      <pubDate>Wed, 25 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/afl/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>NCAA Basketball</title>
+      <link>/tags/ncaa-basketball/</link>
+      <pubDate>Wed, 25 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/ncaa-basketball/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ncaahoopR</title>
+      <link>/tags/ncaahoopr/</link>
+      <pubDate>Wed, 01 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/ncaahoopr/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Software</title>
+      <link>/tags/software/</link>
+      <pubDate>Fri, 13 Dec 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/software/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Research</title>
+      <link>/tags/research/</link>
+      <pubDate>Wed, 22 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/research/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Data Journalism</title>
+      <link>/tags/data-journalism/</link>
+      <pubDate>Mon, 20 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/data-journalism/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>NIST</title>
+      <link>/tags/nist/</link>
+      <pubDate>Sun, 01 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/nist/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>World Cup</title>
+      <link>/tags/world-cup/</link>
+      <pubDate>Wed, 27 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/world-cup/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>
