@@ -3,17 +3,16 @@ abstract: "In wake of the Covid-19 pandemic, 2019-2020 soccer seasons across the
 authors:
 - admin
 - Michael Lopez
-date: "2020-12-29T00:00:00Z"
+date: "2021-07-15T00:00:00Z"
 doi: ""
 featured: false
 projects: []
-publication: 'arXiv Pre-Print'
+publication: 'AStA Advances in Statistical Analysis'
 publication_short: ""
 publication_types:
 - "2"
-publishDate: "2020-12-29T00:00:00Z"
+publishDate: "2021-07-15T00:00:00Z"
 summary: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis posuere tellus ac convallis placerat. Proin tincidunt magna sed ex sollicitudin condimentum.
 title: Estimating the change in soccer's home advantage during the Covid-19 pandemic using bivariate Poisson regression
-url_pdf: https://arxiv.org/abs/2012.14949
+url_pdf: https://link.springer.com/article/10.1007/s10182-021-00413-9
 ---
-

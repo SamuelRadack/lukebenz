@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Data Journalism on Luke Benz</title>
-    <link>/tags/data-journalism/</link>
+    <link>https://lukebenz.com/tags/data-journalism/</link>
     <description>Recent content in Data Journalism on Luke Benz</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 20 May 2019 00:00:00 +0000</lastBuildDate>
     
-	    <atom:link href="/tags/data-journalism/index.xml" rel="self" type="application/rss+xml" />
+	    <atom:link href="https://lukebenz.com/tags/data-journalism/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Yale Daily News</title>
-      <link>/project/ydn_articles/</link>
+      <link>https://lukebenz.com/project/ydn_articles/</link>
       <pubDate>Mon, 20 May 2019 00:00:00 +0000</pubDate>
       
-      <guid>/project/ydn_articles/</guid>
+      <guid>https://lukebenz.com/project/ydn_articles/</guid>
       <description>
 
 &lt;h2 id=&#34;ncaa-basketball&#34;&gt;NCAA Basketball&lt;/h2&gt;
@@ -97,10 +97,10 @@
     
     <item>
       <title>Mid Major Madness</title>
-      <link>/project/mid_madness/</link>
+      <link>https://lukebenz.com/project/mid_madness/</link>
       <pubDate>Tue, 01 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>/project/mid_madness/</guid>
+      <guid>https://lukebenz.com/project/mid_madness/</guid>
       <description>&lt;p&gt;I write for &lt;a href=&#34;www.midmajormadness.com&#34; target=&#34;_blank&#34;&gt;midmajormadness.com&lt;/a&gt; covering NCAA basketball analytics and Ivy League hoops. Below is a complete list of my stories for the website.&lt;/p&gt;
 
 &lt;ul&gt;

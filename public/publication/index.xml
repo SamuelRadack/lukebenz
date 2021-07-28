@@ -2,39 +2,39 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Publications on Luke Benz</title>
-    <link>/publication/</link>
+    <link>https://lukebenz.com/publication/</link>
     <description>Recent content in Publications on Luke Benz</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 29 Dec 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 15 Jul 2021 00:00:00 +0000</lastBuildDate>
     
-	    <atom:link href="/publication/index.xml" rel="self" type="application/rss+xml" />
+	    <atom:link href="https://lukebenz.com/publication/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Estimating the change in soccer&#39;s home advantage during the Covid-19 pandemic using bivariate Poisson regression</title>
-      <link>/publication/soccer_covid_ha/</link>
-      <pubDate>Tue, 29 Dec 2020 00:00:00 +0000</pubDate>
+      <link>https://lukebenz.com/publication/soccer_covid_ha/</link>
+      <pubDate>Thu, 15 Jul 2021 00:00:00 +0000</pubDate>
       
-      <guid>/publication/soccer_covid_ha/</guid>
+      <guid>https://lukebenz.com/publication/soccer_covid_ha/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Social media partnerships with patient organizations for neuro-oncology patient recruitment</title>
-      <link>/publication/social_media_recruitment/</link>
+      <link>https://lukebenz.com/publication/social_media_recruitment/</link>
       <pubDate>Tue, 01 Oct 2019 00:00:00 +0000</pubDate>
       
-      <guid>/publication/social_media_recruitment/</guid>
+      <guid>https://lukebenz.com/publication/social_media_recruitment/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Quality of life after surgery for intracranial meningioma</title>
-      <link>/publication/qol_meningioma/</link>
+      <link>https://lukebenz.com/publication/qol_meningioma/</link>
       <pubDate>Wed, 13 Sep 2017 00:00:00 +0000</pubDate>
       
-      <guid>/publication/qol_meningioma/</guid>
+      <guid>https://lukebenz.com/publication/qol_meningioma/</guid>
       <description></description>
     </item>
     

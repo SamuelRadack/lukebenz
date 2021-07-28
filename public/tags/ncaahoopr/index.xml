@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>ncaahoopR on Luke Benz</title>
-    <link>/tags/ncaahoopr/</link>
+    <link>https://lukebenz.com/tags/ncaahoopr/</link>
     <description>Recent content in ncaahoopR on Luke Benz</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator>
     <language>en-us</language>
     <lastBuildDate>Wed, 01 Jan 2020 00:00:00 +0000</lastBuildDate>
     
-	    <atom:link href="/tags/ncaahoopr/index.xml" rel="self" type="application/rss+xml" />
+	    <atom:link href="https://lukebenz.com/tags/ncaahoopr/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>What&#39;s New in ncaahoopR Version 1.5</title>
-      <link>/post/ncaahoopr_v1.5/</link>
+      <link>https://lukebenz.com/post/ncaahoopr_v1.5/</link>
       <pubDate>Wed, 01 Jan 2020 00:00:00 +0000</pubDate>
       
-      <guid>/post/ncaahoopr_v1.5/</guid>
+      <guid>https://lukebenz.com/post/ncaahoopr_v1.5/</guid>
       <description>
 
 
@@ -96,11 +96,11 @@ uk_color &amp;lt;- ncaa_colors$primary_color[ncaa_colors$ncaa_name == &amp;quot;
 ### Classic 
 gg_wp_chart(401166125, home_col = uk_color, away_col = osu_color, 
             include_spread = T, show_labels = F)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/ncaahoopR_v1.5/index_files/figure-html/unnamed-chunk-1-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://lukebenz.com/post/ncaahoopR_v1.5/index_files/figure-html/unnamed-chunk-1-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;### Naive
 gg_wp_chart(401166125, home_col = uk_color, away_col = osu_color, 
             include_spread = F, show_labels = F)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/ncaahoopR_v1.5/index_files/figure-html/unnamed-chunk-1-2.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://lukebenz.com/post/ncaahoopR_v1.5/index_files/figure-html/unnamed-chunk-1-2.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;smaller-changes&#34; class=&#34;section level1&#34;&gt;
 &lt;h1&gt;Smaller Changes&lt;/h1&gt;
@@ -111,7 +111,7 @@ gg_wp_chart(401166125, home_col = uk_color, away_col = osu_color,
 &lt;li&gt;Rows where the score differential changes w/out any shot being made are now removed. This fixes &lt;a href=&#34;https://github.com/lbenz730/ncaahoopR/issues/21&#34;&gt;a bug&lt;/a&gt; in ESPN data from the current season where certain events are given incorrect times.&lt;/li&gt;
 &lt;li&gt;Colors for remaining 105 schools and logos for all 353 schools added to &lt;code&gt;ncaa_colors&lt;/code&gt; data frame courtsey of &lt;a href=&#34;https://github.com/morrisLuke&#34;&gt;Luke Morris&lt;/a&gt;.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;/img/ncaa_colors.png&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://lukebenz.com/img/ncaa_colors.png&#34; /&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;data-repository&#34; class=&#34;section level1&#34;&gt;
 &lt;h1&gt;Data Repository&lt;/h1&gt;
@@ -142,10 +142,10 @@ gg_wp_chart(401166125, home_col = uk_color, away_col = osu_color,
     
     <item>
       <title>A New ncaahoopR Win Probability Model</title>
-      <link>/post/ncaahoopr_win_prob/</link>
+      <link>https://lukebenz.com/post/ncaahoopr_win_prob/</link>
       <pubDate>Wed, 16 Oct 2019 00:00:00 +0000</pubDate>
       
-      <guid>/post/ncaahoopr_win_prob/</guid>
+      <guid>https://lukebenz.com/post/ncaahoopr_win_prob/</guid>
       <description>
 
 
@@ -196,12 +196,12 @@ To combat covariates’ non-linear dependence on time, various versions of this 
 &lt;/table&gt;
 &lt;p&gt;Essentially, this method is related to a Generalized Additive Model (GAM). In simple terms a GAM is a linear combination of some unknown smoothed functions over the covariates. What I have done is essentially reverse the steps–I fit linear combinations of predictors (with logit link function) and then smooth over the time dependent results. This was done to gain a little bit more interpretability of the coefficient values, although I think a GAM could be fit and obtain vary similar results.&lt;/p&gt;
 &lt;p&gt;We see in the coefficient trace plot below the obvious result that as the game progresses, the pregame line becomes less important in predicting win probability and the current score differential becomes increasingly more important
-&lt;img src=&#34;/img/wp_coeffs.png&#34; /&gt;&lt;/p&gt;
+&lt;img src=&#34;https://lukebenz.com/img/wp_coeffs.png&#34; /&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;model-calibration&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Model Calibration&lt;/h2&gt;
 &lt;p&gt;The model above was trained on &lt;a href=&#34;https://github.com/lbenz730/Senior-Thesis/tree/master/pbp_data&#34;&gt;10,949 games from the 2016-17 and 2017-18 seasons&lt;/a&gt; and tested on &lt;a href=&#34;https://github.com/lbenz730/Senior-Thesis/tree/master/test_pbp_data&#34;&gt;3,625 games from the first part of the 2018-19 season&lt;/a&gt;. Using the idea of calibration plots from Michael Lopez’s &lt;a href=&#34;https://statsbylopez.com/2017/03/08/all-win-probability-models-are-wrong-some-are-useful/&#34;&gt;win probability post after the 2017 Super Bowl&lt;/a&gt;, I compare bins of predicted and observed probability over the course of the game. We see that the model is well calibrated for all situations.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/img/calibration_plot.png&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://lukebenz.com/img/calibration_plot.png&#34; /&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;summary&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Summary&lt;/h2&gt;
@@ -212,17 +212,17 @@ To combat covariates’ non-linear dependence on time, various versions of this 
     
     <item>
       <title>Does Arizona State&#39;s Curtain of Distraction Work?</title>
-      <link>/post/asu_curtain/</link>
+      <link>https://lukebenz.com/post/asu_curtain/</link>
       <pubDate>Mon, 04 Feb 2019 00:00:00 +0000</pubDate>
       
-      <guid>/post/asu_curtain/</guid>
+      <guid>https://lukebenz.com/post/asu_curtain/</guid>
       <description>
 
 
 &lt;div id=&#34;introduction&#34; class=&#34;section level1&#34;&gt;
 &lt;h1&gt;Introduction&lt;/h1&gt;
 &lt;p&gt;One of the more unique student sections in college basketball belongs to the Arizon State Sun Devils and their famous “Curtain of Distraction”. The Curtain of Distraction opens to reveal students in ridiculous attire trying to do all they can to break the focus of opposing free throw shooters. Perhaps the most famous attempted distraction occured when &lt;a href=&#34;https://www.youtube.com/watch?v=vZWtcTkUZ0A&#34;&gt;Olympic swimmer Michael appeard from behind the curatin wearing only a speedo&lt;/a&gt;. Several &lt;a href=&#34;https://www.cbsnews.com/news/the-curtain-of-distraction-helps-asu-win-games/&#34;&gt;outlets claim anecdotally&lt;/a&gt; that Curtain of Distraction works but don’t offer statistical evidence. Justin Wolfers of The Upshot attempted to quantify the effect of the Curtain of Distraction and &lt;a href=&#34;https://www.nytime%20s.com/2015/02/14/upshot/how-arizona-state-reinvented-free-throw-distraction.html&#34;&gt;found it to increase ASU’s home court advantage by 1-2 points&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/img/curatain.jpg&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://lukebenz.com/img/curatain.jpg&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Is the advantage still present (Wolfer’s article was written 4 years ago)? Let’s take a look, using my &lt;a href=&#34;https://github.com/lbenz730/ncaahoopR&#34;&gt;&lt;code&gt;ncaahoopR&lt;/code&gt;&lt;/a&gt; R package.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;exploratory-analysis&#34; class=&#34;section level1&#34;&gt;
@@ -265,7 +265,7 @@ free_throws$made &amp;lt;- grepl(&amp;quot;made&amp;quot;, free_throws$descripti
                    &amp;quot;n_attempts&amp;quot; = 20, &amp;quot;ft_pct&amp;quot; = 0.65)) %&amp;gt;%
   arrange(desc(ft_pct))
 knitr::kable(sum_stats)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/img/asu1.png&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://lukebenz.com/img/asu1.png&#34; /&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;a-more-in-depth-look&#34; class=&#34;section level1&#34;&gt;
 &lt;h1&gt;A More In-Depth Look&lt;/h1&gt;
@@ -345,7 +345,7 @@ ft_stats &amp;lt;- bind_rows(ft_stats, tibble(&amp;quot;home&amp;quot; = &amp;qu
   scale_color_manual(values = c(ncaa_colors$secondary_color[ncaa_colors$espn_name == &amp;quot;Arizona State&amp;quot;], 
                                 ncaa_colors$primary_color[ncaa_colors$espn_name == &amp;quot;Arizona State&amp;quot;]),
                      labels = c(&amp;quot;Arizona State&amp;quot;, &amp;quot;Other&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/img/asu2.png&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://lukebenz.com/img/asu2.png&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;A few play-by-play logs are not available on ESPN, but we have more than enough games to suggest that the effect of the Curtain of Distraction is reduced this year. Three teams had their best road FT shooting performance against the Sun Devils, while the majority of the others seem to fall within the reasonable range one would expect given their other performances. In fact, we can actually quantify how likely each shooting performance at ASU was. Assume that the number of free on opponent took against Arizona State follows a binomial&lt;span class=&#34;math inline&#34;&gt;\((n,p)\)&lt;/span&gt; distribution where &lt;span class=&#34;math inline&#34;&gt;\(n\)&lt;/span&gt; denotes the number of free throw attempts against ASU and &lt;span class=&#34;math inline&#34;&gt;\(p\)&lt;/span&gt; denotes the percentage of free throws that opponent
 missed in it’s other true road games. We then get the likelihood of each shooting performance against ASU as follows:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;season_ft_stats &amp;lt;- 
@@ -373,7 +373,7 @@ tibble(&amp;quot;team&amp;quot; = season_ft_stats$team,
        &amp;quot;p_value&amp;quot; = p_performance) %&amp;gt;%
   arrange(desc(p_value)) %&amp;gt;%
   knitr::kable()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/img/asu3.png&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://lukebenz.com/img/asu3.png&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;We see that none of the 12 opponent shooting performances differ from those teams’ normal road free throw shooting behavior in a statistically significant manner. That is to say, &lt;strong&gt;there is no evidence to suggest the Curtain of Distraction has had any major impact on opponent free throw shooting this season&lt;/strong&gt;. We can see this visually in the below graphic.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;set.seed(123)
 for(i in 1:nrow(season_ft_stats)) {
@@ -405,7 +405,7 @@ ggplot(sim_results, aes(x = miss)) +
   scale_fill_manual(values = c(&amp;quot;#CC0033&amp;quot;, &amp;quot;#CFB87C&amp;quot;, &amp;quot;#00274C&amp;quot;, &amp;quot;#0051BA&amp;quot;,
                                &amp;quot;#FFC72A&amp;quot;, &amp;quot;#FDD023&amp;quot;, &amp;quot;#000000&amp;quot;, &amp;quot;#154733&amp;quot;, &amp;quot;#DC4405&amp;quot;,
                                &amp;quot;#FF671F&amp;quot;, &amp;quot;maroon&amp;quot;, &amp;quot;#CC0000&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/img/asu4.png&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://lukebenz.com/img/asu4.png&#34; /&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;conclusion&#34; class=&#34;section level1&#34;&gt;
 &lt;h1&gt;Conclusion&lt;/h1&gt;
@@ -416,10 +416,10 @@ ggplot(sim_results, aes(x = miss)) +
     
     <item>
       <title>Game Excitement Index: An In-Depth Exploration</title>
-      <link>/post/gei/</link>
+      <link>https://lukebenz.com/post/gei/</link>
       <pubDate>Sat, 22 Dec 2018 00:00:00 +0000</pubDate>
       
-      <guid>/post/gei/</guid>
+      <guid>https://lukebenz.com/post/gei/</guid>
       <description>
 
 
@@ -474,7 +474,7 @@ master &amp;lt;- left_join(master, df, by = &amp;quot;game_id&amp;quot;)&lt;/cod
 &lt;div id=&#34;analysis&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Analysis&lt;/h2&gt;
 &lt;p&gt;Below is a histogram of the Game Excitement Index for the 2018-19 season (for all games play-by-play data is avaiable). Through the first 6 weeks of the season, GEI has a mean of roughly 3.6 and standard deviation of about 2.6. GEI appears to follow some sort of Gamma distribution. The distribution is skewed right, with over 62 percent of games registing GEI less than 4.
-&lt;img src=&#34;/post/gei/index_files/figure-html/fig1-1.png&#34; width=&#34;672&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;img src=&#34;https://lukebenz.com/post/gei/index_files/figure-html/fig1-1.png&#34; width=&#34;672&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;We can see looking by the plot above that very few games have GEI greater than 10. In fact, 10 is the 99th percentile for GEI, and through 12/21/2018, only 23 games have achieved such a mark. Below are the most exciting games of the season.&lt;/p&gt;
 &lt;table&gt;
 &lt;thead&gt;
@@ -1214,12 +1214,12 @@ master &amp;lt;- left_join(master, df, by = &amp;quot;game_id&amp;quot;)&lt;/cod
 &lt;/div&gt;
 &lt;div id=&#34;gei-game-types-by-conference&#34; class=&#34;section level4&#34;&gt;
 &lt;h4&gt;GEI Game Types by Conference&lt;/h4&gt;
-&lt;p&gt;&lt;img src=&#34;/post/gei/index_files/figure-html/fig2-1.png&#34; width=&#34;1440&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://lukebenz.com/post/gei/index_files/figure-html/fig2-1.png&#34; width=&#34;1440&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;most-exciting-game-by-date&#34; class=&#34;section level4&#34;&gt;
 &lt;h4&gt;Most Exciting Game by Date&lt;/h4&gt;
 &lt;p&gt;Finally, one can look at the most exciting game on each day of the season. I got the idea for the below chart from Jordan Sperber’s &lt;a href=&#34;https://twitter.com/hoopvision68/status/1054509454064926720&#34;&gt;look at the best ranked games each day per KenPom FanMatch&lt;/a&gt;, which seeks to quantify the quality of a game &lt;em&gt;before&lt;/em&gt; it is played.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/post/gei/index_files/figure-html/fig3-1.png&#34; width=&#34;1920&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://lukebenz.com/post/gei/index_files/figure-html/fig3-1.png&#34; width=&#34;1920&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;By no means is GEI meant to be a perfect metric, and it might fail to capture important aspects of the game that a given individual might find to be exciting. That being said, I think it does a pretty good job of capturing a lot of what makes games fun to watch, and helps raise awareness of a lot of good mid-major basketball that often flies under the radar. I’ll keep updating these materials as conference play kicks off in the coming weeks to see if/how the metric changes, but for now, we can sit back, relax, and appreciate some good college hoops.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;

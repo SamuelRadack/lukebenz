@@ -2,30 +2,30 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Software on Luke Benz</title>
-    <link>/tags/software/</link>
+    <link>https://lukebenz.com/tags/software/</link>
     <description>Recent content in Software on Luke Benz</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator>
     <language>en-us</language>
     <lastBuildDate>Fri, 13 Dec 2019 00:00:00 +0000</lastBuildDate>
     
-	    <atom:link href="/tags/software/index.xml" rel="self" type="application/rss+xml" />
+	    <atom:link href="https://lukebenz.com/tags/software/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>ncaahoopR</title>
-      <link>/project/ncaahoopr/</link>
+      <link>https://lukebenz.com/project/ncaahoopr/</link>
       <pubDate>Fri, 13 Dec 2019 00:00:00 +0000</pubDate>
       
-      <guid>/project/ncaahoopr/</guid>
+      <guid>https://lukebenz.com/project/ncaahoopr/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Basketball Shiny Apps</title>
-      <link>/project/shiny_apps/</link>
+      <link>https://lukebenz.com/project/shiny_apps/</link>
       <pubDate>Sun, 01 Dec 2019 00:00:00 +0000</pubDate>
       
-      <guid>/project/shiny_apps/</guid>
+      <guid>https://lukebenz.com/project/shiny_apps/</guid>
       <description>
 
 &lt;p&gt;A collection of links to various basketball related shiny apps&lt;/p&gt;

@@ -2,30 +2,30 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Projects on Luke Benz</title>
-    <link>/project/</link>
+    <link>https://lukebenz.com/project/</link>
     <description>Recent content in Projects on Luke Benz</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator>
     <language>en-us</language>
     <lastBuildDate>Fri, 13 Dec 2019 00:00:00 +0000</lastBuildDate>
     
-	    <atom:link href="/project/index.xml" rel="self" type="application/rss+xml" />
+	    <atom:link href="https://lukebenz.com/project/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>ncaahoopR</title>
-      <link>/project/ncaahoopr/</link>
+      <link>https://lukebenz.com/project/ncaahoopr/</link>
       <pubDate>Fri, 13 Dec 2019 00:00:00 +0000</pubDate>
       
-      <guid>/project/ncaahoopr/</guid>
+      <guid>https://lukebenz.com/project/ncaahoopr/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Basketball Shiny Apps</title>
-      <link>/project/shiny_apps/</link>
+      <link>https://lukebenz.com/project/shiny_apps/</link>
       <pubDate>Sun, 01 Dec 2019 00:00:00 +0000</pubDate>
       
-      <guid>/project/shiny_apps/</guid>
+      <guid>https://lukebenz.com/project/shiny_apps/</guid>
       <description>
 
 &lt;p&gt;A collection of links to various basketball related shiny apps&lt;/p&gt;
@@ -73,10 +73,10 @@
     
     <item>
       <title>Sports Analytics Research</title>
-      <link>/project/sports_research/</link>
+      <link>https://lukebenz.com/project/sports_research/</link>
       <pubDate>Wed, 22 May 2019 00:00:00 +0000</pubDate>
       
-      <guid>/project/sports_research/</guid>
+      <guid>https://lukebenz.com/project/sports_research/</guid>
       <description>
 
 &lt;h3 id=&#34;an-examination-of-timeout-value-strategy-and-momentum-in-ncaa-division-1-men-s-basketball&#34;&gt;An Examination of Timeout Value, Strategy, and Momentum in NCAA Division 1 Men&amp;rsquo;s Basketball&lt;/h3&gt;
@@ -110,10 +110,10 @@
     
     <item>
       <title>Yale Sports Analytics</title>
-      <link>/project/yusag/</link>
+      <link>https://lukebenz.com/project/yusag/</link>
       <pubDate>Tue, 21 May 2019 00:00:00 +0000</pubDate>
       
-      <guid>/project/yusag/</guid>
+      <guid>https://lukebenz.com/project/yusag/</guid>
       <description>
 
 &lt;p&gt;A collection of links to various sports analytics projects not already linked in projects/posts.&lt;/p&gt;
@@ -154,10 +154,10 @@
     
     <item>
       <title>Yale Daily News</title>
-      <link>/project/ydn_articles/</link>
+      <link>https://lukebenz.com/project/ydn_articles/</link>
       <pubDate>Mon, 20 May 2019 00:00:00 +0000</pubDate>
       
-      <guid>/project/ydn_articles/</guid>
+      <guid>https://lukebenz.com/project/ydn_articles/</guid>
       <description>
 
 &lt;h2 id=&#34;ncaa-basketball&#34;&gt;NCAA Basketball&lt;/h2&gt;
@@ -238,10 +238,10 @@
     
     <item>
       <title>Mid Major Madness</title>
-      <link>/project/mid_madness/</link>
+      <link>https://lukebenz.com/project/mid_madness/</link>
       <pubDate>Tue, 01 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>/project/mid_madness/</guid>
+      <guid>https://lukebenz.com/project/mid_madness/</guid>
       <description>&lt;p&gt;I write for &lt;a href=&#34;www.midmajormadness.com&#34; target=&#34;_blank&#34;&gt;midmajormadness.com&lt;/a&gt; covering NCAA basketball analytics and Ivy League hoops. Below is a complete list of my stories for the website.&lt;/p&gt;
 
 &lt;ul&gt;
@@ -254,24 +254,24 @@
     
     <item>
       <title>NIST</title>
-      <link>/project/nist/</link>
+      <link>https://lukebenz.com/project/nist/</link>
       <pubDate>Sun, 01 Jul 2018 00:00:00 +0000</pubDate>
       
-      <guid>/project/nist/</guid>
+      <guid>https://lukebenz.com/project/nist/</guid>
       <description>&lt;ul&gt;
-&lt;li&gt;&lt;em&gt;NIST Homegeneity Assessor User&amp;rsquo;s Manual&lt;/em&gt; (Summer 2018) &lt;a href=&#34;/nist/NIST_Homegeneity_Assessor_Users_Manual.pdf&#34;&gt;Paper&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;em&gt;Launch and Demonstration of the NIST Homogeneity Assessor&lt;/em&gt; (Summer 2018) &lt;a href=&#34;/nist/nist_2018.pdf&#34;&gt;Slides&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;em&gt;Combining Results in Collaborative Studies when Reported Uncertainties are Unreliable&lt;/em&gt; (Summer 2017) &lt;a href=&#34;/nist/nist_2017.pdf&#34;&gt;Slides&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;NIST Homegeneity Assessor User&amp;rsquo;s Manual&lt;/em&gt; (Summer 2018) &lt;a href=&#34;https://lukebenz.com/nist/NIST_Homegeneity_Assessor_Users_Manual.pdf&#34;&gt;Paper&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Launch and Demonstration of the NIST Homogeneity Assessor&lt;/em&gt; (Summer 2018) &lt;a href=&#34;https://lukebenz.com/nist/nist_2018.pdf&#34;&gt;Slides&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Combining Results in Collaborative Studies when Reported Uncertainties are Unreliable&lt;/em&gt; (Summer 2017) &lt;a href=&#34;https://lukebenz.com/nist/nist_2017.pdf&#34;&gt;Slides&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </description>
     </item>
     
     <item>
       <title>FiveThirtyEight Riddlers</title>
-      <link>/project/fivethirtyeight_riddlers/</link>
+      <link>https://lukebenz.com/project/fivethirtyeight_riddlers/</link>
       <pubDate>Sun, 20 May 2018 00:00:00 +0000</pubDate>
       
-      <guid>/project/fivethirtyeight_riddlers/</guid>
+      <guid>https://lukebenz.com/project/fivethirtyeight_riddlers/</guid>
       <description>
 
 &lt;h2 id=&#34;featured-solutions&#34;&gt;Featured Solutions&lt;/h2&gt;

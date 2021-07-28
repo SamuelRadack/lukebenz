@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on Luke Benz</title>
-    <link>/post/</link>
+    <link>https://lukebenz.com/post/</link>
     <description>Recent content in Posts on Luke Benz</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 25 May 2020 00:00:00 +0000</lastBuildDate>
     
-	    <atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+	    <atom:link href="https://lukebenz.com/post/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Bundesliga Home Field Avantage in the Absence of Fans</title>
-      <link>/post/bundesliga_hfa/</link>
+      <link>https://lukebenz.com/post/bundesliga_hfa/</link>
       <pubDate>Mon, 25 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>/post/bundesliga_hfa/</guid>
+      <guid>https://lukebenz.com/post/bundesliga_hfa/</guid>
       <description>
 
 
@@ -27,7 +27,7 @@
 &lt;div id=&#34;analyzing-expected-outcomes&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Analyzing Expected Outcomes&lt;/h2&gt;
 &lt;p&gt;One quick and dirty way to analyze the strength of HFA in the absence of fans is to compare the results of the first two weeks (18 games) since the Bundesliga’s return to what we’d expect given full HFA. To do this, I’ll use &lt;a href=&#34;https://projects.fivethirtyeight.com/soccer-predictions/bundesliga/&#34;&gt;FiveThirtyEight’s pubically available SPI model&lt;/a&gt;. FiveThirtyEight predicts the win probability for both the home and away teams as well as the probabiligty of a draw. Using these probabilities, we can simulate the first two weeks of matches 10,000 times, and look at home many points (3 for win, 1 for draw) we’d expect to get accrued by home teams. This approach allows for the adjustment of team quality, as in a small sample, there could be more/less higher quality home teams. Note that FiveThirtyEight’s post-COVID return projections already reduce HFA by 10%.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/post/bundesliga_hfa/index_files/figure-html/unnamed-chunk-1-1.png&#34; width=&#34;1024&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://lukebenz.com/post/bundesliga_hfa/index_files/figure-html/unnamed-chunk-1-1.png&#34; width=&#34;1024&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Clearly the results are pretty unexpected even assuming a 10% HFA reduction. This isn’t to suggest that HFA is completely gone without fans, but it does suggest that it probably is reduced by more than 10%. I’ll note that a March 11 game between behind closed doors between Borussia Monchengladbach and FC Cologne, but I’m not including that here since a) it was before a long lay off and b) it was before FiveThirtyEight reduced it’s HFA.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;how-much-is-hfa-reduced&#34; class=&#34;section level2&#34;&gt;
@@ -38,9 +38,9 @@ Y_1 \sim \text{Poisson}(\lambda_1)\\
 Y_2 \sim \text{Poisson}(\lambda_2)
 \]&lt;/span&gt;
 where &lt;span class=&#34;math inline&#34;&gt;\(Y_i\)&lt;/span&gt; is the number of goals scored by team &lt;span class=&#34;math inline&#34;&gt;\(i\)&lt;/span&gt;. Using &lt;a href=&#34;%22https://projects.fivethirtyeight.com/soccer-api/club/spi_matches.csv%22&#34;&gt;FiveThirtyEight’s publically available data&lt;/a&gt;, I fit a possion regression model using &lt;a href=&#34;https://en.wikipedia.org/wiki/B-spline&#34;&gt;b-splines&lt;/a&gt; on each of the team’s Soccer Power Index (SPI) plus a home team indicator.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/post/bundesliga_hfa/index_files/figure-html/unnamed-chunk-2-1.png&#34; width=&#34;1024&#34; /&gt;
+&lt;p&gt;&lt;img src=&#34;https://lukebenz.com/post/bundesliga_hfa/index_files/figure-html/unnamed-chunk-2-1.png&#34; width=&#34;1024&#34; /&gt;
 We can see that my simplified model is a pretty good approximation of FiveThirtyEight’s model. Perhps it slightly underestimates certain draw probabilities, as FiveThirtyEight inflates draw probabilities from their Poisson model, but it’s a useful enough approximation for the purposes I’d like to use it for. Now, we can manually control the reduction in HFA and see where our observed results compare to expected results.
-&lt;img src=&#34;/post/bundesliga_hfa/index_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;1024&#34; /&gt;&lt;/p&gt;
+&lt;img src=&#34;https://lukebenz.com/post/bundesliga_hfa/index_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;1024&#34; /&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;discussion&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Discussion&lt;/h2&gt;
@@ -52,17 +52,17 @@ We can see that my simplified model is a pretty good approximation of FiveThirty
     
     <item>
       <title>Could an AFL Style Tournament Structure be Utilized in College Basketball</title>
-      <link>/post/afl_tournament_sims/</link>
+      <link>https://lukebenz.com/post/afl_tournament_sims/</link>
       <pubDate>Wed, 25 Mar 2020 00:00:00 +0000</pubDate>
       
-      <guid>/post/afl_tournament_sims/</guid>
+      <guid>https://lukebenz.com/post/afl_tournament_sims/</guid>
       <description>
 
 
 &lt;div id=&#34;introduction&#34; class=&#34;section level1&#34;&gt;
 &lt;h1&gt;Introduction&lt;/h1&gt;
 &lt;p&gt;While Australian Rules Football (AFL) recently suspended its season, it was for a brief moment in time, the most popular sports league in the world (if only due to the fact the every other major sports league had already shut down). AFL is actually really fun to watch, and I’d highly recommend checking it out once its season returns. One of the parts of AFL that has always interested me is its unique playoff structure–an eight team playoff that is a hybrid of single elimination (for seeds 5-8) and “psuedo” double elimination (for seeds 1:4).&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/img/afl_playoff_structure.png&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://lukebenz.com/img/afl_playoff_structure.png&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;This tournament structure is super interesting in the context of college basketball conference tournaments. Every win a team earns in the NCAA tournament nets its conference about &lt;a href=&#34;https://www.washingtonpost.com/graphics/sports/ncaa-money/&#34;&gt;1.7 million dollars&lt;/a&gt; split equally amongst each member school. Hence, conferences (particularly those mid-major conferences which only send one representive to the big dance) have big incentives to send their best team to the NCAA tournament.&lt;/p&gt;
 &lt;p&gt;Does the AFL playoff structure better protect top seeds compared to the two most common tournament formats currently used by conferences (neutral site tournament and higher seed home court advantage). On one hand, the top seed(s) have the advantage of a mulligan in the case of a first round slip up, but simultaneously have a more difficult first round (and possibly semi-final) matchup. The answer to this question is somewhat dependent on the distribution of team stength across the tournament. To examine this question, I ran the following simulation.&lt;/p&gt;
 &lt;ol style=&#34;list-style-type: decimal&#34;&gt;
@@ -76,11 +76,11 @@ We can see that my simplified model is a pretty good approximation of FiveThirty
 &lt;div id=&#34;simulation-results&#34; class=&#34;section level1&#34;&gt;
 &lt;h1&gt;Simulation Results&lt;/h1&gt;
 &lt;p&gt;First, we must start by comparing the standard single elimination 8 team formats. It’s little suprise to see that giving the better seed in each matchup home court advatage is beneficial to these higher seeds. Every single conference’s top seed is more likely to win the tournament with the option to host as long as they keeping, and similarly for the top 2 seeds chance’s of reaching the finals.
-&lt;img src=&#34;/post/afl_tournament_sims/index_files/figure-html/unnamed-chunk-1-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;img src=&#34;https://lukebenz.com/post/afl_tournament_sims/index_files/figure-html/unnamed-chunk-1-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Given that the majority of conference play neutral site conference tournaments, we are perhaps most interested in comparing that tournament format to the unique AFL tournament style. Clearly, the AFL tournament provides some benefit to the top seeds in the tournament. Some of the may be driven by hosting games, but likely the majority of it is driven by first round mulligan alloted to the top-4 seeds. Compare the differences between the 4- and 5- seed in these 2 tournament formats. The 4- seed does not host its first round game while the 5- seed does, but the 4- seed seems an improvement in its odds of reaching/winning the finals because it survives a first round loss.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/post/afl_tournament_sims/index_files/figure-html/unnamed-chunk-2-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://lukebenz.com/post/afl_tournament_sims/index_files/figure-html/unnamed-chunk-2-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Finally, we compare the simulated probabilities of winning/reaching a tournament final between the higher seed always getting home court and the AFL style. While there isn’t a huge difference in the chances of the top 2 seeds reaching the finals between the two scenarios, the 3- and 4- seeds are much likelier to reach the finals in the AFL style tournament. Across the board, however, the top seed is less likely to win the AFL style tournament. This is because in the AFL style tournament, the final is played at a neutral site compared to the higher seed getting to host the championship game.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/post/afl_tournament_sims/index_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://lukebenz.com/post/afl_tournament_sims/index_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;So it seems that the home court advantage format makes it most likely for a conference to send its best team to the NCAA tournament (at least via automatic bid). But maybe this is not what’s best for the conference. Maybe instead, it would rather send the best team in expectation. That is, maybe it would rather maximize the chances that a top-4 team would make the tournament. We can quantify this in terms of the expected value of conference champion team strength.&lt;/p&gt;
 &lt;p&gt;Let &lt;span class=&#34;math inline&#34;&gt;\(\gamma_i\)&lt;/span&gt; denote the team strength of team &lt;span class=&#34;math inline&#34;&gt;\(i\)&lt;/span&gt;. Specifically, &lt;span class=&#34;math inline&#34;&gt;\(gamma_i\)&lt;/span&gt; denotes the number of points team &lt;span class=&#34;math inline&#34;&gt;\(i\)&lt;/span&gt; would be expected to win/loss by against an average team on a neutral floor. If you’re interested in the math behind estimating &lt;span class=&#34;math inline&#34;&gt;\(\gamma_i\)&lt;/span&gt;, check out &lt;a href=&#34;https://lukebenz.com/post/hoops_methodology/&#34;&gt;this post&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;Let &lt;span class=&#34;math inline&#34;&gt;\(C\)&lt;/span&gt; denote the team strength of the conference champion. We see that
@@ -88,7 +88,7 @@ We can see that my simplified model is a pretty good approximation of FiveThirty
 E(C) = \sum_{i \in \text{conference}} \gamma_i p_i
 \]&lt;/span&gt;
 where &lt;span class=&#34;math inline&#34;&gt;\(p_i\)&lt;/span&gt; denotes the chances that team &lt;span class=&#34;math inline&#34;&gt;\(i\)&lt;/span&gt; wins its conference tournament. Now, we can compare &lt;span class=&#34;math inline&#34;&gt;\(E(C)\)&lt;/span&gt; for each conference under the 3 different types of tournament simulations.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/post/afl_tournament_sims/index_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://lukebenz.com/post/afl_tournament_sims/index_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;In 8 of the 32 conferences, the AFL style tournament yields the highest expected champion &lt;span class=&#34;math inline&#34;&gt;\(E(C)\)&lt;/span&gt;, while the higher seed HCA format yields the highest expected champion in the remaining 24 conferences.&lt;/p&gt;
 &lt;table&gt;
 &lt;thead&gt;
@@ -151,7 +151,7 @@ where &lt;span class=&#34;math inline&#34;&gt;\(p_i\)&lt;/span&gt; denotes the c
 &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;p&gt;What do these 8 conferences all have in common? We can compare standardized team strength (Z-score of &lt;span class=&#34;math inline&#34;&gt;\(\gamma_i\)&lt;/span&gt; across conference) by seed, and see that all of these conferences have weaker top seeds with better concentration of talent across the top 3 or 4 seeds.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/post/afl_tournament_sims/index_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://lukebenz.com/post/afl_tournament_sims/index_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;summary&#34; class=&#34;section level1&#34;&gt;
 &lt;h1&gt;Summary&lt;/h1&gt;
@@ -163,10 +163,10 @@ where &lt;span class=&#34;math inline&#34;&gt;\(p_i\)&lt;/span&gt; denotes the c
     
     <item>
       <title>What&#39;s New in ncaahoopR Version 1.5</title>
-      <link>/post/ncaahoopr_v1.5/</link>
+      <link>https://lukebenz.com/post/ncaahoopr_v1.5/</link>
       <pubDate>Wed, 01 Jan 2020 00:00:00 +0000</pubDate>
       
-      <guid>/post/ncaahoopr_v1.5/</guid>
+      <guid>https://lukebenz.com/post/ncaahoopr_v1.5/</guid>
       <description>
 
 
@@ -246,11 +246,11 @@ uk_color &amp;lt;- ncaa_colors$primary_color[ncaa_colors$ncaa_name == &amp;quot;
 ### Classic 
 gg_wp_chart(401166125, home_col = uk_color, away_col = osu_color, 
             include_spread = T, show_labels = F)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/ncaahoopR_v1.5/index_files/figure-html/unnamed-chunk-1-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://lukebenz.com/post/ncaahoopR_v1.5/index_files/figure-html/unnamed-chunk-1-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;### Naive
 gg_wp_chart(401166125, home_col = uk_color, away_col = osu_color, 
             include_spread = F, show_labels = F)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/ncaahoopR_v1.5/index_files/figure-html/unnamed-chunk-1-2.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://lukebenz.com/post/ncaahoopR_v1.5/index_files/figure-html/unnamed-chunk-1-2.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;smaller-changes&#34; class=&#34;section level1&#34;&gt;
 &lt;h1&gt;Smaller Changes&lt;/h1&gt;
@@ -261,7 +261,7 @@ gg_wp_chart(401166125, home_col = uk_color, away_col = osu_color,
 &lt;li&gt;Rows where the score differential changes w/out any shot being made are now removed. This fixes &lt;a href=&#34;https://github.com/lbenz730/ncaahoopR/issues/21&#34;&gt;a bug&lt;/a&gt; in ESPN data from the current season where certain events are given incorrect times.&lt;/li&gt;
 &lt;li&gt;Colors for remaining 105 schools and logos for all 353 schools added to &lt;code&gt;ncaa_colors&lt;/code&gt; data frame courtsey of &lt;a href=&#34;https://github.com/morrisLuke&#34;&gt;Luke Morris&lt;/a&gt;.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;/img/ncaa_colors.png&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://lukebenz.com/img/ncaa_colors.png&#34; /&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;data-repository&#34; class=&#34;section level1&#34;&gt;
 &lt;h1&gt;Data Repository&lt;/h1&gt;
@@ -292,10 +292,10 @@ gg_wp_chart(401166125, home_col = uk_color, away_col = osu_color,
     
     <item>
       <title>A New ncaahoopR Win Probability Model</title>
-      <link>/post/ncaahoopr_win_prob/</link>
+      <link>https://lukebenz.com/post/ncaahoopr_win_prob/</link>
       <pubDate>Wed, 16 Oct 2019 00:00:00 +0000</pubDate>
       
-      <guid>/post/ncaahoopr_win_prob/</guid>
+      <guid>https://lukebenz.com/post/ncaahoopr_win_prob/</guid>
       <description>
 
 
@@ -346,12 +346,12 @@ To combat covariates’ non-linear dependence on time, various versions of this 
 &lt;/table&gt;
 &lt;p&gt;Essentially, this method is related to a Generalized Additive Model (GAM). In simple terms a GAM is a linear combination of some unknown smoothed functions over the covariates. What I have done is essentially reverse the steps–I fit linear combinations of predictors (with logit link function) and then smooth over the time dependent results. This was done to gain a little bit more interpretability of the coefficient values, although I think a GAM could be fit and obtain vary similar results.&lt;/p&gt;
 &lt;p&gt;We see in the coefficient trace plot below the obvious result that as the game progresses, the pregame line becomes less important in predicting win probability and the current score differential becomes increasingly more important
-&lt;img src=&#34;/img/wp_coeffs.png&#34; /&gt;&lt;/p&gt;
+&lt;img src=&#34;https://lukebenz.com/img/wp_coeffs.png&#34; /&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;model-calibration&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Model Calibration&lt;/h2&gt;
 &lt;p&gt;The model above was trained on &lt;a href=&#34;https://github.com/lbenz730/Senior-Thesis/tree/master/pbp_data&#34;&gt;10,949 games from the 2016-17 and 2017-18 seasons&lt;/a&gt; and tested on &lt;a href=&#34;https://github.com/lbenz730/Senior-Thesis/tree/master/test_pbp_data&#34;&gt;3,625 games from the first part of the 2018-19 season&lt;/a&gt;. Using the idea of calibration plots from Michael Lopez’s &lt;a href=&#34;https://statsbylopez.com/2017/03/08/all-win-probability-models-are-wrong-some-are-useful/&#34;&gt;win probability post after the 2017 Super Bowl&lt;/a&gt;, I compare bins of predicted and observed probability over the course of the game. We see that the model is well calibrated for all situations.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/img/calibration_plot.png&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://lukebenz.com/img/calibration_plot.png&#34; /&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;summary&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Summary&lt;/h2&gt;
@@ -362,12 +362,12 @@ To combat covariates’ non-linear dependence on time, various versions of this 
     
     <item>
       <title>Statsketball 2019</title>
-      <link>/post/statsketball/</link>
+      <link>https://lukebenz.com/post/statsketball/</link>
       <pubDate>Tue, 19 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>/post/statsketball/</guid>
+      <guid>https://lukebenz.com/post/statsketball/</guid>
       <description>
-&lt;script src=&#34;/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;https://lukebenz.com/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;p&gt;Below is my submission methodology for the 2019 American Statistical Association &lt;a href=&#34;https://thisisstatistics.org/home-2/statsketball/&#34;&gt;Statsketball&lt;/a&gt; Draft Challenge. Having won the contest &lt;a href=&#34;https://thisisstatistics.org/statsketball-2018-congratulations-to-our-winners/&#34;&gt;in 2018&lt;/a&gt;, I knew that I had to up my game this year to defend my crown.&lt;/p&gt;
@@ -2749,7 +2749,7 @@ West
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
-&lt;p&gt;&lt;img src=&#34;/post/statsketball/index_files/figure-html/unnamed-chunk-2-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://lukebenz.com/post/statsketball/index_files/figure-html/unnamed-chunk-2-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;expected-points&#34; class=&#34;section level3&#34;&gt;
 &lt;h3&gt;Expected Points&lt;/h3&gt;
@@ -2757,9 +2757,9 @@ West
 &lt;span class=&#34;math display&#34;&gt;\[
 \mathbb{E}(S_i) = \sum_{j = 1}^6 P(\text{Team } i \text{ wins in Round } j)\times(\text{Points for win in Round } j)
 \]&lt;/span&gt;
-&lt;img src=&#34;/post/statsketball/index_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;
+&lt;img src=&#34;https://lukebenz.com/post/statsketball/index_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;
 It’s not suprising that teams with better seeds tend to have the best expected points. However, given the increased cost, is it necessarily worth it? Looking at a plot of expected points divided by team cost (to get an estimate of how many points we can expected per draft point we spend), it’s clear that many of the 1-seeds, with the expection of Gonzaga, are overvalued.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/post/statsketball/index_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://lukebenz.com/post/statsketball/index_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;selecting-teams-the-knapsack-problem&#34; class=&#34;section level3&#34;&gt;
 &lt;h3&gt;Selecting Teams: The Knapsack Problem&lt;/h3&gt;
@@ -2791,17 +2791,17 @@ kn_solved&lt;/code&gt;&lt;/pre&gt;
     
     <item>
       <title>Does Arizona State&#39;s Curtain of Distraction Work?</title>
-      <link>/post/asu_curtain/</link>
+      <link>https://lukebenz.com/post/asu_curtain/</link>
       <pubDate>Mon, 04 Feb 2019 00:00:00 +0000</pubDate>
       
-      <guid>/post/asu_curtain/</guid>
+      <guid>https://lukebenz.com/post/asu_curtain/</guid>
       <description>
 
 
 &lt;div id=&#34;introduction&#34; class=&#34;section level1&#34;&gt;
 &lt;h1&gt;Introduction&lt;/h1&gt;
 &lt;p&gt;One of the more unique student sections in college basketball belongs to the Arizon State Sun Devils and their famous “Curtain of Distraction”. The Curtain of Distraction opens to reveal students in ridiculous attire trying to do all they can to break the focus of opposing free throw shooters. Perhaps the most famous attempted distraction occured when &lt;a href=&#34;https://www.youtube.com/watch?v=vZWtcTkUZ0A&#34;&gt;Olympic swimmer Michael appeard from behind the curatin wearing only a speedo&lt;/a&gt;. Several &lt;a href=&#34;https://www.cbsnews.com/news/the-curtain-of-distraction-helps-asu-win-games/&#34;&gt;outlets claim anecdotally&lt;/a&gt; that Curtain of Distraction works but don’t offer statistical evidence. Justin Wolfers of The Upshot attempted to quantify the effect of the Curtain of Distraction and &lt;a href=&#34;https://www.nytime%20s.com/2015/02/14/upshot/how-arizona-state-reinvented-free-throw-distraction.html&#34;&gt;found it to increase ASU’s home court advantage by 1-2 points&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/img/curatain.jpg&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://lukebenz.com/img/curatain.jpg&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Is the advantage still present (Wolfer’s article was written 4 years ago)? Let’s take a look, using my &lt;a href=&#34;https://github.com/lbenz730/ncaahoopR&#34;&gt;&lt;code&gt;ncaahoopR&lt;/code&gt;&lt;/a&gt; R package.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;exploratory-analysis&#34; class=&#34;section level1&#34;&gt;
@@ -2844,7 +2844,7 @@ free_throws$made &amp;lt;- grepl(&amp;quot;made&amp;quot;, free_throws$descripti
                    &amp;quot;n_attempts&amp;quot; = 20, &amp;quot;ft_pct&amp;quot; = 0.65)) %&amp;gt;%
   arrange(desc(ft_pct))
 knitr::kable(sum_stats)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/img/asu1.png&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://lukebenz.com/img/asu1.png&#34; /&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;a-more-in-depth-look&#34; class=&#34;section level1&#34;&gt;
 &lt;h1&gt;A More In-Depth Look&lt;/h1&gt;
@@ -2924,7 +2924,7 @@ ft_stats &amp;lt;- bind_rows(ft_stats, tibble(&amp;quot;home&amp;quot; = &amp;qu
   scale_color_manual(values = c(ncaa_colors$secondary_color[ncaa_colors$espn_name == &amp;quot;Arizona State&amp;quot;], 
                                 ncaa_colors$primary_color[ncaa_colors$espn_name == &amp;quot;Arizona State&amp;quot;]),
                      labels = c(&amp;quot;Arizona State&amp;quot;, &amp;quot;Other&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/img/asu2.png&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://lukebenz.com/img/asu2.png&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;A few play-by-play logs are not available on ESPN, but we have more than enough games to suggest that the effect of the Curtain of Distraction is reduced this year. Three teams had their best road FT shooting performance against the Sun Devils, while the majority of the others seem to fall within the reasonable range one would expect given their other performances. In fact, we can actually quantify how likely each shooting performance at ASU was. Assume that the number of free on opponent took against Arizona State follows a binomial&lt;span class=&#34;math inline&#34;&gt;\((n,p)\)&lt;/span&gt; distribution where &lt;span class=&#34;math inline&#34;&gt;\(n\)&lt;/span&gt; denotes the number of free throw attempts against ASU and &lt;span class=&#34;math inline&#34;&gt;\(p\)&lt;/span&gt; denotes the percentage of free throws that opponent
 missed in it’s other true road games. We then get the likelihood of each shooting performance against ASU as follows:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;season_ft_stats &amp;lt;- 
@@ -2952,7 +2952,7 @@ tibble(&amp;quot;team&amp;quot; = season_ft_stats$team,
        &amp;quot;p_value&amp;quot; = p_performance) %&amp;gt;%
   arrange(desc(p_value)) %&amp;gt;%
   knitr::kable()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/img/asu3.png&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://lukebenz.com/img/asu3.png&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;We see that none of the 12 opponent shooting performances differ from those teams’ normal road free throw shooting behavior in a statistically significant manner. That is to say, &lt;strong&gt;there is no evidence to suggest the Curtain of Distraction has had any major impact on opponent free throw shooting this season&lt;/strong&gt;. We can see this visually in the below graphic.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;set.seed(123)
 for(i in 1:nrow(season_ft_stats)) {
@@ -2984,7 +2984,7 @@ ggplot(sim_results, aes(x = miss)) +
   scale_fill_manual(values = c(&amp;quot;#CC0033&amp;quot;, &amp;quot;#CFB87C&amp;quot;, &amp;quot;#00274C&amp;quot;, &amp;quot;#0051BA&amp;quot;,
                                &amp;quot;#FFC72A&amp;quot;, &amp;quot;#FDD023&amp;quot;, &amp;quot;#000000&amp;quot;, &amp;quot;#154733&amp;quot;, &amp;quot;#DC4405&amp;quot;,
                                &amp;quot;#FF671F&amp;quot;, &amp;quot;maroon&amp;quot;, &amp;quot;#CC0000&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/img/asu4.png&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://lukebenz.com/img/asu4.png&#34; /&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;conclusion&#34; class=&#34;section level1&#34;&gt;
 &lt;h1&gt;Conclusion&lt;/h1&gt;
@@ -2995,10 +2995,10 @@ ggplot(sim_results, aes(x = miss)) +
     
     <item>
       <title>Game Excitement Index: An In-Depth Exploration</title>
-      <link>/post/gei/</link>
+      <link>https://lukebenz.com/post/gei/</link>
       <pubDate>Sat, 22 Dec 2018 00:00:00 +0000</pubDate>
       
-      <guid>/post/gei/</guid>
+      <guid>https://lukebenz.com/post/gei/</guid>
       <description>
 
 
@@ -3053,7 +3053,7 @@ master &amp;lt;- left_join(master, df, by = &amp;quot;game_id&amp;quot;)&lt;/cod
 &lt;div id=&#34;analysis&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Analysis&lt;/h2&gt;
 &lt;p&gt;Below is a histogram of the Game Excitement Index for the 2018-19 season (for all games play-by-play data is avaiable). Through the first 6 weeks of the season, GEI has a mean of roughly 3.6 and standard deviation of about 2.6. GEI appears to follow some sort of Gamma distribution. The distribution is skewed right, with over 62 percent of games registing GEI less than 4.
-&lt;img src=&#34;/post/gei/index_files/figure-html/fig1-1.png&#34; width=&#34;672&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;img src=&#34;https://lukebenz.com/post/gei/index_files/figure-html/fig1-1.png&#34; width=&#34;672&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;We can see looking by the plot above that very few games have GEI greater than 10. In fact, 10 is the 99th percentile for GEI, and through 12/21/2018, only 23 games have achieved such a mark. Below are the most exciting games of the season.&lt;/p&gt;
 &lt;table&gt;
 &lt;thead&gt;
@@ -3793,12 +3793,12 @@ master &amp;lt;- left_join(master, df, by = &amp;quot;game_id&amp;quot;)&lt;/cod
 &lt;/div&gt;
 &lt;div id=&#34;gei-game-types-by-conference&#34; class=&#34;section level4&#34;&gt;
 &lt;h4&gt;GEI Game Types by Conference&lt;/h4&gt;
-&lt;p&gt;&lt;img src=&#34;/post/gei/index_files/figure-html/fig2-1.png&#34; width=&#34;1440&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://lukebenz.com/post/gei/index_files/figure-html/fig2-1.png&#34; width=&#34;1440&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;most-exciting-game-by-date&#34; class=&#34;section level4&#34;&gt;
 &lt;h4&gt;Most Exciting Game by Date&lt;/h4&gt;
 &lt;p&gt;Finally, one can look at the most exciting game on each day of the season. I got the idea for the below chart from Jordan Sperber’s &lt;a href=&#34;https://twitter.com/hoopvision68/status/1054509454064926720&#34;&gt;look at the best ranked games each day per KenPom FanMatch&lt;/a&gt;, which seeks to quantify the quality of a game &lt;em&gt;before&lt;/em&gt; it is played.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/post/gei/index_files/figure-html/fig3-1.png&#34; width=&#34;1920&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://lukebenz.com/post/gei/index_files/figure-html/fig3-1.png&#34; width=&#34;1920&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;By no means is GEI meant to be a perfect metric, and it might fail to capture important aspects of the game that a given individual might find to be exciting. That being said, I think it does a pretty good job of capturing a lot of what makes games fun to watch, and helps raise awareness of a lot of good mid-major basketball that often flies under the radar. I’ll keep updating these materials as conference play kicks off in the coming weeks to see if/how the metric changes, but for now, we can sit back, relax, and appreciate some good college hoops.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -3807,10 +3807,10 @@ master &amp;lt;- left_join(master, df, by = &amp;quot;game_id&amp;quot;)&lt;/cod
     
     <item>
       <title>NCAA Hoops Model Methodology</title>
-      <link>/post/hoops_methodology/</link>
+      <link>https://lukebenz.com/post/hoops_methodology/</link>
       <pubDate>Sun, 21 Oct 2018 00:00:00 +0000</pubDate>
       
-      <guid>/post/hoops_methodology/</guid>
+      <guid>https://lukebenz.com/post/hoops_methodology/</guid>
       <description>
 
 
@@ -3836,14 +3836,14 @@ Hence, we’d expect Harvard to win this game by roughly 0.8 points. Of course, 
 \widehat Y_i = \widehat \beta_{team = Harvard} - \widehat \beta_{opp = Yale} + \widehat \beta_{loc = Away} = 1.9 - (-2.1) - 3.2 = 0.8
 \]&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;We recover the Harvard by 0.8 predicted scoreline, and hence, it doesn’t matter which school we use as “team” or “opponent” because the results are identical. Once we have a predicted score differential, we can convert this to a win probability using &lt;a href=&#34;https://en.wikipedia.org/wiki/Logistic_regression&#34;&gt;logistic regression&lt;/a&gt;. I won’t get into the specifics how logistic regressions works in this post, but for the purposes of this example, just think about it as a translation between predicted point spread and predicted win probability.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/post/hoops_methodology/index_files/figure-html/unnamed-chunk-1-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://lukebenz.com/post/hoops_methodology/index_files/figure-html/unnamed-chunk-1-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;One thing that we check to see is that the win probability model is well calibrated. That is, if we predict a team has a 75% chance of winning, then we should see them win about 75% of the time on out of sample data. To see that the model is well tuned, I’ve fit the logistic regression on data from the 2017-18 season, and then made predictions of win probability from prior predicted score differentials for the 2016-17 season. We don’t see any drastic deviations from the line denoting perfect correspondence between predcited and observed win probability. This is good–it means teams are winning about as often as we predict they are winning!&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/post/hoops_methodology/index_files/figure-html/unnamed-chunk-2-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://lukebenz.com/post/hoops_methodology/index_files/figure-html/unnamed-chunk-2-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;offense-and-defense-specific-models&#34; class=&#34;section level1&#34;&gt;
 &lt;h1&gt;Offense and Defense Specific Models&lt;/h1&gt;
 &lt;p&gt;Now that we have the basics of model, we can dive into what’s new for this season. In the past, I’ve only been interesting in predicting game &lt;em&gt;score differential&lt;/em&gt;, &lt;span class=&#34;math inline&#34;&gt;\(Y_i\)&lt;/span&gt;. In fact, we can rewrite score differentials as &lt;span class=&#34;math inline&#34;&gt;\(Y_i = T_i - O_i\)&lt;/span&gt;, where &lt;span class=&#34;math inline&#34;&gt;\(T_i\)&lt;/span&gt; denotes &lt;code&gt;team_score&lt;/code&gt; and &lt;span class=&#34;math inline&#34;&gt;\(O_i\)&lt;/span&gt; denotes &lt;code&gt;opp_score&lt;/code&gt; for game &lt;span class=&#34;math inline&#34;&gt;\(i\)&lt;/span&gt;, respectively. Not only is the distribution of &lt;code&gt;score_differential&lt;/code&gt; normally distributed, but so too is the distribution of &lt;code&gt;team_score&lt;/code&gt;. I’ll note that the gap around 0 in the distribution of &lt;code&gt;score_differential&lt;/code&gt; is due to the fact that games can’t end in ties. I’ll also comment that the distribution of &lt;code&gt;opp_score&lt;/code&gt; is identical to that of &lt;code&gt;team_score&lt;/code&gt; as each game is entered twice in the database, so there is a direct one-to-one correspondence between each value of &lt;code&gt;team_score&lt;/code&gt; and &lt;code&gt;opp_score&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/post/hoops_methodology/index_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;img src=&#34;/post/hoops_methodology/index_files/figure-html/unnamed-chunk-3-2.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://lukebenz.com/post/hoops_methodology/index_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;img src=&#34;https://lukebenz.com/post/hoops_methodology/index_files/figure-html/unnamed-chunk-3-2.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Recall, the &lt;a href=&#34;https://en.wikipedia.org/wiki/Sum_of_normally_distributed_random_variables&#34;&gt;sum of two normal random variables is also normally distributed&lt;/a&gt;, even if they are not indepent of one another. Thus, using the same linear model framework, we can predict for each game &lt;span class=&#34;math inline&#34;&gt;\(T_i\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(O_i\)&lt;/span&gt;. That is, in addition to a predicted score differential, we can actually predict the number of points each team will score. As a consqeuence, we can obtaining estimates of team offensive and defensive coefficeints, &lt;span class=&#34;math inline&#34;&gt;\(\alpha_{team}\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\delta_{team}\)&lt;/span&gt;, respectively. To be clear, this is not necessarily a different model, but a reparameterization that allows us to learn more informations about the contributions of team strength.&lt;/p&gt;
 &lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
 Y = \beta_{team}X_{team} - \beta_{opp}X_{opp} + \beta_{loc}X_{loc}\\
@@ -3889,7 +3889,7 @@ where &lt;span class=&#34;math inline&#34;&gt;\(\beta_{loc, off}\)&lt;/span&gt; 
 &lt;div id=&#34;preseason-priors&#34; class=&#34;section level1&#34;&gt;
 &lt;h1&gt;Preseason Priors&lt;/h1&gt;
 &lt;p&gt;One challenge with any sports rating system is setting rankings at the beginning of a season. This problem is magnified in any college sport, where teams lose a significant number of their key players from year to year due to transfers, graduation, and the NBA draft. Moreover, teams welcome new recruits and incoming transfers, meaning the year to year difference is any given team’s roster can be quite significant. I’ve tried to deal with these &lt;a href=&#34;https://sports.sites.yale.edu/ncaa-basketball-prediction-model-methodology&#34;&gt;issues in the past at the beginning of a given season&lt;/a&gt;, but now that I have three full years of archived rankings (2016-17, 2017-18, and a backcaluated version on 2014-15) I can do a lot better. Let’s look at the year to year stability of our different types of coefficients &lt;span class=&#34;math inline&#34;&gt;\(\alpha_{team}\)&lt;/span&gt;, &lt;span class=&#34;math inline&#34;&gt;\(\delta_{team}\)&lt;/span&gt;, and &lt;span class=&#34;math inline&#34;&gt;\(\beta_{team}\)&lt;/span&gt;.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/post/hoops_methodology/index_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;672&#34; /&gt;&lt;img src=&#34;/post/hoops_methodology/index_files/figure-html/unnamed-chunk-6-2.png&#34; width=&#34;672&#34; /&gt;&lt;img src=&#34;/post/hoops_methodology/index_files/figure-html/unnamed-chunk-6-3.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://lukebenz.com/post/hoops_methodology/index_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;672&#34; /&gt;&lt;img src=&#34;https://lukebenz.com/post/hoops_methodology/index_files/figure-html/unnamed-chunk-6-2.png&#34; width=&#34;672&#34; /&gt;&lt;img src=&#34;https://lukebenz.com/post/hoops_methodology/index_files/figure-html/unnamed-chunk-6-3.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;We see that there is higher year to year variability in the offensive coefficients than in the defensive coefficients. So if we can account for some of the year to year variation due to some of the factors surrounding why a team’s roster from year to year, this can help us set good preseason ratings. While my system doesn’t make use of individual player data in-season, I think that it allows us to extract the most information out of how teams change from year to year. All of the the individual level data was graciously given to me by &lt;a href=&#34;https://twitter.com/totally_t_bomb&#34;&gt;Bart Torvik&lt;/a&gt;, who honestly has one of the &lt;a href=&#34;http://www.barttorvik.com&#34;&gt;coolest sites on the internet&lt;/a&gt; if you’re a college hoops fan. Bart keeps track of a player value metric called, &lt;a href=&#34;https://www.bigtengeeks.com/new-stat-porpagatu/&#34;&gt;“Points Over Replacement Player Per Adjusted Game At That Usage”&lt;/a&gt;, or more simply PPG! . Examining returning players who played at least 40% of possible minutes for their teams, I computed team level returing PPG!, departing PPG!, and incoming transfer PPG! . Additionly, Bart provided me with team level percetange of returning minutes. Combining that with &lt;a href=&#34;https://github.com/lbenz730/NCAA_Hoops/blob/master/3.0_Files/Info/247_recruiting.csv&#34;&gt;my own recruiting data&lt;/a&gt; pulled from &lt;a href=&#34;https://247sports.com/Season/2018-Basketball/CompositeTeamRankings/&#34;&gt;247Sports.com&lt;/a&gt;, I used the several variables to predict offensive and defensive coefficients from the the previous years statistics. Regressions were fit on data 2015-16 &lt;span class=&#34;math inline&#34;&gt;\(\rightarrow\)&lt;/span&gt; 2016-17 and 2016-17 &lt;span class=&#34;math inline&#34;&gt;\(\rightarrow\)&lt;/span&gt; 2017-18 using 10-fold cross validiation. The following variables comprised the models.&lt;/p&gt;
 &lt;div id=&#34;alpha_teamtextyear-i1&#34; class=&#34;section level4&#34;&gt;
 &lt;h4&gt;&lt;span class=&#34;math inline&#34;&gt;\(\alpha_{team}^{\text{year =} i+1}\)&lt;/span&gt;&lt;/h4&gt;
@@ -3915,7 +3915,7 @@ where &lt;span class=&#34;math inline&#34;&gt;\(\beta_{loc, off}\)&lt;/span&gt; 
 &lt;/ul&gt;
 &lt;p&gt;Model &lt;span class=&#34;math inline&#34;&gt;\(R^2 = 0.59\)&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;From this, not only get a much improved preseason estimate of a team’s true strength (&lt;span class=&#34;math inline&#34;&gt;\(\hat \gamma_{team} = \hat \alpha_{team} + \hat \delta_{team}\)&lt;/span&gt;), but we can also get a prior distribution on the these coefficients as well, utilizing the variance of &lt;span class=&#34;math inline&#34;&gt;\(\hat \gamma_{team}\)&lt;/span&gt;. Perhaps not suprisingly, the uncertainty in these distributions is greater for teams with more high level recruits and fewer returning players. Compare the following preseason priors for some of the more interesting teams this year.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/post/hoops_methodology/index_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://lukebenz.com/post/hoops_methodology/index_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Let’s take a look at the top-25 teams heading into the 2018-19 season.&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;##               team yusag_coeff
 ## 1   North Carolina    21.29206
@@ -3958,7 +3958,7 @@ Finally, the games weight in the model is given by
 &lt;span class=&#34;math display&#34;&gt;\[
 w = \frac{1}{1 + 0.5^{5r}e^{-r}}
 \]&lt;/span&gt;
-&lt;img src=&#34;/post/hoops_methodology/index_files/figure-html/unnamed-chunk-10-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;img src=&#34;https://lukebenz.com/post/hoops_methodology/index_files/figure-html/unnamed-chunk-10-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;This bias really only downweights early season games when the majority of the season has already been played.&lt;/p&gt;
 &lt;p&gt;Ok so now that we have coefficient estimates for each team prior to the season and estimates from the current season’s worth of data what do we do? Part of the reason the preseason ratings of interesting is that estimates of team coefficients are extremely noisy early in the season. To get around this, we can take a weighted average of a team’s in-season coefficients and preseason coefficients. Suppose a team has &lt;span class=&#34;math inline&#34;&gt;\(n\)&lt;/span&gt; games on it’s schedule, and it’s most recent game played was the &lt;span class=&#34;math inline&#34;&gt;\(k^{th}\)&lt;/span&gt; game on the schedule. Then we have
 &lt;span class=&#34;math display&#34;&gt;\[
@@ -3980,10 +3980,10 @@ w = \min\biggl(\frac{2k}{n}, 1\biggr)
     
     <item>
       <title>You Play to…Lose the Game?</title>
-      <link>/post/eng_bel/</link>
+      <link>https://lukebenz.com/post/eng_bel/</link>
       <pubDate>Wed, 27 Jun 2018 00:00:00 +0000</pubDate>
       
-      <guid>/post/eng_bel/</guid>
+      <guid>https://lukebenz.com/post/eng_bel/</guid>
       <description>
 
 
@@ -4010,19 +4010,19 @@ w = \min\biggl(\frac{2k}{n}, 1\biggr)
 &lt;li&gt;Russia 1.96 (35)&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;Are these groups really that different in talent? The average rating in the upper half of the bracket is 2.62, while the average team in the lower half of the bracket is 2.48 . Among teams to qualify for the Knockout Round, we can simulate the average talent disparity between the top half of the bracket, when the Group G winner will go, and the lower half of the bracket, where the Group G runner-up will go.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/post/eng_bel/index_files/figure-html/unnamed-chunk-1-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://lukebenz.com/post/eng_bel/index_files/figure-html/unnamed-chunk-1-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;In the histogram displaying talent disparities from 100,000 simulated knockout brackets based on pre-tournament probabilities to advance, we see that the disparity based on current ratings isn’t that big. Perhaps the reason that we think the disparity is larger than it actually is that that big-name teams in the top-half of the bracket, namely Argentina, are worse than expected pre-tournament, while several teams in the bottom half, like Croatia, Sweden, and Switzerland, have all improved in rating since the beginning of the tournament. Irregardless, there is truth in the fact that the top half of the knockout break is stronger on average than the bottom half of the bracket. Let’s see how England and Belgium fair based on which half of the bracket they are in to see if losing in order to finish second in Group G really is better.&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;##        finish  Qtrs Semis Final Champ
 ## 1   eng_first 0.639 0.294 0.137 0.070
 ## 2  eng_second 0.590 0.330 0.173 0.074
 ## 3  belg_first 0.660 0.339 0.178 0.089
 ## 4 belg_second 0.657 0.375 0.208 0.117&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/eng_bel/index_files/figure-html/unnamed-chunk-2-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://lukebenz.com/post/eng_bel/index_files/figure-html/unnamed-chunk-2-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Using Monte Carlo, I simulated the knockout round 1000 times with each Belgium winning the group and 1000 times with England winning the group. Not suprisingly, both teams had better round-by-round advancement probabilities across the board, with the exception of the quarterfinals, when finishing as group runner up.&lt;/p&gt;
 &lt;div id=&#34;conditioning-on-colombia&#34; class=&#34;section level3&#34;&gt;
 &lt;h3&gt;Conditioning on Colombia&lt;/h3&gt;
 &lt;p&gt;There is however, an additional interesting factor to consider. While “G” comes before “H”, FIFA has decided to schedule the final round of Group H matches on Thursday morning while scheduling the Group G matches on Thursday afternoon. This means that both England and Belgium will know who their opponets in the round of 16 would be based on the early morning results from Group H. More specifically, England and Belgium will know which half of the draw Colombia is on. Colombia is the 5th ranked team in my model, with a rating of 2.73 , and would be a much more difficult matchup than either Japan or Senegal, the other two potential Group H teams Colombia or Belgium would face. The possibility of facing Colombia is exactly why the quarterfinal advantage seems to disappear. Would the possibility of facing Columbia as Group H winners make it worth winning Group G instead? We can simulate the knockout round 1000 times with Colombia winning Group H (sent to bottom-half), finishing runners up (sent to top-half), or missing the knockout round all together.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/post/eng_bel/index_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://lukebenz.com/post/eng_bel/index_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;We see based on the chart above that matching Colombia’s result if they progress is favorable in the long run to simply trying to finish group runner’s up. Simply avoiding Colombia in the first round can be worth about 3-5% in Belgium and England’s chances of winning the World Cup, with both countries best odds coming when they land in the lower half of the bracket AND avoid Colombia. So overall, perhaps the biggest advantage for England and Belgium is knowing who their opponents would be with 100% certainty prior to their own game. And do be surprised if things get a little crazy with one team trying to ensure they lose, especially if Colombia fails to win Group H. Sorry, Herm – you don’t always “play to win the game”. And maybe–just maybe–it’ll be a whole lot more fun.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;acknowledgements&#34; class=&#34;section level3&#34;&gt;
@@ -4034,10 +4034,10 @@ w = \min\biggl(\frac{2k}{n}, 1\biggr)
     
     <item>
       <title>World Cup Probability Quirks</title>
-      <link>/post/wc_prob_quirks/</link>
+      <link>https://lukebenz.com/post/wc_prob_quirks/</link>
       <pubDate>Sun, 24 Jun 2018 00:00:00 +0000</pubDate>
       
-      <guid>/post/wc_prob_quirks/</guid>
+      <guid>https://lukebenz.com/post/wc_prob_quirks/</guid>
       <description>
 
 
@@ -4059,8 +4059,8 @@ In the contest of the World Cup, we can think of &lt;span class=&#34;math inline
 \mathbb{P}(\text{Mexico Advances}) = \mathbb{P}(\text{Mexico Advances }|\text{ win}) \times \mathbb{P}(\text{win}) + \mathbb{P}(\text{Mexico Advances }|\text{ tie}) \times \mathbb{P}(\text{tie}) + \mathbb{P}(\text{Mexico Advances }|\text{ loss}) \times \mathbb{P}(\text{loss})
 \]&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;Mexico is guarteed to win the group with a win or a tie against Sweeden, so &lt;span class=&#34;math inline&#34;&gt;\(\mathbb{P}(\text{Mexico Advances }|\text{ win}) = \mathbb{P}(\text{Mexico Advances }|\text{ tie}) = 1\)&lt;/span&gt;. With a loss however, Mexico’s position is much more precarious. Full scernarious are outlined &lt;a href=&#34;https://twitter.com/AmericanNumbers/status/1010939489198510081&#34;&gt;here&lt;/a&gt;, and Mexico can still advance with a loss, but accoring to my simulations, &lt;span class=&#34;math inline&#34;&gt;\(\mathbb{P}(\text{Mexico Advances }|\text{ loss})\)&lt;/span&gt; is only about 25%. Conditional on the fact that Mexico loses, they would lose any head to head tiebreaker Sweden, meaning a Germany win over South Korea would almost certainly eliminate El Tri. As for Germany’s favorable odds, a simple look at the expected goal distirbution for the final two matches expain why my model suggests Mexico isn’t as safe as one might’ve thought.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/img/gerkor.png&#34; alt=&#34;gerkor&#34; /&gt;
-&lt;img src=&#34;/img/mexswe.png&#34; alt=&#34;mexswe&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://lukebenz.com/img/gerkor.png&#34; alt=&#34;gerkor&#34; /&gt;
+&lt;img src=&#34;https://lukebenz.com/img/mexswe.png&#34; alt=&#34;mexswe&#34; /&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;group-h&#34; class=&#34;section level3&#34;&gt;
 &lt;h3&gt;Group H&lt;/h3&gt;
@@ -4080,18 +4080,18 @@ In the contest of the World Cup, we can think of &lt;span class=&#34;math inline
 \sum_{teams} \mathbb{P}(\text{team advances}) = 2
 \]&lt;/span&gt;
 as there are 2 spots in the knockout round for each group. Given that Poland has already been eliminated, we must divide that 200% of probability amongst 3 teams somehow, and doing so in a relatively even manner yields this neat result. Micah McCurdy has a &lt;a href=&#34;https://twitter.com/IneffectiveMath/status/1010983059364163586&#34;&gt;good explanation on this phenomon in general&lt;/a&gt;. Perhaps even more interesting is the fact that the three remaining countries’ chances don’t deviate significantly from a true random draw, in which each country’s chances would be exactly 2/3. Any time you have random or near random events in sports, it’s almost always exciting (this is why we find March Madness so appealing, for instance), meaning that Group H’s final matchday will be must-see TV. Here’s how my model sees the final Group H matches.3&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/img/sencol.png&#34; alt=&#34;sencol&#34; /&gt;
-&lt;img src=&#34;/img/poljpn.png&#34; alt=&#34;poljpn&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://lukebenz.com/img/sencol.png&#34; alt=&#34;sencol&#34; /&gt;
+&lt;img src=&#34;https://lukebenz.com/img/poljpn.png&#34; alt=&#34;poljpn&#34; /&gt;&lt;/p&gt;
 &lt;/div&gt;
 </description>
     </item>
     
     <item>
       <title>World Cup Methodology</title>
-      <link>/post/wc_model_methodology/blogpost/</link>
+      <link>https://lukebenz.com/post/wc_model_methodology/blogpost/</link>
       <pubDate>Sun, 10 Jun 2018 00:00:00 +0000</pubDate>
       
-      <guid>/post/wc_model_methodology/blogpost/</guid>
+      <guid>https://lukebenz.com/post/wc_model_methodology/blogpost/</guid>
       <description>
 
 
@@ -4126,7 +4126,7 @@ Approximating such a distribution using prediction intervals for &lt;code&gt;goa
 &lt;div id=&#34;taking-a-step-back&#34; class=&#34;section level1&#34;&gt;
 &lt;h1&gt;Taking a Step Back&lt;/h1&gt;
 &lt;p&gt;At this stage, there are two questions to consider. The first, is why didn’t a linear model, which had worked well for us in the case of basketball and football, work well in the case of soccer? Furthermore, we wondered, if not a linear model, what type of model would work best? The answer to both of these questions is best seen by looking at histograms of points/goals scored in soccer games vs. basketball games.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/post/wc_model_methodology/blogpost_files/figure-html/unnamed-chunk-1-1.png&#34; width=&#34;672&#34; /&gt;&lt;img src=&#34;/post/wc_model_methodology/blogpost_files/figure-html/unnamed-chunk-1-2.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://lukebenz.com/post/wc_model_methodology/blogpost_files/figure-html/unnamed-chunk-1-1.png&#34; width=&#34;672&#34; /&gt;&lt;img src=&#34;https://lukebenz.com/post/wc_model_methodology/blogpost_files/figure-html/unnamed-chunk-1-2.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Based on the plots above, we see that the distribution of basketball scores looks like a bell curve, while the distribution of soccer scores does not. Rather, the distribution of soccer scores looks to be more like a &lt;a href=&#34;https://en.wikipedia.org/wiki/Poisson_distribution&#34;&gt;Poisson distribution&lt;/a&gt;. Recall that the probability mass function (PMF) of the possion distribution with parameter &lt;span class=&#34;math inline&#34;&gt;\(\lambda\)&lt;/span&gt; is by
 &lt;span class=&#34;math display&#34;&gt;\[
 P(X = k) = \frac{e^{-\lambda}\lambda^k}{x!} \textrm{ for } x = 0, 1, 2, ...
@@ -4149,7 +4149,7 @@ P(X = k) = \frac{e^{-\lambda}\lambda^k}{x!} \textrm{ for } x = 0, 1, 2, ...
 &lt;span class=&#34;math display&#34;&gt;\[
 w_i = \alpha_i \times e^{- \frac{\delta_t - \delta_i}{\delta\star}}
 \]&lt;/span&gt;
-&lt;img src=&#34;/post/wc_model_methodology/blogpost_files/figure-html/unnamed-chunk-2-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;img src=&#34;https://lukebenz.com/post/wc_model_methodology/blogpost_files/figure-html/unnamed-chunk-2-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;We see above that the 2014 World Cup and the 2016 Euro Cup are among the most heavily weighted games, as we would hope. Now the call to the model is as follows:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;glm.futbol &amp;lt;- glm(goals ~ team + opponent + location, 
                   family = &amp;quot;poisson&amp;quot;,
@@ -4259,7 +4259,7 @@ w_i = \alpha_i \times e^{- \frac{\delta_t - \delta_i}{\delta\star}}
 &lt;/tr&gt;
 &lt;/table&gt;
 &lt;p&gt;Perhaps unsuprisingly, the most likely outcome is a 1-1 draw, but there is still about an 87% chance we see a different outcome. Summing the diagonal entries of this matrix (extended out beyond 3 goals–let’s assume it’s neither team will score more than 10 goals) gives the probability that that Iberian neighbors end in a stalemate, while summing the entries above the diagonal or below the diagonal yield Portugal or Spain’s chances of winning, respectively. Overall, we estimate that Spain has about a 41% chance to win, Portugal has about a 33% chance to win, and there is a 26% chance the two teams draw.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/post/wc_model_methodology/blogpost_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://lukebenz.com/post/wc_model_methodology/blogpost_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;simulating-the-world-cup&#34; class=&#34;section level1&#34;&gt;
 &lt;h1&gt;Simulating the World Cup&lt;/h1&gt;
@@ -4270,7 +4270,7 @@ w_i = \alpha_i \times e^{- \frac{\delta_t - \delta_i}{\delta\star}}
 &lt;li&gt;Simulate knockout round games as in step 1. If there is a tie, flip a coin to determine who wins the simulated penalty shooutout (assuming that teams convert penalties at similar rates, this is not a decent approximation &lt;a href=&#34;#fn5&#34; class=&#34;footnote-ref&#34; id=&#34;fnref5&#34;&gt;&lt;sup&gt;5&lt;/sup&gt;&lt;/a&gt;).&lt;/li&gt;
 &lt;li&gt;Repeat step 4 until there is a champion&lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;&lt;img src=&#34;/post/wc_model_methodology/blogpost_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;672&#34; /&gt;&lt;img src=&#34;/post/wc_model_methodology/blogpost_files/figure-html/unnamed-chunk-6-2.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://lukebenz.com/post/wc_model_methodology/blogpost_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;672&#34; /&gt;&lt;img src=&#34;https://lukebenz.com/post/wc_model_methodology/blogpost_files/figure-html/unnamed-chunk-6-2.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Our simulations indicate that despite being in the so called “group of death”, defending champion Germany is most likely to win the World Cup, with a roughly 16% chance to hoist the crown. Brazil (11%), Frace (9%), Spain (8%), and the trio of Argentina, Belgium and Columbia (6% each) follow closely behind. A full list of World Cup odds, as well as the code used in this project can be found on &lt;a href=&#34;https://github.com/lbenz730/world_cup&#34;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;limitations&#34; class=&#34;section level1&#34;&gt;

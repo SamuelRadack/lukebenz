@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Soccer on Luke Benz</title>
-    <link>/tags/soccer/</link>
+    <link>https://lukebenz.com/tags/soccer/</link>
     <description>Recent content in Soccer on Luke Benz</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 25 May 2020 00:00:00 +0000</lastBuildDate>
     
-	    <atom:link href="/tags/soccer/index.xml" rel="self" type="application/rss+xml" />
+	    <atom:link href="https://lukebenz.com/tags/soccer/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Bundesliga Home Field Avantage in the Absence of Fans</title>
-      <link>/post/bundesliga_hfa/</link>
+      <link>https://lukebenz.com/post/bundesliga_hfa/</link>
       <pubDate>Mon, 25 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>/post/bundesliga_hfa/</guid>
+      <guid>https://lukebenz.com/post/bundesliga_hfa/</guid>
       <description>
 
 
@@ -27,7 +27,7 @@
 &lt;div id=&#34;analyzing-expected-outcomes&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Analyzing Expected Outcomes&lt;/h2&gt;
 &lt;p&gt;One quick and dirty way to analyze the strength of HFA in the absence of fans is to compare the results of the first two weeks (18 games) since the Bundesliga’s return to what we’d expect given full HFA. To do this, I’ll use &lt;a href=&#34;https://projects.fivethirtyeight.com/soccer-predictions/bundesliga/&#34;&gt;FiveThirtyEight’s pubically available SPI model&lt;/a&gt;. FiveThirtyEight predicts the win probability for both the home and away teams as well as the probabiligty of a draw. Using these probabilities, we can simulate the first two weeks of matches 10,000 times, and look at home many points (3 for win, 1 for draw) we’d expect to get accrued by home teams. This approach allows for the adjustment of team quality, as in a small sample, there could be more/less higher quality home teams. Note that FiveThirtyEight’s post-COVID return projections already reduce HFA by 10%.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/post/bundesliga_hfa/index_files/figure-html/unnamed-chunk-1-1.png&#34; width=&#34;1024&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://lukebenz.com/post/bundesliga_hfa/index_files/figure-html/unnamed-chunk-1-1.png&#34; width=&#34;1024&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Clearly the results are pretty unexpected even assuming a 10% HFA reduction. This isn’t to suggest that HFA is completely gone without fans, but it does suggest that it probably is reduced by more than 10%. I’ll note that a March 11 game between behind closed doors between Borussia Monchengladbach and FC Cologne, but I’m not including that here since a) it was before a long lay off and b) it was before FiveThirtyEight reduced it’s HFA.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;how-much-is-hfa-reduced&#34; class=&#34;section level2&#34;&gt;
@@ -38,9 +38,9 @@ Y_1 \sim \text{Poisson}(\lambda_1)\\
 Y_2 \sim \text{Poisson}(\lambda_2)
 \]&lt;/span&gt;
 where &lt;span class=&#34;math inline&#34;&gt;\(Y_i\)&lt;/span&gt; is the number of goals scored by team &lt;span class=&#34;math inline&#34;&gt;\(i\)&lt;/span&gt;. Using &lt;a href=&#34;%22https://projects.fivethirtyeight.com/soccer-api/club/spi_matches.csv%22&#34;&gt;FiveThirtyEight’s publically available data&lt;/a&gt;, I fit a possion regression model using &lt;a href=&#34;https://en.wikipedia.org/wiki/B-spline&#34;&gt;b-splines&lt;/a&gt; on each of the team’s Soccer Power Index (SPI) plus a home team indicator.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/post/bundesliga_hfa/index_files/figure-html/unnamed-chunk-2-1.png&#34; width=&#34;1024&#34; /&gt;
+&lt;p&gt;&lt;img src=&#34;https://lukebenz.com/post/bundesliga_hfa/index_files/figure-html/unnamed-chunk-2-1.png&#34; width=&#34;1024&#34; /&gt;
 We can see that my simplified model is a pretty good approximation of FiveThirtyEight’s model. Perhps it slightly underestimates certain draw probabilities, as FiveThirtyEight inflates draw probabilities from their Poisson model, but it’s a useful enough approximation for the purposes I’d like to use it for. Now, we can manually control the reduction in HFA and see where our observed results compare to expected results.
-&lt;img src=&#34;/post/bundesliga_hfa/index_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;1024&#34; /&gt;&lt;/p&gt;
+&lt;img src=&#34;https://lukebenz.com/post/bundesliga_hfa/index_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;1024&#34; /&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;discussion&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Discussion&lt;/h2&gt;
@@ -52,10 +52,10 @@ We can see that my simplified model is a pretty good approximation of FiveThirty
     
     <item>
       <title>You Play to…Lose the Game?</title>
-      <link>/post/eng_bel/</link>
+      <link>https://lukebenz.com/post/eng_bel/</link>
       <pubDate>Wed, 27 Jun 2018 00:00:00 +0000</pubDate>
       
-      <guid>/post/eng_bel/</guid>
+      <guid>https://lukebenz.com/post/eng_bel/</guid>
       <description>
 
 
@@ -82,19 +82,19 @@ We can see that my simplified model is a pretty good approximation of FiveThirty
 &lt;li&gt;Russia 1.96 (35)&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;Are these groups really that different in talent? The average rating in the upper half of the bracket is 2.62, while the average team in the lower half of the bracket is 2.48 . Among teams to qualify for the Knockout Round, we can simulate the average talent disparity between the top half of the bracket, when the Group G winner will go, and the lower half of the bracket, where the Group G runner-up will go.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/post/eng_bel/index_files/figure-html/unnamed-chunk-1-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://lukebenz.com/post/eng_bel/index_files/figure-html/unnamed-chunk-1-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;In the histogram displaying talent disparities from 100,000 simulated knockout brackets based on pre-tournament probabilities to advance, we see that the disparity based on current ratings isn’t that big. Perhaps the reason that we think the disparity is larger than it actually is that that big-name teams in the top-half of the bracket, namely Argentina, are worse than expected pre-tournament, while several teams in the bottom half, like Croatia, Sweden, and Switzerland, have all improved in rating since the beginning of the tournament. Irregardless, there is truth in the fact that the top half of the knockout break is stronger on average than the bottom half of the bracket. Let’s see how England and Belgium fair based on which half of the bracket they are in to see if losing in order to finish second in Group G really is better.&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;##        finish  Qtrs Semis Final Champ
 ## 1   eng_first 0.639 0.294 0.137 0.070
 ## 2  eng_second 0.590 0.330 0.173 0.074
 ## 3  belg_first 0.660 0.339 0.178 0.089
 ## 4 belg_second 0.657 0.375 0.208 0.117&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/eng_bel/index_files/figure-html/unnamed-chunk-2-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://lukebenz.com/post/eng_bel/index_files/figure-html/unnamed-chunk-2-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Using Monte Carlo, I simulated the knockout round 1000 times with each Belgium winning the group and 1000 times with England winning the group. Not suprisingly, both teams had better round-by-round advancement probabilities across the board, with the exception of the quarterfinals, when finishing as group runner up.&lt;/p&gt;
 &lt;div id=&#34;conditioning-on-colombia&#34; class=&#34;section level3&#34;&gt;
 &lt;h3&gt;Conditioning on Colombia&lt;/h3&gt;
 &lt;p&gt;There is however, an additional interesting factor to consider. While “G” comes before “H”, FIFA has decided to schedule the final round of Group H matches on Thursday morning while scheduling the Group G matches on Thursday afternoon. This means that both England and Belgium will know who their opponets in the round of 16 would be based on the early morning results from Group H. More specifically, England and Belgium will know which half of the draw Colombia is on. Colombia is the 5th ranked team in my model, with a rating of 2.73 , and would be a much more difficult matchup than either Japan or Senegal, the other two potential Group H teams Colombia or Belgium would face. The possibility of facing Colombia is exactly why the quarterfinal advantage seems to disappear. Would the possibility of facing Columbia as Group H winners make it worth winning Group G instead? We can simulate the knockout round 1000 times with Colombia winning Group H (sent to bottom-half), finishing runners up (sent to top-half), or missing the knockout round all together.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/post/eng_bel/index_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://lukebenz.com/post/eng_bel/index_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;We see based on the chart above that matching Colombia’s result if they progress is favorable in the long run to simply trying to finish group runner’s up. Simply avoiding Colombia in the first round can be worth about 3-5% in Belgium and England’s chances of winning the World Cup, with both countries best odds coming when they land in the lower half of the bracket AND avoid Colombia. So overall, perhaps the biggest advantage for England and Belgium is knowing who their opponents would be with 100% certainty prior to their own game. And do be surprised if things get a little crazy with one team trying to ensure they lose, especially if Colombia fails to win Group H. Sorry, Herm – you don’t always “play to win the game”. And maybe–just maybe–it’ll be a whole lot more fun.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;acknowledgements&#34; class=&#34;section level3&#34;&gt;
@@ -106,10 +106,10 @@ We can see that my simplified model is a pretty good approximation of FiveThirty
     
     <item>
       <title>World Cup Probability Quirks</title>
-      <link>/post/wc_prob_quirks/</link>
+      <link>https://lukebenz.com/post/wc_prob_quirks/</link>
       <pubDate>Sun, 24 Jun 2018 00:00:00 +0000</pubDate>
       
-      <guid>/post/wc_prob_quirks/</guid>
+      <guid>https://lukebenz.com/post/wc_prob_quirks/</guid>
       <description>
 
 
@@ -131,8 +131,8 @@ In the contest of the World Cup, we can think of &lt;span class=&#34;math inline
 \mathbb{P}(\text{Mexico Advances}) = \mathbb{P}(\text{Mexico Advances }|\text{ win}) \times \mathbb{P}(\text{win}) + \mathbb{P}(\text{Mexico Advances }|\text{ tie}) \times \mathbb{P}(\text{tie}) + \mathbb{P}(\text{Mexico Advances }|\text{ loss}) \times \mathbb{P}(\text{loss})
 \]&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;Mexico is guarteed to win the group with a win or a tie against Sweeden, so &lt;span class=&#34;math inline&#34;&gt;\(\mathbb{P}(\text{Mexico Advances }|\text{ win}) = \mathbb{P}(\text{Mexico Advances }|\text{ tie}) = 1\)&lt;/span&gt;. With a loss however, Mexico’s position is much more precarious. Full scernarious are outlined &lt;a href=&#34;https://twitter.com/AmericanNumbers/status/1010939489198510081&#34;&gt;here&lt;/a&gt;, and Mexico can still advance with a loss, but accoring to my simulations, &lt;span class=&#34;math inline&#34;&gt;\(\mathbb{P}(\text{Mexico Advances }|\text{ loss})\)&lt;/span&gt; is only about 25%. Conditional on the fact that Mexico loses, they would lose any head to head tiebreaker Sweden, meaning a Germany win over South Korea would almost certainly eliminate El Tri. As for Germany’s favorable odds, a simple look at the expected goal distirbution for the final two matches expain why my model suggests Mexico isn’t as safe as one might’ve thought.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/img/gerkor.png&#34; alt=&#34;gerkor&#34; /&gt;
-&lt;img src=&#34;/img/mexswe.png&#34; alt=&#34;mexswe&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://lukebenz.com/img/gerkor.png&#34; alt=&#34;gerkor&#34; /&gt;
+&lt;img src=&#34;https://lukebenz.com/img/mexswe.png&#34; alt=&#34;mexswe&#34; /&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;group-h&#34; class=&#34;section level3&#34;&gt;
 &lt;h3&gt;Group H&lt;/h3&gt;
@@ -152,18 +152,18 @@ In the contest of the World Cup, we can think of &lt;span class=&#34;math inline
 \sum_{teams} \mathbb{P}(\text{team advances}) = 2
 \]&lt;/span&gt;
 as there are 2 spots in the knockout round for each group. Given that Poland has already been eliminated, we must divide that 200% of probability amongst 3 teams somehow, and doing so in a relatively even manner yields this neat result. Micah McCurdy has a &lt;a href=&#34;https://twitter.com/IneffectiveMath/status/1010983059364163586&#34;&gt;good explanation on this phenomon in general&lt;/a&gt;. Perhaps even more interesting is the fact that the three remaining countries’ chances don’t deviate significantly from a true random draw, in which each country’s chances would be exactly 2/3. Any time you have random or near random events in sports, it’s almost always exciting (this is why we find March Madness so appealing, for instance), meaning that Group H’s final matchday will be must-see TV. Here’s how my model sees the final Group H matches.3&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/img/sencol.png&#34; alt=&#34;sencol&#34; /&gt;
-&lt;img src=&#34;/img/poljpn.png&#34; alt=&#34;poljpn&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://lukebenz.com/img/sencol.png&#34; alt=&#34;sencol&#34; /&gt;
+&lt;img src=&#34;https://lukebenz.com/img/poljpn.png&#34; alt=&#34;poljpn&#34; /&gt;&lt;/p&gt;
 &lt;/div&gt;
 </description>
     </item>
     
     <item>
       <title>World Cup Methodology</title>
-      <link>/post/wc_model_methodology/blogpost/</link>
+      <link>https://lukebenz.com/post/wc_model_methodology/blogpost/</link>
       <pubDate>Sun, 10 Jun 2018 00:00:00 +0000</pubDate>
       
-      <guid>/post/wc_model_methodology/blogpost/</guid>
+      <guid>https://lukebenz.com/post/wc_model_methodology/blogpost/</guid>
       <description>
 
 
@@ -198,7 +198,7 @@ Approximating such a distribution using prediction intervals for &lt;code&gt;goa
 &lt;div id=&#34;taking-a-step-back&#34; class=&#34;section level1&#34;&gt;
 &lt;h1&gt;Taking a Step Back&lt;/h1&gt;
 &lt;p&gt;At this stage, there are two questions to consider. The first, is why didn’t a linear model, which had worked well for us in the case of basketball and football, work well in the case of soccer? Furthermore, we wondered, if not a linear model, what type of model would work best? The answer to both of these questions is best seen by looking at histograms of points/goals scored in soccer games vs. basketball games.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/post/wc_model_methodology/blogpost_files/figure-html/unnamed-chunk-1-1.png&#34; width=&#34;672&#34; /&gt;&lt;img src=&#34;/post/wc_model_methodology/blogpost_files/figure-html/unnamed-chunk-1-2.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://lukebenz.com/post/wc_model_methodology/blogpost_files/figure-html/unnamed-chunk-1-1.png&#34; width=&#34;672&#34; /&gt;&lt;img src=&#34;https://lukebenz.com/post/wc_model_methodology/blogpost_files/figure-html/unnamed-chunk-1-2.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Based on the plots above, we see that the distribution of basketball scores looks like a bell curve, while the distribution of soccer scores does not. Rather, the distribution of soccer scores looks to be more like a &lt;a href=&#34;https://en.wikipedia.org/wiki/Poisson_distribution&#34;&gt;Poisson distribution&lt;/a&gt;. Recall that the probability mass function (PMF) of the possion distribution with parameter &lt;span class=&#34;math inline&#34;&gt;\(\lambda\)&lt;/span&gt; is by
 &lt;span class=&#34;math display&#34;&gt;\[
 P(X = k) = \frac{e^{-\lambda}\lambda^k}{x!} \textrm{ for } x = 0, 1, 2, ...
@@ -221,7 +221,7 @@ P(X = k) = \frac{e^{-\lambda}\lambda^k}{x!} \textrm{ for } x = 0, 1, 2, ...
 &lt;span class=&#34;math display&#34;&gt;\[
 w_i = \alpha_i \times e^{- \frac{\delta_t - \delta_i}{\delta\star}}
 \]&lt;/span&gt;
-&lt;img src=&#34;/post/wc_model_methodology/blogpost_files/figure-html/unnamed-chunk-2-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;img src=&#34;https://lukebenz.com/post/wc_model_methodology/blogpost_files/figure-html/unnamed-chunk-2-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;We see above that the 2014 World Cup and the 2016 Euro Cup are among the most heavily weighted games, as we would hope. Now the call to the model is as follows:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;glm.futbol &amp;lt;- glm(goals ~ team + opponent + location, 
                   family = &amp;quot;poisson&amp;quot;,
@@ -331,7 +331,7 @@ w_i = \alpha_i \times e^{- \frac{\delta_t - \delta_i}{\delta\star}}
 &lt;/tr&gt;
 &lt;/table&gt;
 &lt;p&gt;Perhaps unsuprisingly, the most likely outcome is a 1-1 draw, but there is still about an 87% chance we see a different outcome. Summing the diagonal entries of this matrix (extended out beyond 3 goals–let’s assume it’s neither team will score more than 10 goals) gives the probability that that Iberian neighbors end in a stalemate, while summing the entries above the diagonal or below the diagonal yield Portugal or Spain’s chances of winning, respectively. Overall, we estimate that Spain has about a 41% chance to win, Portugal has about a 33% chance to win, and there is a 26% chance the two teams draw.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/post/wc_model_methodology/blogpost_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://lukebenz.com/post/wc_model_methodology/blogpost_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;simulating-the-world-cup&#34; class=&#34;section level1&#34;&gt;
 &lt;h1&gt;Simulating the World Cup&lt;/h1&gt;
@@ -342,7 +342,7 @@ w_i = \alpha_i \times e^{- \frac{\delta_t - \delta_i}{\delta\star}}
 &lt;li&gt;Simulate knockout round games as in step 1. If there is a tie, flip a coin to determine who wins the simulated penalty shooutout (assuming that teams convert penalties at similar rates, this is not a decent approximation &lt;a href=&#34;#fn5&#34; class=&#34;footnote-ref&#34; id=&#34;fnref5&#34;&gt;&lt;sup&gt;5&lt;/sup&gt;&lt;/a&gt;).&lt;/li&gt;
 &lt;li&gt;Repeat step 4 until there is a champion&lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;&lt;img src=&#34;/post/wc_model_methodology/blogpost_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;672&#34; /&gt;&lt;img src=&#34;/post/wc_model_methodology/blogpost_files/figure-html/unnamed-chunk-6-2.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://lukebenz.com/post/wc_model_methodology/blogpost_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;672&#34; /&gt;&lt;img src=&#34;https://lukebenz.com/post/wc_model_methodology/blogpost_files/figure-html/unnamed-chunk-6-2.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Our simulations indicate that despite being in the so called “group of death”, defending champion Germany is most likely to win the World Cup, with a roughly 16% chance to hoist the crown. Brazil (11%), Frace (9%), Spain (8%), and the trio of Argentina, Belgium and Columbia (6% each) follow closely behind. A full list of World Cup odds, as well as the code used in this project can be found on &lt;a href=&#34;https://github.com/lbenz730/world_cup&#34;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;limitations&#34; class=&#34;section level1&#34;&gt;

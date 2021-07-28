@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Michael Lopez on Luke Benz</title>
-    <link>/authors/michael-lopez/</link>
+    <link>https://lukebenz.com/authors/michael-lopez/</link>
     <description>Recent content in Michael Lopez on Luke Benz</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 29 Dec 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 15 Jul 2021 00:00:00 +0000</lastBuildDate>
     
-	    <atom:link href="/authors/michael-lopez/index.xml" rel="self" type="application/rss+xml" />
+	    <atom:link href="https://lukebenz.com/authors/michael-lopez/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Estimating the change in soccer&#39;s home advantage during the Covid-19 pandemic using bivariate Poisson regression</title>
-      <link>/publication/soccer_covid_ha/</link>
-      <pubDate>Tue, 29 Dec 2020 00:00:00 +0000</pubDate>
+      <link>https://lukebenz.com/publication/soccer_covid_ha/</link>
+      <pubDate>Thu, 15 Jul 2021 00:00:00 +0000</pubDate>
       
-      <guid>/publication/soccer_covid_ha/</guid>
+      <guid>https://lukebenz.com/publication/soccer_covid_ha/</guid>
       <description></description>
     </item>
     

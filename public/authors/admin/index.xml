@@ -2,48 +2,48 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Luke Benz</title>
-    <link>/authors/admin/</link>
+    <link>https://lukebenz.com/authors/admin/</link>
     <description>Recent content on Luke Benz</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 29 Dec 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 15 Jul 2021 00:00:00 +0000</lastBuildDate>
     
-	    <atom:link href="/authors/admin/index.xml" rel="self" type="application/rss+xml" />
+	    <atom:link href="https://lukebenz.com/authors/admin/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Estimating the change in soccer&#39;s home advantage during the Covid-19 pandemic using bivariate Poisson regression</title>
-      <link>/publication/soccer_covid_ha/</link>
-      <pubDate>Tue, 29 Dec 2020 00:00:00 +0000</pubDate>
+      <link>https://lukebenz.com/publication/soccer_covid_ha/</link>
+      <pubDate>Thu, 15 Jul 2021 00:00:00 +0000</pubDate>
       
-      <guid>/publication/soccer_covid_ha/</guid>
+      <guid>https://lukebenz.com/publication/soccer_covid_ha/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Social media partnerships with patient organizations for neuro-oncology patient recruitment</title>
-      <link>/publication/social_media_recruitment/</link>
+      <link>https://lukebenz.com/publication/social_media_recruitment/</link>
       <pubDate>Tue, 01 Oct 2019 00:00:00 +0000</pubDate>
       
-      <guid>/publication/social_media_recruitment/</guid>
+      <guid>https://lukebenz.com/publication/social_media_recruitment/</guid>
       <description></description>
     </item>
     
     <item>
       <title>An Examination of Timeout Value, Strategy, and Momentum in NCAA Division 1 Men&#39;s Basketball</title>
-      <link>/posters/nessis_2019/</link>
+      <link>https://lukebenz.com/posters/nessis_2019/</link>
       <pubDate>Sat, 28 Sep 2019 00:00:00 +0000</pubDate>
       
-      <guid>/posters/nessis_2019/</guid>
+      <guid>https://lukebenz.com/posters/nessis_2019/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Game Excitement Index: An In-Depth Exploration</title>
-      <link>/post/gei/</link>
+      <link>https://lukebenz.com/post/gei/</link>
       <pubDate>Sat, 22 Dec 2018 00:00:00 +0000</pubDate>
       
-      <guid>/post/gei/</guid>
+      <guid>https://lukebenz.com/post/gei/</guid>
       <description>
 
 
@@ -98,7 +98,7 @@ master &amp;lt;- left_join(master, df, by = &amp;quot;game_id&amp;quot;)&lt;/cod
 &lt;div id=&#34;analysis&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Analysis&lt;/h2&gt;
 &lt;p&gt;Below is a histogram of the Game Excitement Index for the 2018-19 season (for all games play-by-play data is avaiable). Through the first 6 weeks of the season, GEI has a mean of roughly 3.6 and standard deviation of about 2.6. GEI appears to follow some sort of Gamma distribution. The distribution is skewed right, with over 62 percent of games registing GEI less than 4.
-&lt;img src=&#34;/post/gei/index_files/figure-html/fig1-1.png&#34; width=&#34;672&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;img src=&#34;https://lukebenz.com/post/gei/index_files/figure-html/fig1-1.png&#34; width=&#34;672&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;We can see looking by the plot above that very few games have GEI greater than 10. In fact, 10 is the 99th percentile for GEI, and through 12/21/2018, only 23 games have achieved such a mark. Below are the most exciting games of the season.&lt;/p&gt;
 &lt;table&gt;
 &lt;thead&gt;
@@ -838,12 +838,12 @@ master &amp;lt;- left_join(master, df, by = &amp;quot;game_id&amp;quot;)&lt;/cod
 &lt;/div&gt;
 &lt;div id=&#34;gei-game-types-by-conference&#34; class=&#34;section level4&#34;&gt;
 &lt;h4&gt;GEI Game Types by Conference&lt;/h4&gt;
-&lt;p&gt;&lt;img src=&#34;/post/gei/index_files/figure-html/fig2-1.png&#34; width=&#34;1440&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://lukebenz.com/post/gei/index_files/figure-html/fig2-1.png&#34; width=&#34;1440&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;most-exciting-game-by-date&#34; class=&#34;section level4&#34;&gt;
 &lt;h4&gt;Most Exciting Game by Date&lt;/h4&gt;
 &lt;p&gt;Finally, one can look at the most exciting game on each day of the season. I got the idea for the below chart from Jordan Sperber’s &lt;a href=&#34;https://twitter.com/hoopvision68/status/1054509454064926720&#34;&gt;look at the best ranked games each day per KenPom FanMatch&lt;/a&gt;, which seeks to quantify the quality of a game &lt;em&gt;before&lt;/em&gt; it is played.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/post/gei/index_files/figure-html/fig3-1.png&#34; width=&#34;1920&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://lukebenz.com/post/gei/index_files/figure-html/fig3-1.png&#34; width=&#34;1920&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;By no means is GEI meant to be a perfect metric, and it might fail to capture important aspects of the game that a given individual might find to be exciting. That being said, I think it does a pretty good job of capturing a lot of what makes games fun to watch, and helps raise awareness of a lot of good mid-major basketball that often flies under the radar. I’ll keep updating these materials as conference play kicks off in the coming weeks to see if/how the metric changes, but for now, we can sit back, relax, and appreciate some good college hoops.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -852,28 +852,28 @@ master &amp;lt;- left_join(master, df, by = &amp;quot;game_id&amp;quot;)&lt;/cod
     
     <item>
       <title>The International Low Grade Glioma Registry Patient-Reported Quality of Life</title>
-      <link>/posters/qol_lgg/</link>
+      <link>https://lukebenz.com/posters/qol_lgg/</link>
       <pubDate>Thu, 15 Nov 2018 00:00:00 +0000</pubDate>
       
-      <guid>/posters/qol_lgg/</guid>
+      <guid>https://lukebenz.com/posters/qol_lgg/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Quality of life after surgery for intracranial meningioma</title>
-      <link>/publication/qol_meningioma/</link>
+      <link>https://lukebenz.com/publication/qol_meningioma/</link>
       <pubDate>Wed, 13 Sep 2017 00:00:00 +0000</pubDate>
       
-      <guid>/publication/qol_meningioma/</guid>
+      <guid>https://lukebenz.com/publication/qol_meningioma/</guid>
       <description></description>
     </item>
     
     <item>
       <title></title>
-      <link>/authors/admin/</link>
-      <pubDate>Tue, 29 Dec 2020 00:00:00 +0000</pubDate>
+      <link>https://lukebenz.com/authors/admin/</link>
+      <pubDate>Thu, 15 Jul 2021 00:00:00 +0000</pubDate>
       
-      <guid>/authors/admin/</guid>
+      <guid>https://lukebenz.com/authors/admin/</guid>
       <description>&lt;p&gt;My name is Luke Benz and I am a first year Biostatistics PhD Student at the Harvard T.H. Chan School of Public Health. I graduated from Yale University in 2019 with a BS in Applied Mathematics with a concentration in Statistics and Data Science. While I do not yet know what my research at Harvard will entail, I have several diverse interests, including clinical trials, social networks, electronic health record (EHR) data, and cancer.&lt;/p&gt;
 
 &lt;p&gt;Before coming to Harvard, I was a senior data scientist at &lt;a href=&#34;https://www.medidata.com/en/&#34; target=&#34;_blank&#34;&gt;Medidata Solutions, Inc.&lt;/a&gt;, where I most recently worked on models to select sites to use in clinical trials, and to forecast enrollment patterns and key milestones in those trials.&lt;/p&gt;
