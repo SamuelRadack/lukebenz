@@ -33,6 +33,9 @@ social:
 - icon: github
   icon_pack: fab
   link: https://github.com/lbenz730
+- icon: google-scholar
+  icon_pack: 'ai'
+  link: https://scholar.google.com/citations?view_op=list_works&hl=en&user=K401YYwAAAAJ
 superuser: true
 user_groups:
 - Researchers
